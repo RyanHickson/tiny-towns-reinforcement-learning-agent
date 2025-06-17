@@ -29,11 +29,3 @@ monumentsDeck = [
     "theStarloom",
     "statueOfTheBondmaker"
 ]
-
-allDecks = [cottageDeck,
-            farmDeck,
-            factoryDeck,
-            tavernDeck,
-            chapelDeck,
-            theatreDeck,
-            wellDeck]

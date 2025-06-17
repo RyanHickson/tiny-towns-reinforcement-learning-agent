@@ -1,124 +1,122 @@
-cardTypes = ["cottageType", "chapelType", "farmType", "tavernType", "wellType", "theatreType", "factoryType"]
-
 # COTTAGE TYPES
-cottageLayout = [[0,2],
-                 [4,3]]
+cottageLayout = [["wild","wheat"],
+                 ["brick","glass"]]
 
 # FARM TYPES
-farmLayout = [[2,2],
-              [1,1]]
+farmLayout = [["wheat","wheat"],
+              ["wood","wood"]]
 
-orchardLayout = [[5,2],
-                 [2,1]]
+orchardLayout = [["stone","wheat"],
+                 ["wheat","wood"]]
 
-greenhouseLayout = [[2,3],
-                    [1,1]]
+greenhouseLayout = [["wheat","glass"],
+                    ["wood","wood"]]
 
-granaryLayout = [[2,2],
-                 [1,4]]
+granaryLayout = [["wheat","wheat"],
+                 ["wood","brick"]]
 
 # FACTORY TYPES
-factoryLayout = [[1,0,0,0],
-                 [4,5,5,4]]
+factoryLayout = [["wood","wild","wild","wild"],
+                 ["brick","stone","stone","brick"]]
 
-warehouseLayout = [[2,1,2],
-                   [4,0,4]]
+warehouseLayout = [["wheat","wood","wheat"],
+                   ["brick","wild","brick"]]
 
-tradingPostLayout = [[5,1,0],
-                     [5,1,4]]
+tradingPostLayout = [["stone","wood","wild"],
+                     ["stone","wood","brick"]]
 
-bankLayout = [[2,2,0],
-              [1,3,4]]
+bankLayout = [["wheat","wheat","wild"],
+              ["wood","glass","brick"]]
 
 # TAVERN TYPES
-almshouseLayout = [5,5,3]
+tavernLayout = ["brick","brick","glass"]
 
-innLayout = [2,5,3]
+almshouseLayout = ["stone","stone","glass"]
 
-tavernLayout = [4,4,3]
+innLayout = ["wheat","stone","glass"]
 
-feastHallLayout = [1,1,3]
+feastHallLayout = ["wood","wood","glass"]
 
 # CHAPEL TYPES
-templeLayout = [[0,0,3],
-                [4,4,5]]
+chapelLayout = [["wild","wild","glass"],
+                ["stone","glass","stone"]]
 
-chapelLayout = [[0,0,3],
-                [5,3,5]]
+templeLayout = [["wild","wild","glass"],
+                ["brick","brick","stone"]]
 
-abbeyLayout = [[0,0,3],
-               [4,5,5,]]
+abbeyLayout = [["wild","wild","glass"],
+               ["brick","stone","stone",]]
 
-cloisterLayout = [[0,0,3],
-                  [1,4,5]]
+cloisterLayout = [["wild","wild","glass"],
+                  ["wood","brick","stone"]]
 
 # THEATRE TYPES
-tailorLayout = [[0,2,0],
-                [5,3,5]]
+theatreLayout = [["wild","stone","wild"],
+                 ["wood","glass","wood"]]
 
-theatreLayout = [[0,5,0],
-                 [1,3,1]]
+tailorLayout = [["wild","wheat","wild"],
+                ["stone","glass","stone"]]
 
-marketLayout = [[0,1,0],
-                [5,3,5]]
+marketLayout = [["wild","wood","wild"],
+                ["stone","glass","stone"]]
 
-bakeryLayout = [[0,2,0],
-                [4,3,4]]
+bakeryLayout = [["wild","wheat","wild"],
+                ["brick","glass","brick"]]
 
 # WELL TYPES
-wellLayout = [1,5]
+wellLayout = ["wood","stone"]
 
-fountainLayout = [1,5]
+fountainLayout = ["wood","stone"]
 
-millstoneLayout = [1,5]
+millstoneLayout = ["wood","stone"]
 
-shedLayout = [1,5]
+shedLayout = ["wood","stone"]
 
 # MONUMENTS
-architectsGuildLayout = [[0,0,3],
-                         [0,2,5],
-                         [1,4,0]]
+architectsGuildLayout = [["wild","wild","glass"],
+                         ["wild","wheat","stone"],
+                         ["wood","brick","wild"]]
 
-archiveOfTheSecondAgeLayout = [[2,2],
-                               [4,3]]
+archiveOfTheSecondAgeLayout = [["wheat","wheat"],
+                               ["brick","glass"]]
 
-barrettCastleLayout = [[2,0,0,5],
-                       [1,3,3,4]]
+barrettCastleLayout = [["wheat","wild","wild","stone"],
+                       ["wood","glass","glass","brick"]]
 
-cathedralOfCaterinaLayout = [[0,2],
-                             [5,3]]
+cathedralOfCaterinaLayout = [["wild","wheat"],
+                             ["stone","glass"]]
 
-fortIronweedLayout = [[2,0,4],
-                      [5,1,5]]
+fortIronweedLayout = [["wheat","wild","brick"],
+                      ["stone","wood","stone"]]
 
-grandMausoleumOfTheRodina = [[2,2],
-                             [4,5]]
+grandMausoleumOfTheRodinaLayout = [["wheat","wheat"],
+                                   ["brick","stone"]]
 
-groveUniversityLayout = [[0,4,0],
-                         [5,3,5]]
+groveUniversityLayout = [["wild","brick","wild"],
+                         ["stone","glass","stone"]]
 
-mandrasPalace = [[2,3],
-                 [4,1]]
+mandrasPalaceLayout = [["wheat","glass"],
+                       ["brick","wood"]]
 
-obeliskOfTheCrescentLayout = [[2,0,0],
-                              [4,3,4]]
+obeliskOfTheCrescentLayout = [["wheat","wild","wild"],
+                              ["brick","glass","brick"]]
 
-opaleyesWatchLayout = [[1,0,0,0],
-                       [4,3,2,2],
-                       [5,0,0,0]]
+opaleyesWatchLayout = [["wood","wild","wild","wild"],
+                       ["brick","glass","wheat","wheat"],
+                       ["stone","wild","wild","wild"]]
 
-shrineOfTheElderTreeLayout = [[4,2,5],
-                              [1,3,1]]
+shrineOfTheElderTreeLayout = [["brick","wheat","stone"],
+                              ["wood","glass","wood"]]
 
-silvaForumLayout = [[0,0,2,0],
-                    [4,4,5,1]]
+silvaForumLayout = [["wild","wild","wheat","wild"],
+                    ["brick","brick","stone","wood"]]
 
-theSkyBathsLayout = [[0,2,0],
-                     [5,3,1],
-                     [4,0,4]]
+theSkyBathsLayout = [["wild","wheat","wild"],
+                     ["stone","glass","wood"],
+                     ["brick","wild","brick"]]
 
-theStarloomLayout = [[3,3,],
-                     [1,2]]
+theStarloomLayout = [["glass","glass",],
+                     ["wood","wheat"]]
 
-statueOfTheBondmakerLayout = [[1,5,5,3],
-                              [2,0,0,0]]
+statueOfTheBondmakerLayout = [["wood","stone","stone","glass"],
+                              ["wheat","wild","wild","wild"]]
