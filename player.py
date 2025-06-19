@@ -1,7 +1,7 @@
 import numpy as np
 
 testBoard = np.array([["b", "g", "b", "g"],
-                      ["", "c", "w", "g"],
+                      ["w", "c", "w", "g"],
                       ["s", "w", "c", "s"],
                       ["s", "w", "b", "c"]])
 
@@ -14,5 +14,5 @@ class Player:
         # self.board = np.full((4,4), "", dtype=str)
 
     def describePlayer(self):
-        return f"Player {self.playerNumber} has the current board: \n {self.board} \n Their monument this game is {self.monument}"
+        return f"Player {self.playerNumber} has the current board: \n {self.board} \n Their monument this game is {self.monument.getName()}"
     

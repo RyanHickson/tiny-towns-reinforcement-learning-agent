@@ -4,6 +4,7 @@ from player import *
 from buildingLayouts import *
 from cards import *
 from resources import *
+from layoutVariants import createVariants
 
 
 class Game:
@@ -34,9 +35,8 @@ class Game:
 
     def play(self):
         finished = False
-        playerOne = Player(1, "architectsGuild") # random.choice(monumentsDeck)
+        playerOne = Player(1, architectsGuild) # random.choice(monumentsDeck)
         while not finished:
-            self.checkForBuildable()
             # rows, cols = playerOne.board.shape
             # for i in range(rows):
             #     for j in range(cols):
@@ -54,11 +54,23 @@ class Game:
             #                     playerOne.board[i,j] = "b"
             #                 case "stone":
             #                     playerOne.board[i,j] = "s"
-                        
-            
             print(Game.showCardChoices(self))
             print(playerOne.describePlayer())
-            self.checkForBuildable()
+            # self.checkForBuildable()
+            # chapelCoords = getNotWilds(chapelLayout)
+            # print(chapelCoords)
+            print(findPlacements(playerOne.board, architectsGuild))
+            print("\n\n\n")
+            coordDictionary = dict()
+            for card in self.cardChoices:
+                buildDict = findPlacements(playerOne.board, card)
+                for coord, building in buildDict.items():
+                    if coord in coordDictionary.keys():
+                        coordDictionary[coord].update(building)
+                    else:
+                        coordDictionary[coord] = set(building)
+            print(coordDictionary)
+            print("")
             finished = True
         print("Game completed!")
 
@@ -66,10 +78,17 @@ class Game:
         return [el.getName() for el in self.cardChoices]
     
     def checkForBuildable(self):
-        for building in self.cardChoices:
-            currentLayout = building.getLayout()
-            print(building.getName())
-            print(f"{currentLayout=}")
+        for card in self.cardChoices:
+            print(card.getName())
+            layouts = createVariants(card.getLayout())
+            for i, layout in enumerate(layouts):
+                print(f"Variant {i+1}:")
+                if isinstance(layout, np.ndarray):
+                    print(layout.tolist())
+                else:
+                    print(layout)
+                print("")
+            
 
 def main():
     """Main entry point for the game."""

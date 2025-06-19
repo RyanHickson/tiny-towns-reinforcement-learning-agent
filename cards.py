@@ -1,5 +1,4 @@
 from buildingLayouts import *
-from cardDecks import *
 
 class Card:
     def __init__(self, name, layout, deck, abilityText, isFeedable=False):
@@ -21,6 +20,13 @@ class Card:
         else:
             return self.name
 
+cottageDeck = []
+farmDeck = []
+factoryDeck = []
+tavernDeck = []
+chapelDeck = []
+theatreDeck = []
+wellDeck = []
 
 cottage = Card("Cottage", cottageLayout, cottageDeck, "3VP if this building is fed.", isFeedable=True)
 
@@ -55,18 +61,13 @@ millstone = Card("Millstone", millstoneLayout, wellDeck, "2VP if adjacent to a F
 shed = Card("Shed", shedLayout, wellDeck, "1VP. May be constructed on any empty square in your town.")
 
 cottageDeck = [cottage]
-
 farmDeck = [farm, orchard, greenhouse, granary]
-
 factoryDeck = [factory, warehouse, tradingPost, bank]
-
 tavernDeck = [tavern, inn, almshouse, feastHall]
-
 chapelDeck = [chapel, temple, abbey, cloister]
-
 theatreDeck = [theatre, bakery, market, tailor]
-
 wellDeck = [well, fountain, millstone, shed]
+monumentsDeck = []
 
 allDecks = [cottageDeck,
             farmDeck,
