@@ -66,7 +66,6 @@ class Game:
             # print(chapelCoords)
             print("\n")
             coordDictionary = dict()
-            optionsDict = dict()
             for card in self.cardChoices:
                 buildDict = findPlacements(playerOne.board, card)
                 for coord, building in buildDict.items():
@@ -74,7 +73,7 @@ class Game:
                         coordDictionary[coord].update(building)
                     else:
                         coordDictionary[coord] = set(building)
-            print(coordDictionary)
+            print(f"{coordDictionary=}")
             print("")
             finished = True
         print("Game completed!")

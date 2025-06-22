@@ -2,6 +2,7 @@ import numpy as np
 import random as rdm
 from buildingLayouts import *
 from resources import *
+from cards import *
 
 # testBoard = np.array([["B", "G", "B", "G"],
 #                       ["W", "C", "W", "G"],
@@ -11,10 +12,9 @@ from resources import *
 testBoard = np.array([[wheat, wild, brick, glass],
                       [brick, wild, brick, wild],
                       [wild, wild, wild, wild],
-                      [wood, wild, wild, wild]])
+                      [wild, wild, wild, wild]])
 
 randomBoard = np.full((4,4), emptyTile)
-resouceCodes = [" ", "W", "C", "B", "G", "S"]
 
 for i in range(4):
     for j in range(4):

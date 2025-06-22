@@ -1,5 +1,6 @@
 import numpy as np
 from layoutVariants import *
+from resources import *
 
 # W = WOOD
 # C = WHEAT (CROP)
@@ -162,7 +163,7 @@ def findPlacements(board, card):
                 for r, c in notWilds:
                     boardValue = board[i + r][j + c]
                     layoutValue = variant[r][c]
-                    if boardValue != layoutValue and boardValue != "wild":      # CHECK FOR RESOURCE MISMATCH AND WILD RESOURCE
+                    if boardValue != layoutValue and boardValue != wild:      # CHECK FOR RESOURCE MISMATCH AND WILD RESOURCE
                         match = False
                         break
                 if match:
