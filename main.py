@@ -39,6 +39,7 @@ class Game:
     def play(self):
         finished = False
         playerOne = Player(1, rdm.choice(monumentsDeck))  # architectsGuild
+        self.cardChoices.append(playerOne.monument)
         print(playerOne.describeTownBoard())
         while not finished:
             # rows, cols = playerOne.board.shape
@@ -60,11 +61,10 @@ class Game:
             #                     playerOne.board[i,j] = "s"
             print(Game.showCardChoices(self))
             print(playerOne.describePlayer())
-            print(playerOne.describeTownBoard())
             # self.checkForBuildable()
             # chapelCoords = getNotWilds(chapelLayout)
             # print(chapelCoords)
-            print(findPlacements(playerOne.board, architectsGuild))
+            print(findPlacements(playerOne.board, playerOne.monument))
             print("\n")
             coordDictionary = dict()
             for card in self.cardChoices:

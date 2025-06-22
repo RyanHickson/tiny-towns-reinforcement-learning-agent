@@ -8,10 +8,10 @@ from resources import *
 #                       ["S", "W", "C", "S"],
 #                       ["S", "W", "B", "C"]])
 
-testBoard = np.array([['wheat', 'glass', 'brick', 'glass'],
-                      ['brick', 'wild', 'brick', 'wood'],
-                      ['brick', 'wheat', 'wild', 'brick'],
-                      ['wood', 'brick', 'brick', 'wood']])
+testBoard = np.array([['wheat', 'wild', 'brick', 'glass'],
+                      ['brick', 'wild', 'brick', 'wild'],
+                      ['wild', 'wild', 'wild', 'wild'],
+                      ['wood', 'wild', 'wild', 'wild']])
 
 randomBoard = np.full((4,4), emptyTile)
 resouceCodes = [" ", "W", "C", "B", "G", "S"]
