@@ -8,10 +8,10 @@ from resources import *
 #                       ["S", "W", "C", "S"],
 #                       ["S", "W", "B", "C"]])
 
-testBoard = np.array([['wheat', 'wild', 'brick', 'glass'],
-                      ['brick', 'wild', 'brick', 'wild'],
-                      ['wild', 'wild', 'wild', 'wild'],
-                      ['wood', 'wild', 'wild', 'wild']])
+testBoard = np.array([[wheat, wild, brick, glass],
+                      [brick, wild, brick, wild],
+                      [wild, wild, wild, wild],
+                      [wood, wild, wild, wild]])
 
 randomBoard = np.full((4,4), emptyTile)
 resouceCodes = [" ", "W", "C", "B", "G", "S"]
@@ -29,11 +29,22 @@ class Player:
         # self.board = np.full((4,4), "", dtype=str)
 
     def describePlayer(self):
-        return f"Player {self.playerID} has the current board: \n {self.board} \n Their monument this game is {self.monument.getName()}"
+        return f"Player {self.getID()} has the current board: \n {self.showBoard()} \n Their monument this game is {self.monument.getName()}"
+    
+    def getID(self):
+        return self.playerID
     
     def describeTownBoard(self):
         self.townBoardDict = {}
         for row in range(4):
             for tile in range(4):
-                self.townBoardDict[row, tile] = self.board[row, tile]
+                self.townBoardDict[row, tile] = self.board[row, tile].getName()
         return self.townBoardDict
+    
+    def showBoard(self):
+        self.townBoard = np.full((4,4), emptyTile)
+        self.townBoardDict = self.describeTownBoard()
+        for row in range(4):
+            for col in range(4):
+                self.townBoard[row, col] = self.townBoardDict[row, col]
+        return self.townBoard

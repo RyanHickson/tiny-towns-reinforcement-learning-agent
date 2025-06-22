@@ -64,9 +64,9 @@ class Game:
             # self.checkForBuildable()
             # chapelCoords = getNotWilds(chapelLayout)
             # print(chapelCoords)
-            print(findPlacements(playerOne.board, playerOne.monument))
             print("\n")
             coordDictionary = dict()
+            optionsDict = dict()
             for card in self.cardChoices:
                 buildDict = findPlacements(playerOne.board, card)
                 for coord, building in buildDict.items():
