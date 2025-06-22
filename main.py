@@ -1,5 +1,5 @@
 # SINGLE PLAYER PLAYTEST
-import random
+import random as rdm
 from player import *
 from buildingLayouts import *
 from cards import *
@@ -9,33 +9,37 @@ from layoutVariants import createVariants
 
 class Game:
     def __init__(self):
-        # self.cottageChoice = random.choice(cottageDeck)
-        # self.farmChoice = random.choice(farmDeck)
-        # self.factoryChoice = random.choice(factoryDeck)
-        # self.tavernChoice = random.choice(tavernDeck)
-        # self.chapelChoice = random.choice(chapelDeck)
-        # self.theatreChoice = random.choice(theatreDeck)
-        # self.wellChoice = random.choice(wellDeck)
-        
-        self.cottageChoice = cottage
-        self.farmChoice = farm
-        self.factoryChoice = tradingPost
-        self.tavernChoice = inn
-        self.chapelChoice = chapel
-        self.theatreChoice = bakery
-        self.wellChoice = shed
-        
-        self.cardChoices = [self.cottageChoice,
-                            self.farmChoice,
-                            self.factoryChoice,
-                            self.tavernChoice,
-                            self.chapelChoice,
-                            self.theatreChoice,
-                            self.wellChoice]
+        self.cottageChoice = rdm.choice(cottageDeck)
+        self.farmChoice = rdm.choice(farmDeck)
+        self.factoryChoice = rdm.choice(factoryDeck)
+        self.tavernChoice = rdm.choice(tavernDeck)
+        self.chapelChoice = rdm.choice(chapelDeck)
+        self.theatreChoice = rdm.choice(theatreDeck)
+        self.wellChoice = rdm.choice(wellDeck)
+        numberOfPlayers = 1
+
+        # self.cottageChoice = cottage
+        # self.farmChoice = farm
+        # self.factoryChoice = tradingPost
+        # self.tavernChoice = inn
+        # self.chapelChoice = chapel
+        # self.theatreChoice = bakery
+        # self.wellChoice = shed
+
+        self.cardChoices = [
+            self.cottageChoice,
+            self.farmChoice,
+            self.factoryChoice,
+            self.tavernChoice,
+            self.chapelChoice,
+            self.theatreChoice,
+            self.wellChoice,
+        ]
 
     def play(self):
         finished = False
-        playerOne = Player(1, architectsGuild) # random.choice(monumentsDeck)
+        playerOne = Player(1, rdm.choice(monumentsDeck))  # architectsGuild
+        print(playerOne.describeTownBoard())
         while not finished:
             # rows, cols = playerOne.board.shape
             # for i in range(rows):
@@ -56,11 +60,12 @@ class Game:
             #                     playerOne.board[i,j] = "s"
             print(Game.showCardChoices(self))
             print(playerOne.describePlayer())
+            print(playerOne.describeTownBoard())
             # self.checkForBuildable()
             # chapelCoords = getNotWilds(chapelLayout)
             # print(chapelCoords)
             print(findPlacements(playerOne.board, architectsGuild))
-            print("\n\n\n")
+            print("\n")
             coordDictionary = dict()
             for card in self.cardChoices:
                 buildDict = findPlacements(playerOne.board, card)
@@ -76,7 +81,7 @@ class Game:
 
     def showCardChoices(self):
         return [el.getName() for el in self.cardChoices]
-    
+
     def checkForBuildable(self):
         for card in self.cardChoices:
             print(card.getName())
@@ -88,7 +93,7 @@ class Game:
                 else:
                     print(layout)
                 print("")
-            
+
 
 def main():
     """Main entry point for the game."""
