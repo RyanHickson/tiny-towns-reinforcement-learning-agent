@@ -18,14 +18,6 @@ class Game:
         self.wellChoice = rdm.choice(wellDeck)
         numberOfPlayers = 1
 
-        # self.cottageChoice = cottage
-        # self.farmChoice = farm
-        # self.factoryChoice = tradingPost
-        # self.tavernChoice = inn
-        # self.chapelChoice = chapel
-        # self.theatreChoice = bakery
-        # self.wellChoice = shed
-
         self.cardChoices = [
             self.cottageChoice,
             self.farmChoice,
@@ -42,39 +34,30 @@ class Game:
         self.cardChoices.append(playerOne.monument)
         print(playerOne.describeTownBoard())
         while not finished:
-            # rows, cols = playerOne.board.shape
-            # for i in range(rows):
-            #     for j in range(cols):
-            #         chosenResource = ""
-            #         while chosenResource.lower() not in resourceTypes:
-            #             chosenResource = input("Choose resource: ")
-            #             match chosenResource.lower():
-            #                 case "wood":
-            #                     playerOne.board[i,j] = "w"
-            #                 case "wheat":
-            #                     playerOne.board[i,j] = "c"
-            #                 case "glass":
-            #                     playerOne.board[i,j] = "g"
-            #                 case "brick":
-            #                     playerOne.board[i,j] = "b"
-            #                 case "stone":
-            #                     playerOne.board[i,j] = "s"
             print(Game.showCardChoices(self))
             print(playerOne.describePlayer())
-            # self.checkForBuildable()
-            # chapelCoords = getNotWilds(chapelLayout)
-            # print(chapelCoords)
             print("\n")
-            coordDictionary = dict()
-            for card in self.cardChoices:
-                buildDict = findPlacements(playerOne.board, card)
-                for coord, building in buildDict.items():
-                    if coord in coordDictionary.keys():
-                        coordDictionary[coord].update(building)
-                    else:
-                        coordDictionary[coord] = set(building)
+            coordDictionary, buildOptions = findAllPlacements(playerOne, self.cardChoices)
             print(f"{coordDictionary=}")
             print("")
+            print(buildOptions)
+            buildingChoiceInput = input("Build: ")
+            buildingChoice = buildingInputDict[buildingChoiceInput]
+            rowChoice = int(input("ROW: "))
+            colChoice = int(input("COLUMN: "))
+            playerOne.board[rowChoice,colChoice] = buildingChoice
+            print(playerOne.describePlayer())
+            while buildingChoice != "FINISHED":
+                buildingChoiceInput = input("Build: ")
+                buildingChoice = buildingInputDict[buildingChoiceInput]
+                rowChoice = int(input("ROW: "))
+                colChoice = int(input("COLUMN: "))
+                playerOne.board[rowChoice,colChoice] = buildingChoice
+                coordDictionary, buildOptions = findAllPlacements(playerOne, self.cardChoices)
+                print(playerOne.describePlayer())
+                print(playerOne.describeTownBoard())
+                print(coordDictionary)
+                print(buildOptions)
             finished = True
         print("Game completed!")
 

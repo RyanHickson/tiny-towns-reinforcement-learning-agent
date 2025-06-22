@@ -14,6 +14,8 @@ testBoard = np.array([[wheat, wild, brick, glass],
                       [wild, wild, wild, wild],
                       [wild, wild, wild, wild]])
 
+emptyBoard = np.full((4,4), emptyTile)
+
 randomBoard = np.full((4,4), emptyTile)
 
 for i in range(4):
@@ -24,7 +26,7 @@ class Player:
     def __init__(self, playerID, monument):
         self.playerID = playerID
         self.monument = monument
-        self.board = testBoard
+        self.board = emptyBoard
 
         # self.board = np.full((4,4), "", dtype=str)
 
@@ -38,7 +40,7 @@ class Player:
         self.townBoardDict = {}
         for row in range(4):
             for tile in range(4):
-                self.townBoardDict[row, tile] = self.board[row, tile].getName()
+                self.townBoardDict[row, tile] = self.board[row, tile]   # .getName()
         return self.townBoardDict
     
     def showBoard(self):
@@ -46,5 +48,5 @@ class Player:
         self.townBoardDict = self.describeTownBoard()
         for row in range(4):
             for col in range(4):
-                self.townBoard[row, col] = self.townBoardDict[row, col]
+                self.townBoard[row, col] = self.townBoardDict[row, col].getName()
         return self.townBoard

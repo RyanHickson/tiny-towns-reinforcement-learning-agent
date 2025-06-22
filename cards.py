@@ -1,4 +1,5 @@
 from buildingLayouts import *
+from resources import *
 
 class Card:
     def __init__(self, name, layout, deck, abilityText, isFeedable=False):
@@ -110,3 +111,58 @@ monumentsDeck = [architectsGuild,
                 theSkyBaths,
                 theStarloom,
                 statueOfTheBondmaker]
+
+buildingInputDict = {
+    "cottage": cottage,
+    
+    "farm": farm,
+    "orchard": orchard,
+    "greenhouse": greenhouse,
+    "granary": granary,
+    
+    "factory": factory,
+    "warehouse": warehouse,
+    "tradingPost": tradingPost,
+    "bank": bank,
+
+    "tavern": tavern,
+    "inn": inn,
+    "almshouse": almshouse,
+    "feastHall": feastHall,
+    
+    "chapel": chapel,
+    "temple": temple,
+    "abbey": abbey,
+    "cloister": cloister,
+
+    "theatre": theatre,
+    "bakery": bakery,
+    "market": market,
+    "tailor": tailor,
+    
+    "well": well,
+    "fountain": fountain,
+    "millstone": millstone,
+    "shed": shed,
+
+    "architectsGuild": architectsGuild,
+    "archiveOfTheSecondAge": archiveOfTheSecondAge,
+    "barettCastle": barettCastle,
+    "cathedralOfCaterina": cathedralOfCaterina,
+    "fortIronweed": fortIronweed,
+    "grandMausoleumOfTheRodina": grandMausoleumOfTheRodina,
+    "groveUniversity": groveUniversity,
+    "mandrasPalace": mandrasPalace,
+    "obeliskOfTheCrescent": obeliskOfTheCrescent,
+    "opaleyesWatch": opaleyesWatch,
+    "shrineOfTheElderTree": shrineOfTheElderTree,
+    "silvaForum": silvaForum,
+    "theSkyBaths": theSkyBaths,
+    "theStarloom": theStarloom,
+    "statueOfTheBondmaker": statueOfTheBondmaker,
+    "wheat": wheat,
+    "wood": wood,
+    "glass": glass,
+    "brick": brick,
+    "stone": stone
+}

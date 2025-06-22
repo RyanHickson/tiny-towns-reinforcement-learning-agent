@@ -146,11 +146,11 @@ def findPlacements(board, card):
     """
     Finds all building placement possibilities and returns a dictionary of
     co-ordinate pair keys and building placement possibility values
-    NEED TO UPDATE TO RETURN REMOVABLE RESOURCE CUBE COMBINATIONS
     """
     variants = createVariants(card.getLayout())
     boardRows, boardCols = len(board), len(board[0])
     placementDict = {}
+    placementOptions = []
 
     for variant in variants:
         variant = np.array(variant)
@@ -175,5 +175,22 @@ def findPlacements(board, card):
                             placementDict[coordPair].add(card.getName())
                         else:
                             placementDict[coordPair] = {card.getName()}
+                    placementOptions.append({
+                        "building": card.getName(),
+                        "co-ords": coordSet
+                    })
 
-    return placementDict
+    return placementDict, placementOptions
+
+def findAllPlacements(player, cards):
+    coordDictionary = dict()
+    allBuildOptions = []
+    for card in cards:
+        buildDict, buildOptions = findPlacements(player.showBoard(), card)
+        for coord, building in buildDict.items():
+            if coord in coordDictionary.keys():
+                coordDictionary[coord].update(building)
+            else:
+                coordDictionary[coord] = set(building)
+        allBuildOptions.append(buildOptions)
+    return coordDictionary, allBuildOptions
