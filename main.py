@@ -16,7 +16,13 @@ class Game:
         self.chapel_choice = rdm.choice(chapel_deck)
         self.theatre_choice = rdm.choice(theatre_deck)
         self.well_choice = rdm.choice(well_deck)
-        number_of_players = 1
+        self.player_dict = {}
+        number_of_players = 2
+        for player in range(number_of_players):
+            self.player_dict[player] = Player(player, rdm.choice(monuments_deck))
+        print(self.player_dict)
+        self.player_queue = [player for player in self.player_dict.keys()]
+        print(self.player_queue)
 
         self.card_choices = [
             self.cottage_choice,
@@ -31,24 +37,24 @@ class Game:
     def play(self):
         # SETUP
         finished = False
-        player_one = Player(1, rdm.choice(monuments_deck))  # architectsGuild
-        self.card_choices.append(player_one.monument)
-        
-        
-        
+
         # TURN
-        
+
+        master_builder = self.player_dict[self.player_queue.pop(0)]   # starting master builder
+        print(f"{self.player_queue=}")
+        print(f"{master_builder.get_id()=}")
         # MASTER BUILDER CHOOSES A RESOURCE                 (YET TO IMPLEMENT)
         # ALL PLAYERS PLACE CHOSEN RESOURCE                 (YET TO IMPLEMENT)
         # CHECK FOR CONSTRUCTION POSSIBILITIES
         # CHOOSE IF AND WHERE TO BUILD                      (YET TO IMPLEMENT)
         # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
-        print(player_one.describe_town_board())
+        # print(master_builder.describe_town_board())
         while not finished:
+            master_builder
             print(Game.show_card_choices(self))
-            print(player_one.describe_player())
+            print(master_builder.describe_player())
             print("\n")
-            coord_dictionary, build_options = find_all_placements(player_one, self.card_choices)
+            coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
             print(f"{coord_dictionary=}")
             print("")
             print(build_options)
@@ -56,25 +62,33 @@ class Game:
             if building_choice_input == "FINISHED":
                 finished = True
                 continue
-            building_choice = building_input_dict[building_choice_input]
-            row_choice = int(input("ROW (0-3): "))
-            col_choice = int(input("COLUMN (0-3): "))
-            player_one.board[row_choice,col_choice] = building_choice
-            print(player_one.describe_player())
+            if building_choice_input not in building_input_dict.keys():
+                print("Input not understood.")
+                building_choice = ""
+            else:
+                building_choice = building_input_dict[building_choice_input]
+                row_choice = int(input("ROW (0-3): "))
+                col_choice = int(input("COLUMN (0-3): "))
+                master_builder.board[row_choice,col_choice] = building_choice
+                print(master_builder.describe_player())
             while building_choice != "FINISHED":
                 building_choice_input = input("Build (e.g. wood, chapel, or FINISHED): ")
                 if building_choice_input == "FINISHED":
                     finished = True
                     break
-                building_choice = building_input_dict[building_choice_input]
-                row_choice = int(input("ROW (0-3): "))
-                col_choice = int(input("COLUMN (0-3): "))
-                player_one.board[row_choice, col_choice] = building_choice
-                coord_dictionary, build_options = find_all_placements(player_one, self.card_choices)
-                print(player_one.describe_player())
-                print(player_one.describe_town_board())
-                print(coord_dictionary)
-                print(build_options)
+                if building_choice_input not in building_input_dict.keys():
+                    print("Input not understood.")
+                    building_choice = ""
+                else:
+                    building_choice = building_input_dict[building_choice_input]
+                    row_choice = int(input("ROW (0-3): "))
+                    col_choice = int(input("COLUMN (0-3): "))
+                    master_builder.board[row_choice, col_choice] = building_choice
+                    coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
+                    print(master_builder.describe_player())
+                    print(master_builder.describe_town_board())
+                    print(coord_dictionary)
+                    print(build_options)
             finished = True
         print("Game completed!")
 
