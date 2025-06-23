@@ -151,6 +151,7 @@ def findPlacements(board, card):
     boardRows, boardCols = len(board), len(board[0])
     placementDict = {}
     placementOptions = []
+    buildList = []
 
     for variant in variants:
         variant = np.array(variant)
@@ -175,12 +176,14 @@ def findPlacements(board, card):
                             placementDict[coordPair].add(card.getName())
                         else:
                             placementDict[coordPair] = {card.getName()}
-                    placementOptions.append({
-                        "building": card.getName(),
-                        "co-ords": coordSet
-                    })
-
-    return placementDict, placementOptions
+                        placementOptions.append({
+                            coordPair: card.getName(),
+                            "co-ords": coordSet
+                        })
+    for el in placementOptions:
+            if el not in buildList:
+                buildList.append(el)
+    return placementDict, buildList
 
 def findAllPlacements(player, cards):
     coordDictionary = dict()

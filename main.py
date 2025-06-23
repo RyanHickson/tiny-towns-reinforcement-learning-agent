@@ -29,9 +29,17 @@ class Game:
         ]
 
     def play(self):
+        # SETUP
         finished = False
         playerOne = Player(1, rdm.choice(monumentsDeck))  # architectsGuild
         self.cardChoices.append(playerOne.monument)
+        
+        # TURN
+        # MASTER BUILDER CHOOSES A RESOURCE
+        # ALL PLAYERS PLACE CHOSEN RESOURCE
+        # CHECK FOR CONSTRUCTION POSSIBILITIES
+        # CHOOSE IF AND WHERE TO BUILD
+        # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
         print(playerOne.describeTownBoard())
         while not finished:
             print(Game.showCardChoices(self))
@@ -41,17 +49,23 @@ class Game:
             print(f"{coordDictionary=}")
             print("")
             print(buildOptions)
-            buildingChoiceInput = input("Build: ")
+            buildingChoiceInput = input("Build (e.g. wood, chapel, or FINISHED): ")
+            if buildingChoiceInput == "FINISHED":
+                finished = True
+                continue
             buildingChoice = buildingInputDict[buildingChoiceInput]
-            rowChoice = int(input("ROW: "))
-            colChoice = int(input("COLUMN: "))
+            rowChoice = int(input("ROW (0-3): "))
+            colChoice = int(input("COLUMN (0-3): "))
             playerOne.board[rowChoice,colChoice] = buildingChoice
             print(playerOne.describePlayer())
             while buildingChoice != "FINISHED":
-                buildingChoiceInput = input("Build: ")
+                buildingChoiceInput = input("Build (e.g. wood, chapel, or FINISHED): ")
+                if buildingChoiceInput == "FINISHED":
+                    finished = True
+                    break
                 buildingChoice = buildingInputDict[buildingChoiceInput]
-                rowChoice = int(input("ROW: "))
-                colChoice = int(input("COLUMN: "))
+                rowChoice = int(input("ROW (0-3): "))
+                colChoice = int(input("COLUMN (0-3): "))
                 playerOne.board[rowChoice,colChoice] = buildingChoice
                 coordDictionary, buildOptions = findAllPlacements(playerOne, self.cardChoices)
                 print(playerOne.describePlayer())

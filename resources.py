@@ -16,7 +16,7 @@ glass = Resource("glass")
 brick = Resource("brick")
 stone = Resource("stone")
 
-emptyTile = Resource(" ")
+emptyTile = Resource("     ")
 wild = Resource("wild")
 
 
