@@ -18,7 +18,3 @@ stone = Resource("stone")
 
 emptyTile = Resource("     ")
 wild = Resource("wild")
-
-
-resource_types = [wood, wheat, glass, brick, stone]
-#                 1      2      3      4      5

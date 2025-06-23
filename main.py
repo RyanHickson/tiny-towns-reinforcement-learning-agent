@@ -5,6 +5,7 @@ from building_layouts import *
 from cards import *
 from resources import *
 from layout_variants import create_variants
+from agent import *
 
 
 class Game:
@@ -17,9 +18,13 @@ class Game:
         self.theatre_choice = rdm.choice(theatre_deck)
         self.well_choice = rdm.choice(well_deck)
         self.player_dict = {}
-        number_of_players = 2
+        self.agent_dict = {}
+        number_of_players = int(input("Number of players (2-6): "))
         for player in range(number_of_players):
-            self.player_dict[player] = Player(player, rdm.choice(monuments_deck))
+            self.agent_dict[player] = Agent(player)
+        rdm.shuffle(self.agent_dict)
+        for player in range(number_of_players):
+            self.player_dict[player] = Player(player, rdm.choice(monuments_deck), self.agent_dict[player])
         print(self.player_dict)
         self.player_queue = [player for player in self.player_dict.keys()]
         print(self.player_queue)
@@ -43,6 +48,7 @@ class Game:
         master_builder = self.player_dict[self.player_queue.pop(0)]   # starting master builder
         print(f"{self.player_queue=}")
         print(f"{master_builder.get_id()=}")
+        print(f"{master_builder.agent=}")
         # MASTER BUILDER CHOOSES A RESOURCE                 (YET TO IMPLEMENT)
         # ALL PLAYERS PLACE CHOSEN RESOURCE                 (YET TO IMPLEMENT)
         # CHECK FOR CONSTRUCTION POSSIBILITIES

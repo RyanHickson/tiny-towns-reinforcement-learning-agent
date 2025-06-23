@@ -16,25 +16,25 @@ test_board = np.array([[wheat, wild, brick, glass],
 
 empty_board = np.full((4,4), emptyTile)
 
-random_board = np.full((4,4), emptyTile)
-
-for i in range(4):
-    for j in range(4):
-        random_board[(i,j)] = rdm.choice(resource_types).get_name()
-
 class Player:
-    def __init__(self, player_id, monument):
+    def __init__(self, player_id, monument, agent):
         self.player_id = player_id
         self.monument = monument
         self.board = empty_board
+        self.agent = agent
+        self.resource_types = [wood, wheat, glass, brick, stone]
+                                # 1      2      3      4      5
 
         # self._board = np.full((4,4), "", dtype=str)
 
     def describe_player(self):
-        return f"Player {self.get_id()} has the current _board: \n {self.show_board()} \n Their monument this game is {self.monument.get_name()}"
+        return f"Player {self.get_id()} has the current _board: \n {self.show_board()} \n Their monument this game is {self.monument.get_name()}. They are being operated by agent {self.agent.get_name()}"
     
     def get_id(self):
         return self.player_id
+    
+    def get_agent(self):
+        return self.agent
     
     def describe_town_board(self):
         self.town_boardDict = {}
