@@ -2,7 +2,6 @@
 
 # def checkAdjacentTiles(tile):
 #     i, j = tile.
-    
 
 # totalScore = 0
 

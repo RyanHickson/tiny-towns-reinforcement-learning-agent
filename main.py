@@ -34,11 +34,14 @@ class Game:
         playerOne = Player(1, rdm.choice(monumentsDeck))  # architectsGuild
         self.cardChoices.append(playerOne.monument)
         
+        
+        
         # TURN
-        # MASTER BUILDER CHOOSES A RESOURCE
-        # ALL PLAYERS PLACE CHOSEN RESOURCE
+        
+        # MASTER BUILDER CHOOSES A RESOURCE                 (YET TO IMPLEMENT)
+        # ALL PLAYERS PLACE CHOSEN RESOURCE                 (YET TO IMPLEMENT)
         # CHECK FOR CONSTRUCTION POSSIBILITIES
-        # CHOOSE IF AND WHERE TO BUILD
+        # CHOOSE IF AND WHERE TO BUILD                      (YET TO IMPLEMENT)
         # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
         print(playerOne.describeTownBoard())
         while not finished:
