@@ -1,7 +1,6 @@
 import numpy as np
 from layout_variants import *
 from resources import *
-from cards import *
 
 # W = WOOD
 # C = WHEAT (CROP)

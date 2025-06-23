@@ -1,5 +1,5 @@
-from building_layouts import *
 from resources import *
+from building_layouts import *
 
 class Card:
     def __init__(self, name, layout, deck, ability_text, is_feedable=False):
