@@ -7,7 +7,7 @@ class Resource:
     def __init__(self, name):
         self.name = name
         
-    def getName(self):
+    def get_name(self):
         return self.name
 
 wood = Resource("wood")
@@ -20,5 +20,5 @@ emptyTile = Resource("     ")
 wild = Resource("wild")
 
 
-resourceTypes = [wood, wheat, glass, brick, stone]
+resource_types = [wood, wheat, glass, brick, stone]
 #                 1      2      3      4      5

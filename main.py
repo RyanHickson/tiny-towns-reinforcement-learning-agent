@@ -1,38 +1,38 @@
 # SINGLE PLAYER PLAYTEST
 import random as rdm
 from player import *
-from buildingLayouts import *
+from building_layouts import *
 from cards import *
 from resources import *
-from layoutVariants import createVariants
+from layout_variants import create_variants
 
 
 class Game:
     def __init__(self):
-        self.cottageChoice = rdm.choice(cottageDeck)
-        self.farmChoice = rdm.choice(farmDeck)
-        self.factoryChoice = rdm.choice(factoryDeck)
-        self.tavernChoice = rdm.choice(tavernDeck)
-        self.chapelChoice = rdm.choice(chapelDeck)
-        self.theatreChoice = rdm.choice(theatreDeck)
-        self.wellChoice = rdm.choice(wellDeck)
-        numberOfPlayers = 1
+        self.cottage_choice = rdm.choice(cottage_deck)
+        self.farm_choice = rdm.choice(farm_deck)
+        self.factory_choice = rdm.choice(factory_deck)
+        self.tavern_choice = rdm.choice(tavern_deck)
+        self.chapel_choice = rdm.choice(chapel_deck)
+        self.theatre_choice = rdm.choice(theatre_deck)
+        self.well_choice = rdm.choice(well_deck)
+        number_of_players = 1
 
-        self.cardChoices = [
-            self.cottageChoice,
-            self.farmChoice,
-            self.factoryChoice,
-            self.tavernChoice,
-            self.chapelChoice,
-            self.theatreChoice,
-            self.wellChoice,
+        self.card_choices = [
+            self.cottage_choice,
+            self.farm_choice,
+            self.factory_choice,
+            self.tavern_choice,
+            self.chapel_choice,
+            self.theatre_choice,
+            self.well_choice,
         ]
 
     def play(self):
         # SETUP
         finished = False
-        playerOne = Player(1, rdm.choice(monumentsDeck))  # architectsGuild
-        self.cardChoices.append(playerOne.monument)
+        player_one = Player(1, rdm.choice(monuments_deck))  # architectsGuild
+        self.card_choices.append(player_one.monument)
         
         
         
@@ -43,48 +43,48 @@ class Game:
         # CHECK FOR CONSTRUCTION POSSIBILITIES
         # CHOOSE IF AND WHERE TO BUILD                      (YET TO IMPLEMENT)
         # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
-        print(playerOne.describeTownBoard())
+        print(player_one.describe_town_board())
         while not finished:
-            print(Game.showCardChoices(self))
-            print(playerOne.describePlayer())
+            print(Game.show_card_choices(self))
+            print(player_one.describe_player())
             print("\n")
-            coordDictionary, buildOptions = findAllPlacements(playerOne, self.cardChoices)
-            print(f"{coordDictionary=}")
+            coord_dictionary, build_options = find_all_placements(player_one, self.card_choices)
+            print(f"{coord_dictionary=}")
             print("")
-            print(buildOptions)
-            buildingChoiceInput = input("Build (e.g. wood, chapel, or FINISHED): ")
-            if buildingChoiceInput == "FINISHED":
+            print(build_options)
+            building_choice_input = input("Build (e.g. wood, chapel, or FINISHED): ")
+            if building_choice_input == "FINISHED":
                 finished = True
                 continue
-            buildingChoice = buildingInputDict[buildingChoiceInput]
-            rowChoice = int(input("ROW (0-3): "))
-            colChoice = int(input("COLUMN (0-3): "))
-            playerOne.board[rowChoice,colChoice] = buildingChoice
-            print(playerOne.describePlayer())
-            while buildingChoice != "FINISHED":
-                buildingChoiceInput = input("Build (e.g. wood, chapel, or FINISHED): ")
-                if buildingChoiceInput == "FINISHED":
+            building_choice = building_input_dict[building_choice_input]
+            row_choice = int(input("ROW (0-3): "))
+            col_choice = int(input("COLUMN (0-3): "))
+            player_one.board[row_choice,col_choice] = building_choice
+            print(player_one.describe_player())
+            while building_choice != "FINISHED":
+                building_choice_input = input("Build (e.g. wood, chapel, or FINISHED): ")
+                if building_choice_input == "FINISHED":
                     finished = True
                     break
-                buildingChoice = buildingInputDict[buildingChoiceInput]
-                rowChoice = int(input("ROW (0-3): "))
-                colChoice = int(input("COLUMN (0-3): "))
-                playerOne.board[rowChoice,colChoice] = buildingChoice
-                coordDictionary, buildOptions = findAllPlacements(playerOne, self.cardChoices)
-                print(playerOne.describePlayer())
-                print(playerOne.describeTownBoard())
-                print(coordDictionary)
-                print(buildOptions)
+                building_choice = building_input_dict[building_choice_input]
+                row_choice = int(input("ROW (0-3): "))
+                col_choice = int(input("COLUMN (0-3): "))
+                player_one.board[row_choice, col_choice] = building_choice
+                coord_dictionary, build_options = find_all_placements(player_one, self.card_choices)
+                print(player_one.describe_player())
+                print(player_one.describe_town_board())
+                print(coord_dictionary)
+                print(build_options)
             finished = True
         print("Game completed!")
 
-    def showCardChoices(self):
-        return [el.getName() for el in self.cardChoices]
+    def show_card_choices(self):
+        return [el.get_name() for el in self.card_choices]
 
-    def checkForBuildable(self):
-        for card in self.cardChoices:
-            print(card.getName())
-            layouts = createVariants(card.getLayout())
+    def check_for_buildable(self):
+        for card in self.card_choices:
+            print(card.get_name())
+            layouts = create_variants(card.get_layout())
             for i, layout in enumerate(layouts):
                 print(f"Variant {i+1}:")
                 if isinstance(layout, np.ndarray):
