@@ -1,8 +1,5 @@
 # def getTileInfo()
 
-# def checkAdjacentTiles(tile):
-#     i, j = tile.
-
 # totalScore = 0
 
 # def getTileScore(tile)

@@ -56,7 +56,7 @@ class Game:
         # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
         # print(master_builder.describe_town_board())
         while not finished:
-            master_builder
+            print(master_builder.check_immediate_adjacent_tiles(12))
             print(Game.show_card_choices(self))
             print(master_builder.describe_player())
             print("\n")
@@ -64,8 +64,9 @@ class Game:
             print(f"{coord_dictionary=}")
             print("")
             print(build_options)
+            print(dict(enumerate(master_builder.get_resource_types())))
             building_choice_input = input("Build (e.g. wood, chapel, or FINISHED): ")
-            if building_choice_input == "FINISHED":
+            if building_choice_input.upper() == "FINISHED":
                 finished = True
                 continue
             if building_choice_input not in building_input_dict.keys():
@@ -79,7 +80,7 @@ class Game:
                 print(master_builder.describe_player())
             while building_choice != "FINISHED":
                 building_choice_input = input("Build (e.g. wood, chapel, or FINISHED): ")
-                if building_choice_input == "FINISHED":
+                if building_choice_input.upper() == "FINISHED":
                     finished = True
                     break
                 if building_choice_input not in building_input_dict.keys():

@@ -195,5 +195,6 @@ def find_all_placements(player, cards):
                 coord_dictionary[coord].update(building)
             else:
                 coord_dictionary[coord] = set(building)
-        all_build_options.append(build_options)
+        if build_options != []:
+            all_build_options.append(build_options)
     return coord_dictionary, all_build_options
