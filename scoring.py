@@ -45,7 +45,7 @@
 # if tile == warehouse
 # score -1 for each resource stored in warehouse
 
-# if tile == tradingPost:
+# if tile == trading_post:
 # totalScore += 1
 
 # if tile == bank:

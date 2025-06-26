@@ -4,7 +4,7 @@ from player import *
 from building_layouts import *
 from cards import *
 from resources import *
-from layout_variants import create_variants
+from layout_variants import *
 from agent import *
 
 
@@ -24,9 +24,11 @@ class Game:
             self.agent_dict[player] = Agent(player)
         rdm.shuffle(self.agent_dict)
         for player in range(number_of_players):
-            self.player_dict[player] = Player(player, rdm.choice(monuments_deck), self.agent_dict[player])
+            self.player_dict[player] = Player(
+                player, rdm.choice(monuments_deck), self.agent_dict[player]
+            )
         print(self.player_dict)
-        self.player_queue = [player for player in self.player_dict.keys()]
+        self.player_queue = list(self.player_dict.keys())
         print(self.player_queue)
 
         self.card_choices = [
@@ -45,7 +47,9 @@ class Game:
 
         # TURN
 
-        master_builder = self.player_dict[self.player_queue.pop(0)]   # starting master builder
+        master_builder = self.player_dict[
+            self.player_queue.pop(0)
+        ]  # starting master builder
         print(f"{self.player_queue=}")
         print(f"{master_builder.get_id()=}")
         print(f"{master_builder.agent=}")
@@ -56,31 +60,17 @@ class Game:
         # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
         # print(master_builder.describe_town_board())
         while not finished:
-            print(master_builder.check_immediate_adjacent_tiles(12))
+            print(f"{master_builder.check_immediate_adjacent_tiles(16)}")
             print(Game.show_card_choices(self))
             print(master_builder.describe_player())
-            print("\n")
-            coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
-            print(f"{coord_dictionary=}")
-            print("")
-            print(build_options)
+            coord_dictionary, build_options = find_all_placements(
+                master_builder, self.card_choices
+            )
             print(dict(enumerate(master_builder.get_resource_types())))
-            building_choice_input = input("Build (e.g. wood, chapel, or FINISHED): ")
-            if building_choice_input.upper() == "FINISHED":
-                finished = True
-                continue
-            if building_choice_input not in building_input_dict.keys():
-                print("Input not understood.")
-                building_choice = ""
-            else:
-                building_choice = building_input_dict[building_choice_input]
-                row_choice = int(input("ROW (0-3): "))
-                col_choice = int(input("COLUMN (0-3): "))
-                master_builder.board[row_choice,col_choice] = building_choice
-                print(master_builder.describe_player())
-            while building_choice != "FINISHED":
-                building_choice_input = input("Build (e.g. wood, chapel, or FINISHED): ")
-                if building_choice_input.upper() == "FINISHED":
+            building_choice = ""
+            while building_choice != "FIN":  # MAIN TURN LOOP
+                building_choice_input = input("Build (e.g. wood, chapel, or FIN): ")
+                if building_choice_input.upper() == "FIN":
                     finished = True
                     break
                 if building_choice_input not in building_input_dict.keys():
@@ -88,14 +78,16 @@ class Game:
                     building_choice = ""
                 else:
                     building_choice = building_input_dict[building_choice_input]
-                    row_choice = int(input("ROW (0-3): "))
-                    col_choice = int(input("COLUMN (0-3): "))
-                    master_builder.board[row_choice, col_choice] = building_choice
-                    coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
+                    tile_input = int(input("Enter tile ID (1-16): "))
+                    master_builder.board[board_tile_dict[tile_input]] = building_choice
+                    coord_dictionary, build_options = find_all_placements(
+                        master_builder, self.card_choices
+                    )
                     print(master_builder.describe_player())
                     print(master_builder.describe_town_board())
                     print(coord_dictionary)
                     print(build_options)
+                    print(master_builder.check_contiguous_groups())
             finished = True
         print("Game completed!")
 
