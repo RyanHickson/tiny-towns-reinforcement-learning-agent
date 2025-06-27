@@ -90,6 +90,7 @@ class Game:
                     print(coord_dictionary)
                     print(build_options)
                     print(master_builder.check_contiguous_groups())
+                    print(master_builder.largest_contiguous_group())
             finished = True
         print("Game completed!")
 

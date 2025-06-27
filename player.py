@@ -47,16 +47,16 @@ class Player:
         """
         self.display_board = np.full((4, 4), emptyTile)
         self.town_boardDict = self.describe_town_board()
-        for key in board_tile_dict.keys():
-            self.display_board[board_tile_dict[key]] = self.town_boardDict[
-                board_tile_dict[key]
+        for tile_id in board_tile_dict:
+            self.display_board[board_tile_dict[tile_id]] = self.town_boardDict[
+                board_tile_dict[tile_id]
             ].get_name()
         return self.display_board
 
     def get_resource_types(self):
         return self.resource_types
 
-    def check_immediate_adjacent_tiles(self, tile):
+    def check_immediate_adjacent_tiles(self, tile_id):
         """
         A method to check the 4 immediate neighbours of a
         given tile, and return a list of their contents.
@@ -65,72 +65,86 @@ class Player:
         """
         manipulation_values = [-4, -1, +1, +4]
         adjacent_tiles_list = []
-        if tile % 4 == 0:
+        if tile_id % 4 == 0:
             manipulation_values.remove(+1)
-        elif (tile - 1) % 4 == 0:
+        elif (tile_id - 1) % 4 == 0:
             manipulation_values.remove(-1)
         for val in manipulation_values:
-            if 0 < tile + val < 17:
-                adjacent_tiles_list.append(tile + val)
+            if 0 < tile_id + val < 17:
+                adjacent_tiles_list.append(tile_id + val)
         return adjacent_tiles_list
 
-    def check_grouping(self, start_tile, visited, check_condition_card=greenhouse):
+    def check_grouping(self, start_tile_id, visited, condition=lambda card: True):
         """
         Find single grouping
         """
         current_group = []
 
-        def depth_first_search(tile):
-            if tile in visited:
+        def depth_first_search(tile_id):
+            if tile_id in visited:
                 return
-            visited.add(tile)
-            card = self.board[board_tile_dict[tile]]
-            if not (isinstance(card, Card) and check_condition_card(card)):
+            visited.add(tile_id)
+            card = self.board[board_tile_dict[tile_id]]
+            if not (isinstance(card, Card)) or not condition(card):
                 return
-            current_group.append(tile)
-            for adjacent_tile in self.check_immediate_adjacent_tiles(tile):
+            current_group.append(tile_id)
+            for adjacent_tile in self.check_immediate_adjacent_tiles(tile_id):
                 depth_first_search(adjacent_tile)
 
-        depth_first_search(start_tile)
+        depth_first_search(start_tile_id)
         return current_group
 
-    def check_contiguous_groups(self, check_condition_card=greenhouse):
+    def check_contiguous_groups(self):
         """
         A method to return the group of adjacent buildings
         on the town board that yields the highest score.
-        Used for Greenhouse feeding and Silva Forum scoring.
+        Used for Greenhouse feeding scoring.
         """
 
         visited = set()
         all_groups = []
 
-        if check_condition_card == greenhouse:
+        def tile_attribute(tile):
+            return getattr(tile, "is_feedable", False)
 
-            def tile_attribute(tile):
-                return getattr(tile, "is_feedable", False)
-
-        elif check_condition_card == silva_forum:
-
-            def tile_type(card_type):
-                return lambda t: t.get_deck() == card_type
-
-        tiles_to_check = board_tile_dict.keys()
-        for tile_id in tiles_to_check:
+        for tile_id in board_tile_dict:
             if tile_id in visited:
                 continue
-            tile = self.board[board_tile_dict[tile_id]]
-            if not isinstance(tile, Card):
+            tile_content = self.board[board_tile_dict[tile_id]]
+            if not isinstance(tile_content, Card):
                 continue
 
-            if check_condition_card == silva_forum:
-                card_type = tile.get_deck()
-                current_group = self.check_grouping(
-                    tile_id, tile_type(card_type), visited
-                )
-            else:
-                if not tile_attribute(tile):
-                    continue
-                current_group = self.check_grouping(tile_id, tile_attribute, visited)
+            if not tile_attribute(tile_content):
+                continue
+            current_group = self.check_grouping(
+                tile_id,
+                visited,
+                lambda tile_content: getattr(tile_content, "is_feedable", False),
+            )
             if current_group:
                 all_groups.append(current_group)
         return all_groups
+
+    def largest_contiguous_group(self):
+        """
+        For scoring Silva Forum
+        """
+
+        largest_group = []
+
+        for card_type in Card.__subclasses__():
+            visited = set()
+            for tile_id in board_tile_dict:
+                if tile_id in visited:
+                    continue
+                tile_content = self.board[board_tile_dict[tile_id]]
+                if not isinstance(tile_content, card_type):
+                    continue
+                current_group = self.check_grouping(
+                    tile_id,
+                    visited,
+                    lambda tile_content: isinstance(tile_content, card_type),
+                )
+                if len(largest_group) < len(current_group):
+                    largest_group = current_group
+        return largest_group
