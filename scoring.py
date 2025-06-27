@@ -1,12 +1,34 @@
+from choices import *
+
 # def getTileInfo()
 
 # totalScore = 0
 
 # def getTileScore(tile)
-# emptyScore = -1
-# if cathedralOfCaterina in board:
-#     emptyScore = 0
+# empty_tile_score = -1
+# if cathedralOfCaterina in self.board:
+# empty_tile_score = 0
+empty_tile_count = 0
+cottage_count = 0
 
+farm_count = 0
+greenhouse_count = 0
+
+warehouse_count = 0
+trading_post_count = 0
+bank_count = 0
+
+tavern_count = 0
+almshouse_count = 0
+feast_hall_count = 0
+chapel_count = 0
+
+for tile_id in range(1, 17):
+    tile_coords = board_tile_dict[tile_id]
+    if isinstance(self.board[tile_coords], Resource):
+        empty_tile_count += 1
+    if self.board[tile_coords] == cottage:
+        cottage_count += 1
 
 # for row in board:
 # for tile in row:

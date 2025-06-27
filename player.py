@@ -22,6 +22,9 @@ class Player:
     def get_id(self):
         return self.player_id
 
+    def get_monument(self):
+        return self.monument
+
     def get_agent(self):
         return self.agent
 

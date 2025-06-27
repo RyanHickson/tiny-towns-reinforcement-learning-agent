@@ -59,12 +59,14 @@ class Game:
         # CHOOSE IF AND WHERE TO BUILD                      (YET TO IMPLEMENT)
         # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
         # print(master_builder.describe_town_board())
+        all_cards = [el for el in self.card_choices]
+        all_cards.append(master_builder.get_monument())
         while not finished:
             print(f"{master_builder.check_immediate_adjacent_tiles(16)}")
             print(Game.show_card_choices(self))
             print(master_builder.describe_player())
             coord_dictionary, build_options = find_all_placements(
-                master_builder, self.card_choices
+                master_builder, all_cards
             )
             print(dict(enumerate(master_builder.get_resource_types())))
             building_choice = ""
@@ -81,7 +83,7 @@ class Game:
                     tile_input = int(input("Enter tile ID (1-16): "))
                     master_builder.board[board_tile_dict[tile_input]] = building_choice
                     coord_dictionary, build_options = find_all_placements(
-                        master_builder, self.card_choices
+                        master_builder, all_cards
                     )
                     print(master_builder.describe_player())
                     print(master_builder.describe_town_board())
