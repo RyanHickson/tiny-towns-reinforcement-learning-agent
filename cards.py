@@ -80,7 +80,7 @@ chapel_deck = []
 theatre_deck = []
 well_deck = []
 
-cottage = Card(
+cottage = CottageType(
     "Cottage",
     cottage_layout,
     cottage_deck,
