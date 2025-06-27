@@ -32,6 +32,11 @@ class Card:
             return self.name
 
 
+class CottageType(Card):
+    def __init_subclass__(cls):
+        return super().__init_subclass__()
+
+
 class FarmType(Card):
     def __init_subclass__(cls):
         return super().__init_subclass__()
