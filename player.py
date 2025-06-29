@@ -148,3 +148,25 @@ class Player:
                 if len(largest_group) < len(current_group):
                     largest_group = current_group
         return largest_group
+    
+    def check_row(self, tile_id):
+        tile_row, tile_col = board_tile_dict[tile_id]
+        row_content_list = []
+        row_coords_list = []
+        for col in range(4):
+            row_coords = tile_row, col
+            row_coords_list.append(row_coords)
+            tile_content = self.board[row_coords]
+            row_content_list.append(tile_content)
+        return row_content_list, row_coords_list
+    
+    def check_col(self, tile_id):
+        tile_row, tile_col = board_tile_dict[tile_id]
+        col_content_list = []
+        col_coords_list = []
+        for row in range(4):
+            col_coords = row, tile_col
+            col_coords_list.append(col_coords)
+            tile_content = self.board[col_coords]
+            col_content_list.append(tile_content)
+        return col_content_list, col_coords_list

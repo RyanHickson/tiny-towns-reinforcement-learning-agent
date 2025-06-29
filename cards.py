@@ -4,13 +4,14 @@ from building_layouts import *
 
 class Card:
     def __init__(
-        self, name, layout, deck, ability_text, is_feedable=False, fed_score=0
+        self, name, layout, deck, ability_text, is_feedable=False, is_fed=False, fed_score=0
     ):
         self.name = name
         self.layout = layout
         self.deck = deck
         self.ability_text = ability_text
         self.is_feedable = is_feedable
+        self.is_fed = is_fed
         self.fed_score = 0
 
     def get_layout(self):
@@ -151,7 +152,7 @@ almshouse = TavernType(
     tavern_deck,
     "VP based on your constructed TAVERN. 1: -1VP, 2: 5VP, 3: -3VP, 4: 15VP, 5: -5VP, 6: 26VP",
 )
-feastHall = TavernType(
+feast_hall = TavernType(
     "Feast Hall",
     feast_hall_layout,
     tavern_deck,
@@ -214,7 +215,7 @@ shed = WellType(
 cottage_deck = [cottage]
 farm_deck = [farm, orchard, greenhouse, granary]
 factory_deck = [factory, warehouse, trading_post, bank]
-tavern_deck = [tavern, inn, almshouse, feastHall]
+tavern_deck = [tavern, inn, almshouse, feast_hall]
 chapel_deck = [chapel, temple, abbey, cloister]
 theatre_deck = [theatre, bakery, market, tailor]
 well_deck = [well, fountain, millstone, shed]
@@ -356,7 +357,7 @@ building_input_dict = {
     "tavern": tavern,
     "inn": inn,
     "almshouse": almshouse,
-    "feast_hall": feastHall,
+    "feast_hall": feast_hall,
     "chapel": chapel,
     "temple": temple,
     "abbey": abbey,
