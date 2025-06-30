@@ -3,8 +3,9 @@ from building_layouts import *
 from resources import *
 from cards import *
 from choices import *
+from scoring import get_player_score
 
-empty_board = np.full((4, 4), emptyTile)
+empty_board = np.full((4, 4), empty)
 
 
 class Player:
@@ -27,6 +28,9 @@ class Player:
 
     def get_agent(self):
         return self.agent
+    
+    def get_score(self):
+        return get_player_score(self)
 
     def describe_town_board(self):
         """
@@ -45,7 +49,7 @@ class Player:
         by calling the get_name method for each
         resource and building on the board.
         """
-        self.display_board = np.full((4, 4), emptyTile)
+        self.display_board = np.full((4, 4), empty)
         self.town_boardDict = self.describe_town_board()
         for tile_id in board_tile_dict:
             self.display_board[board_tile_dict[tile_id]] = self.town_boardDict[

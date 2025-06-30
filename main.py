@@ -91,6 +91,8 @@ class Game:
                     print(build_options)
                     print(master_builder.check_contiguous_groups())
                     print(master_builder.largest_contiguous_group())
+                    print("")
+                    print(f"{master_builder.get_score()}")
             finished = True
         print("Game completed!")
 
