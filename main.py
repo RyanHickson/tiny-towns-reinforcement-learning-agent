@@ -51,7 +51,7 @@ class Game:
             self.player_queue.pop(0)
         ]  # starting master builder
         print(f"{self.player_queue=}")
-        print(f"{master_builder.get_id()=}")
+        print(f"{master_builder.get_player_id()=}")
         print(f"{master_builder.agent=}")
         # MASTER BUILDER CHOOSES A RESOURCE                 (YET TO IMPLEMENT)
         # ALL PLAYERS PLACE CHOSEN RESOURCE                 (YET TO IMPLEMENT)
@@ -75,6 +75,13 @@ class Game:
                 if building_choice_input.upper() == "FIN":
                     finished = True
                     break
+                try:
+                    if int(building_choice_input) in range(17):
+                        print("TEST")
+                        tile_choice = master_builder.board[board_tile_dict[int(building_choice_input)]]
+                        print(tile_choice.get_card_detail())
+                except:
+                    pass
                 if building_choice_input not in building_input_dict.keys():
                     print("Input not understood.")
                     building_choice = ""

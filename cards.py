@@ -31,6 +31,9 @@ class Card:
             return f"{self.name}. This card is feedable."
         else:
             return self.name
+        
+    def score_when_fed(self):
+        return self.fed_score
 
 
 class CottageType(Card):

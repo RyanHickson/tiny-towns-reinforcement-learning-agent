@@ -13,6 +13,7 @@ def get_player_score(self):
     empty_tile_score = -1
     empty_tile_count = 0
     cottage_count = 0
+    feedable_list = []
 
     farm_count = 0
     greenhouse_count = 0
@@ -28,13 +29,9 @@ def get_player_score(self):
 
     for tile_id in range(1, 17):
         tile_coords = board_tile_dict[tile_id]
-        tile_content = self.board[tile_coords].get_name()
+        tile_content = self.board[tile_coords]
 
-        match tile_content:
-            case "empty":
-                empty_tile_count += 1
-            case "Cottage":
-                cottage_count += 1
+        match tile_content.get_name():
             case "Farm":
                 farm_count += 1
             # fed_count = farm_count * 4 # each farm feeds 4 buildings
@@ -45,16 +42,27 @@ def get_player_score(self):
                 col_content_list = self.check_col(tile_id)[1]
                 row_col_combined = set(row_coords_list + col_content_list)
                 for coord_pair in row_col_combined:
-                    if self.board[coord_pair].is_feedable():
-                        self.board[coord_pair].is_fed = True
+                    if isinstance(self.board[coord_pair], Card):
+                        if self.board[coord_pair].is_feedable:
+                            if self.board[coord_pair].is_fed:
+                                continue
+                            else:
+                                self.board[coord_pair].is_fed = True
+                                total_score += self.board[coord_pair].score_when_fed()
             case "Greenhouse":
                 greenhouse_count += 1
             case "Granary":
                 tile_row, tile_col = tile_coords
                 surrounding_tiles = [(-1, -1), (-1, 0), (-1, +1), (0, -1), (0, +1), (+1, -1), (+1, 0), (+1, +1)]
                 for surround_coords in surrounding_tiles:
-                    if self.board[tile_row + surround_coords[0], tile_col + surround_coords[1]].is_feedable():
-                        self.board[tile_row + surround_coords[0], tile_col + surround_coords[1]].is_fed = True
+                    tile_being_checked = self.board[tile_row + surround_coords[0], tile_col + surround_coords[1]]
+                    if isinstance(tile_being_checked, Card):
+                        if tile_being_checked.is_feedable:
+                            if tile_being_checked.is_fed:
+                                continue
+                            else:
+                                tile_being_checked.is_fed = True
+                                # total_score += tile_being_checked.score_when_fed()
             case "Factory":
                 continue    # factory scores nothing
             # case "warehouse":
@@ -69,15 +77,19 @@ def get_player_score(self):
                 almshouse_count += 1
             case "Inn":
                 row_content = self.check_row(tile_id)[0]
+                row_content_names = [el.get_name() for el in row_content]
                 col_content = self.check_col(tile_id)[0]
-                if inn in row_content.remove(inn):
+                col_content_names = [el.get_name() for el in col_content]
+                row_content_names.remove("Inn")
+                col_content_names.remove("Inn")
+                if "Inn" in row_content_names:
                     continue
-                if inn in col_content.remove(inn):
+                if "Inn" in col_content_names:
                     continue
                 total_score += 3
             case "Feast Hall":
                 feast_hall_count += 1
-                if player_on_right.get_id().feast_hall_count < self.feast_hall_count:   # if player on right has lower or equal number of feast halls
+                if player_on_right.get_player_id().feast_hall_count < self.feast_hall_count:   # if player on right has lower or equal number of feast halls
                     each_feast_hall_score = 3   # each feast hall scores 3VP
                 else:   # if it is not the case "that" player being scored has a higher count of feast halls
                     each_feast_hall_score = 2   # they are only worth 2VP each
@@ -185,6 +197,7 @@ def get_player_score(self):
                     unique_building_count += 1
                 total_score += unique_building_count
             case "Barrett Castle":
+                feedable_list.insert(0, 5)
                 if tile_content.is_fed:
                     total_score += 5
             case "Cathedral of Caterina":
@@ -255,8 +268,14 @@ def get_player_score(self):
 
             case "Statue of the Bondmaker":
                 continue
+            case "Cottage":
+                cottage_count += 1
+                feedable_list.append(3)
+                if tile_content.is_fed:
+                    total_score += 3
             case _:
                 empty_tile_count += 1
     print(f"{empty_tile_count=}")
-    total_score += (empty_tile_count * empty_tile_score)
+    print(feedable_list)
+    # total_score += (empty_tile_count * empty_tile_score)
     return total_score

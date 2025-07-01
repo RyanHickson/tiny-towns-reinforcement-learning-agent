@@ -18,15 +18,15 @@ class Player:
         self.current_score = 0
 
     def describe_player(self):
-        return f"""Player {self.get_id()} has the current board: \n{self.get_display_board()} \n Their monument this game is {self.monument.get_name()}. They are being operated by agent {self.agent.get_name()}"""
+        return f"""Player {self.get_player_id()} has the current board: \n{self.get_display_board()} \n Their monument this game is {self.monument.get_name()}. They are being operated by agent {self.get_agent_id()}"""
 
-    def get_id(self):
+    def get_player_id(self):
         return self.player_id
 
     def get_monument(self):
         return self.monument
 
-    def get_agent(self):
+    def get_agent_id(self):
         return self.agent
     
     def get_score(self):
