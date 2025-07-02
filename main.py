@@ -19,17 +19,6 @@ class Game:
         self.well_choice = rdm.choice(well_deck)
         self.player_dict = {}
         self.agent_dict = {}
-        number_of_players = int(input("Number of players (2-6): "))
-        for player in range(number_of_players):
-            self.agent_dict[player] = Agent(player)
-        rdm.shuffle(self.agent_dict)
-        for player in range(number_of_players):
-            self.player_dict[player] = Player(
-                player, rdm.choice(monuments_deck), self.agent_dict[player]
-            )
-        print(self.player_dict)
-        self.player_queue = list(self.player_dict.keys())
-        print(self.player_queue)
 
         self.card_choices = [
             self.cottage_choice,
@@ -38,68 +27,63 @@ class Game:
             self.tavern_choice,
             self.chapel_choice,
             self.theatre_choice,
-            self.well_choice,
-        ]
+            self.well_choice]
+
+        number_of_players = int(input("Number of players (2-6): "))
+        for player in range(number_of_players):
+            self.agent_dict[player] = Agent(player)
+        rdm.shuffle(self.agent_dict)
+        for player in range(number_of_players):
+            self.player_dict[player] = Player(player + 1, rdm.choice(monuments_deck), self.agent_dict[player])
+            monuments_deck.remove(self.player_dict[player].get_monument())
+            self.player_dict[player].all_cards = self.card_choices + [self.player_dict[player].get_monument()]
+        self.player_queue = list(self.player_dict.keys())
+
+
 
     def play(self):
         # SETUP
         finished = False
+        current_player = self.player_queue[0]   # select current player
+        master_builder = self.player_dict[current_player]   # assign current player to be first master builder
+        # ALL PLAYERS PLACE CHOSEN RESOURCE (YET TO IMPLEMENT)
+        # CHECK FOR CONSTRUCTION POSSIBILITIES
+        # CHOOSE IF AND WHERE TO BUILD (YET TO IMPLEMENT)
+        # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
 
         # TURN
-
-        master_builder = self.player_dict[
-            self.player_queue.pop(0)
-        ]  # starting master builder
-        print(f"{self.player_queue=}")
-        print(f"{master_builder.get_player_id()=}")
-        print(f"{master_builder.agent=}")
-        # MASTER BUILDER CHOOSES A RESOURCE                 (YET TO IMPLEMENT)
-        # ALL PLAYERS PLACE CHOSEN RESOURCE                 (YET TO IMPLEMENT)
-        # CHECK FOR CONSTRUCTION POSSIBILITIES
-        # CHOOSE IF AND WHERE TO BUILD                      (YET TO IMPLEMENT)
-        # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
-        # print(master_builder.describe_town_board())
-        all_cards = [el for el in self.card_choices]
-        all_cards.append(master_builder.get_monument())
         while not finished:
-            print(f"{master_builder.check_immediate_adjacent_tiles(16)}")
             print(Game.show_card_choices(self))
-            print(master_builder.describe_player())
-            coord_dictionary, build_options = find_all_placements(
-                master_builder, all_cards
-            )
+            coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
             print(dict(enumerate(master_builder.get_resource_types())))
             building_choice = ""
             while building_choice != "FIN":  # MAIN TURN LOOP
-                building_choice_input = input("Build (e.g. wood, chapel, or FIN): ")
+                building_choice_input = input(f"Player {master_builder.get_player_id()}, Build (e.g. wood, chapel, or FIN): ")  # MASTER BUILDER CHOOSES A RESOURCE
                 if building_choice_input.upper() == "FIN":
                     finished = True
                     break
-                try:
-                    if int(building_choice_input) in range(17):
-                        print("TEST")
-                        tile_choice = master_builder.board[board_tile_dict[int(building_choice_input)]]
-                        print(tile_choice.get_card_detail())
-                except:
-                    pass
                 if building_choice_input not in building_input_dict.keys():
-                    print("Input not understood.")
+                    print("Bad input.")
                     building_choice = ""
                 else:
-                    building_choice = building_input_dict[building_choice_input]
-                    tile_input = int(input("Enter tile ID (1-16): "))
-                    master_builder.board[board_tile_dict[tile_input]] = building_choice
-                    coord_dictionary, build_options = find_all_placements(
-                        master_builder, all_cards
-                    )
-                    print(master_builder.describe_player())
-                    print(master_builder.describe_town_board())
-                    print(coord_dictionary)
-                    print(build_options)
-                    print(master_builder.check_contiguous_groups())
-                    print(master_builder.largest_contiguous_group())
-                    print("")
-                    print(f"{master_builder.get_score()}")
+                    for each_player in self.player_dict:    # RESOURCE PLACEMENT ROUND
+                        current_player = self.player_dict[each_player]
+                        building_choice = building_input_dict[building_choice_input]
+                        tile_input = int(input("Enter tile ID (1-16): "))   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
+                        current_player.board[board_tile_dict[tile_input]] = building_choice
+                    
+                    for each_player in self.player_dict:    # BUILDING ROUND
+                        current_player = self.player_dict[each_player]
+                        coord_dictionary, build_options = find_all_placements(current_player, current_player.get_all_cards())
+                        print(current_player.describe_player())
+                        # print(master_builder.describe_town_board())
+                        print(coord_dictionary)
+                        print(build_options)
+                        print(current_player.check_contiguous_groups())
+                        print(current_player.largest_contiguous_group())
+                        print(f"{self.player_dict[each_player].get_score()}")
+                last_played = self.player_queue.pop(0)   # select current player, and remove them from the front of the player queue
+                self.player_queue.append(last_played)    # add the current player back to the player queue
             finished = True
         print("Game completed!")
 

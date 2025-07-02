@@ -5,20 +5,21 @@ from cards import *
 from choices import *
 from scoring import get_player_score
 
-empty_board = np.full((4, 4), empty)
-
-
 class Player:
     def __init__(self, player_id, monument, agent):
         self.player_id = player_id
         self.monument = monument
-        self.board = empty_board
+        self.board = np.full((4, 4), empty)
         self.agent = agent
         self.resource_types = [wood, wheat, glass, brick, stone]
         self.current_score = 0
+        self.all_cards = ""
 
     def describe_player(self):
-        return f"""Player {self.get_player_id()} has the current board: \n{self.get_display_board()} \n Their monument this game is {self.monument.get_name()}. They are being operated by agent {self.get_agent_id()}"""
+        return f"""Player {self.get_player_id()} has the current board:
+{self.get_display_board()}
+Their monument this game is {self.monument.get_name()}. They are being operated by agent {self.agent.get_name()}
+Build options are {self.display_all_cards()}"""
 
     def get_player_id(self):
         return self.player_id
@@ -26,11 +27,17 @@ class Player:
     def get_monument(self):
         return self.monument
 
-    def get_agent_id(self):
+    def get_agent(self):
         return self.agent
     
     def get_score(self):
         return get_player_score(self)
+    
+    def get_all_cards(self):
+        return self.all_cards
+    
+    def display_all_cards(self):
+        return [card.get_name() for card in self.all_cards]
 
     def describe_town_board(self):
         """
@@ -52,13 +59,11 @@ class Player:
         self.display_board = np.full((4, 4), empty)
         self.town_boardDict = self.describe_town_board()
         for tile_id in board_tile_dict:
-            self.display_board[board_tile_dict[tile_id]] = self.town_boardDict[
-                board_tile_dict[tile_id]
-            ].get_name()
+            self.display_board[board_tile_dict[tile_id]] = self.town_boardDict[board_tile_dict[tile_id]].get_name()
         return self.display_board
 
     def get_resource_types(self):
-        return self.resource_types
+        return [resource.get_name() for resource in self.resource_types]
 
     def check_immediate_adjacent_tiles(self, tile_id):
         """

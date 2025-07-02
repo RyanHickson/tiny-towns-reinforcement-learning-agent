@@ -276,6 +276,6 @@ def get_player_score(self):
             case _:
                 empty_tile_count += 1
     print(f"{empty_tile_count=}")
-    print(feedable_list)
+    print(f"{feedable_list}")
     # total_score += (empty_tile_count * empty_tile_score)
     return total_score
