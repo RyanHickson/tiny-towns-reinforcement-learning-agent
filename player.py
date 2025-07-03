@@ -14,12 +14,13 @@ class Player:
         self.resource_types = [wood, wheat, glass, brick, stone]
         self.current_score = 0
         self.all_cards = ""
+        self.board[(0,1)] = trading_post
 
     def describe_player(self):
         return f"""Player {self.get_player_id()} has the current board:
 {self.get_display_board()}
 Their monument this game is {self.monument.get_name()}. They are being operated by agent {self.agent.get_name()}
-Build options are {self.display_all_cards()}"""
+The cards available to them are {self.display_all_cards()}"""
 
     def get_player_id(self):
         return self.player_id
@@ -44,11 +45,11 @@ Build options are {self.display_all_cards()}"""
         Returns the town board as it is, made up of
         instances of resource and building classes.
         """
-        self.town_boardDict = {}
+        self.town_board_dict = {}
         for row in range(4):
             for tile in range(4):
-                self.town_boardDict[row, tile] = self.board[row, tile]
-        return self.town_boardDict
+                self.town_board_dict[row, tile] = self.board[row, tile]
+        return self.town_board_dict
 
     def get_display_board(self):
         """
@@ -57,9 +58,10 @@ Build options are {self.display_all_cards()}"""
         resource and building on the board.
         """
         self.display_board = np.full((4, 4), empty)
-        self.town_boardDict = self.describe_town_board()
-        for tile_id in board_tile_dict:
-            self.display_board[board_tile_dict[tile_id]] = self.town_boardDict[board_tile_dict[tile_id]].get_name()
+        self.town_board_dict = self.describe_town_board()
+        for tile_id, tile_coords in board_tile_dict.items():
+            # print(f"{self.town_board_dict[board_tile_dict[tile_id]]=}")
+            self.display_board[tile_coords] = self.town_board_dict[tile_coords].get_name()
         return self.display_board
 
     def get_resource_types(self):
@@ -179,3 +181,12 @@ Build options are {self.display_all_cards()}"""
             tile_content = self.board[col_coords]
             col_content_list.append(tile_content)
         return col_content_list, col_coords_list
+    
+    def construct(self, dict):
+        placement = dict["placement"]
+        building = dict["card"]
+        co_ords = dict["co-ords"]
+        self.board[placement] = building
+        for coord_pair in co_ords:
+            if coord_pair != placement and isinstance(self.board[coord_pair], Resource):
+                self.board[coord_pair] = empty

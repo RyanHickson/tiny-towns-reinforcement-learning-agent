@@ -73,12 +73,16 @@ def find_placements(board, card):
                             else:
                                 placement_dict[coord_pair] = {card.get_name()}
                             placement_options.append(
-                                {coord_pair: card.get_name(), "co-ords": coord_set}
+                                {
+                                    "placement": coord_pair,
+                                    "card": card,
+                                    "co-ords": coord_set,
+                                }
                             )
     for el in placement_options:
         if el not in build_list:
             build_list.append(el)
-    return placement_dict, build_list
+    return placement_dict, dict(enumerate(build_list))
 
 
 def find_all_placements(player, cards):
@@ -91,6 +95,6 @@ def find_all_placements(player, cards):
                 coord_dictionary[coord].update(building)
             else:
                 coord_dictionary[coord] = set(building)
-        if build_options != []:
+        if build_options != {}:
             all_build_options.append(build_options)
-    return coord_dictionary, all_build_options
+    return dict(enumerate(coord_dictionary)), all_build_options
