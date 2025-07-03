@@ -14,7 +14,10 @@ class Player:
         self.resource_types = [wood, wheat, glass, brick, stone]
         self.current_score = 0
         self.all_cards = ""
-        self.board[(0,1)] = trading_post
+        self.board = np.array([[cottage, orchard, cottage, cottage],
+                               [cottage, cottage, orchard, empty],
+                               [empty, cottage, cottage, empty],
+                               [empty, empty, empty, empty]])
 
     def describe_player(self):
         return f"""Player {self.get_player_id()} has the current board:
@@ -190,3 +193,17 @@ The cards available to them are {self.display_all_cards()}"""
         for coord_pair in co_ords:
             if coord_pair != placement and isinstance(self.board[coord_pair], Resource):
                 self.board[coord_pair] = empty
+
+    def greenhouse_feeding(self):
+        score_list = []
+        contiguous_feedable_groups = self.check_contiguous_groups()
+        for group_id, grouping in enumerate(contiguous_feedable_groups):
+            current_grouping = []
+            score_list.append(current_grouping)
+            for tile_id in grouping:
+                tile_coords = board_tile_dict[tile_id]
+                if isinstance(self.board[tile_coords], CottageType):
+                    current_grouping.append(3)
+                if isinstance(self.board[tile_coords], Monument):
+                    current_grouping.append(5)
+        return score_list

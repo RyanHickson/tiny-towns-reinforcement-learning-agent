@@ -38,6 +38,7 @@ class Game:
             monuments_deck.remove(self.player_dict[player].get_monument())
             self.player_dict[player].all_cards = self.card_choices + [self.player_dict[player].get_monument()]
         self.player_queue = list(self.player_dict.keys())
+        self.master_builder_queue = self.player_queue.copy()
 
 
 
@@ -79,11 +80,8 @@ class Game:
                             current_player.construct(chosen_building_dict[int(building_placement_choice)])
                             
 
-                        
-                        
-                        # print(current_player.check_contiguous_groups())
                         # print(current_player.largest_contiguous_group())
-                        # print(f"{self.player_dict[each_player].get_score()}")
+                        print(f"{current_player.get_score()}")
                 last_played = self.player_queue.pop(0)   # select current player, and remove them from the front of the player queue
                 self.player_queue.append(last_played)    # add the current player back to the player queue
             finished = True

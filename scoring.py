@@ -13,7 +13,8 @@ def get_player_score(self):
     empty_tile_score = -1
     empty_tile_count = 0
     cottage_count = 0
-    feedable_list = []
+    feedable_list = []  # used by farm building
+    orchard_fed_dict = {}
 
     farm_count = 0
     greenhouse_count = 0
@@ -38,17 +39,16 @@ def get_player_score(self):
             # feed_list_descending[:fed_count] # get the most victory points for the number of farms that can feed buildings
 
             case "Orchard":
-                row_coords_list = self.check_row(tile_id)[1]
-                col_content_list = self.check_col(tile_id)[1]
-                row_col_combined = set(row_coords_list + col_content_list)
-                for coord_pair in row_col_combined:
-                    if isinstance(self.board[coord_pair], Card):
-                        if self.board[coord_pair].is_feedable:
-                            if self.board[coord_pair].is_fed:
-                                continue
-                            else:
-                                self.board[coord_pair].is_fed = True
-                                total_score += self.board[coord_pair].score_when_fed()
+                continue
+                # row_coords_list = self.check_row(tile_id)[1]
+                # col_content_list = self.check_col(tile_id)[1]
+                # row_col_combined = set(row_coords_list + col_content_list)
+                # for coord_pair in row_col_combined:
+                #     if isinstance(self.board[coord_pair], Card):
+                #         if self.board[coord_pair].is_feedable:
+                #             self.board[coord_pair].is_fed = True
+                #             print(f"Orchard at {tile_coords} feeds tile {coord_pair}")
+                #                 # total_score += self.board[coord_pair].score_when_fed()
             case "Greenhouse":
                 greenhouse_count += 1
             case "Granary":
@@ -58,11 +58,8 @@ def get_player_score(self):
                     tile_being_checked = self.board[tile_row + surround_coords[0], tile_col + surround_coords[1]]
                     if isinstance(tile_being_checked, Card):
                         if tile_being_checked.is_feedable:
-                            if tile_being_checked.is_fed:
-                                continue
-                            else:
-                                tile_being_checked.is_fed = True
-                                # total_score += tile_being_checked.score_when_fed()
+                            tile_being_checked.is_fed = True
+                            # total_score += tile_being_checked.score_when_fed()
             case "Factory":
                 continue    # factory scores nothing
             # case "warehouse":
@@ -197,8 +194,15 @@ def get_player_score(self):
                     unique_building_count += 1
                 total_score += unique_building_count
             case "Barrett Castle":
-                feedable_list.insert(0, 5)
-                if tile_content.is_fed:
+                feedable_list.insert(0, 5)  # used by farm building
+                if orchard in self.board:
+                    row_coords_list = self.check_row(tile_id)[1]
+                    col_content_list = self.check_col(tile_id)[1]
+                    row_col_combined = set(row_coords_list + col_content_list)
+                    for coord_pair in row_col_combined:
+                        if isinstance(self.board[coord_pair], FarmType):
+                            total_score += 5
+                elif tile_content.is_fed:
                     total_score += 5
             case "Cathedral of Caterina":
                 total_score += 2
@@ -270,12 +274,31 @@ def get_player_score(self):
                 continue
             case "Cottage":
                 cottage_count += 1
-                feedable_list.append(3)
+                if tile_id in orchard_fed_dict:
+                    continue
+                if orchard in self.board:
+                    row_coords_list = self.check_row(tile_id)[1]
+                    col_content_list = self.check_col(tile_id)[1]
+                    row_col_combined = set(row_coords_list + col_content_list)
+                    for coord_pair in row_col_combined:
+                        if isinstance(self.board[coord_pair], FarmType):
+                            orchard_fed_dict[tile_id] = "Fed"
+                else:
+                    feedable_list.append(3) # used by farm building
                 if tile_content.is_fed:
                     total_score += 3
             case _:
                 empty_tile_count += 1
+    if farm in self.board:
+        print("farm found")
+        farms_can_feed = farm_count * 4 # each farm feeds four is_feedable buildings
+        total_score += sum(feedable_list[:farms_can_feed])
+    if greenhouse in self.board:
+        print("greenhouse found")
+        greenhouse_feed_list = self.greenhouse_feeding()
+        total_score += sum([sum(el) for el in greenhouse_feed_list[:greenhouse_count]])
+    if orchard in self.board:
+        total_score += (3 * len(orchard_fed_dict))
     print(f"{empty_tile_count=}")
-    print(f"{feedable_list}")
     # total_score += (empty_tile_count * empty_tile_score)
     return total_score
