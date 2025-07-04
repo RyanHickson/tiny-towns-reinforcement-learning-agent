@@ -45,8 +45,8 @@ class Game:
     def play(self):
         # SETUP
         finished = False
-        current_player = self.player_queue[0]   # select current player
-        master_builder = self.player_dict[current_player]   # assign current player to be first master builder
+        acting_player = self.player_queue[0]   # select current player
+        master_builder = self.player_dict[acting_player]   # assign current player to be first master builder
         # ALL PLAYERS PLACE CHOSEN RESOURCE (YET TO IMPLEMENT)
         # CHECK FOR CONSTRUCTION POSSIBILITIES
         # CHOOSE IF AND WHERE TO BUILD (YET TO IMPLEMENT)
@@ -57,19 +57,26 @@ class Game:
             coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
             building_choice = ""
             while building_choice != "FIN":  # MAIN TURN LOOP
-                building_choice_input = int(input(f"Player {master_builder.get_player_id()}, Choose a resource: {resource_names_dict} "))  # MASTER BUILDER CHOOSES A RESOURCE
-                if isinstance(resource_dict[building_choice_input], Resource):
+                print(f"Player {master_builder.get_player_id()}, your cards this game are {[el.get_name() for el in master_builder.get_all_cards()]}")
+                resource_choice_id = int(input(f"Choose a resource: {resource_names_dict} "))  # MASTER BUILDER CHOOSES A RESOURCE
+                if isinstance(resource_dict[resource_choice_id], Resource):
                     for each_player in self.player_dict:    # RESOURCE PLACEMENT ROUND
-                        current_player = self.player_dict[each_player]
-                        resource_choice = resource_dict[building_choice_input]
+                        acting_player = self.player_dict[each_player]
+                        if resource_choice_id in acting_player.get_factory_resources():
+                            print(f"Player {acting_player.get_player_id()}, your cards this game are {acting_player.get_all_cards()}")
+                            acting_player_resource_choice_id = int(input(f"Choose a resource: {resource_names_dict} "))
+                            resource_choice = resource_dict[acting_player_resource_choice_id]
+                        else:
+                            resource_choice = resource_dict[resource_choice_id]
                         tile_input = int(input("Enter tile ID (1-16): "))   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
-                        current_player.board[board_tile_dict[tile_input]] = resource_choice
+                        acting_player.board[board_tile_dict[tile_input]] = resource_choice
                     
                     for each_player in self.player_dict:    # BUILDING ROUND
-                        current_player = self.player_dict[each_player]
-                        coord_dictionary, build_options = find_all_placements(current_player, current_player.get_all_cards())
-                        print(current_player.describe_player())
+                        acting_player = self.player_dict[each_player]
+                        coord_dictionary, build_options = find_all_placements(acting_player, acting_player.get_all_cards())
+                        print(acting_player.describe_player())
                         if len(coord_dictionary) != 0:  # if resources are arranged in such a way that something can be built,
+                            factory_count = acting_player.get_building_count(factory)
                             which_building_choice = dict(enumerate(build_options))
                             print(f"{which_building_choice=}")     # print choices of the tile combinations that can be picked up to construct the building in the chosen position
                             build_choice = input("What would you like to build? ")
@@ -77,11 +84,14 @@ class Game:
                             print(chosen_building_dict)
                             building_placement_choice = input("Which co_ordsinates should be built on, and which resources used? ")
                             print(f"{building_placement_choice=}")
-                            current_player.construct(chosen_building_dict[int(building_placement_choice)])
+                            acting_player.construct(chosen_building_dict[int(building_placement_choice)])
+                            new_factory_count = acting_player.get_building_count(factory)
+                            if factory_count != new_factory_count:  # if a factory has been built
+                                self.factory_resources.append(int(input(f"Player {acting_player.get_player_id()}, Choose a resource: {resource_names_dict} ")))
                             
 
-                        # print(current_player.largest_contiguous_group())
-                        print(f"{current_player.get_score()}")
+                        # print(acting_player.largest_contiguous_group())
+                        print(f"{acting_player.get_score()}")
                 last_played = self.player_queue.pop(0)   # select current player, and remove them from the front of the player queue
                 self.player_queue.append(last_played)    # add the current player back to the player queue
             finished = True

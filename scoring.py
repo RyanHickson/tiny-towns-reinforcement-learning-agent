@@ -289,12 +289,38 @@ def get_player_score(self):
                     total_score += 3
             case _:
                 empty_tile_count += 1
+    match tavern_count:
+        case 0:
+            pass
+        case 1:
+            total_score += 2
+        case 2:
+            total_score += 5
+        case 3:
+            total_score += 9
+        case 4:
+            total_score += 14
+        case 5:
+            total_score += 20
+    match almshouse_count:
+        case 0:
+            pass
+        case 1:
+            total_score -= 1
+        case 2:
+            total_score += 5
+        case 3:
+            total_score -= 3
+        case 4:
+            total_score += 15
+        case 5:
+            total_score -= 5
+        case 6:
+            total_score += 26
     if farm in self.board:
-        print("farm found")
         farms_can_feed = farm_count * 4 # each farm feeds four is_feedable buildings
         total_score += sum(feedable_list[:farms_can_feed])
     if greenhouse in self.board:
-        print("greenhouse found")
         greenhouse_feed_list = self.greenhouse_feeding()
         total_score += sum([sum(el) for el in greenhouse_feed_list[:greenhouse_count]])
     if orchard in self.board:

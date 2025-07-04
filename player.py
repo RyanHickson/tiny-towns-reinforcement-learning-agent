@@ -14,10 +14,11 @@ class Player:
         self.resource_types = [wood, wheat, glass, brick, stone]
         self.current_score = 0
         self.all_cards = ""
-        self.board = np.array([[cottage, orchard, cottage, cottage],
-                               [cottage, cottage, orchard, empty],
-                               [empty, cottage, cottage, empty],
-                               [empty, empty, empty, empty]])
+        self.factory_resources = []
+        self.board = np.array([[tavern, tavern, tavern, tavern],
+                               [tavern, empty, empty, empty],
+                               [empty, almshouse, almshouse, almshouse],
+                               [empty, almshouse, almshouse, almshouse]])
 
     def describe_player(self):
         return f"""Player {self.get_player_id()} has the current board:
@@ -39,6 +40,9 @@ The cards available to them are {self.display_all_cards()}"""
     
     def get_all_cards(self):
         return self.all_cards
+    
+    def get_factory_resources(self):
+        return self.factory_resources
     
     def display_all_cards(self):
         return [card.get_name() for card in self.all_cards]
@@ -207,3 +211,12 @@ The cards available to them are {self.display_all_cards()}"""
                 if isinstance(self.board[tile_coords], Monument):
                     current_grouping.append(5)
         return score_list
+    
+    def get_building_count(self, building):
+        building_count = 0
+        for tile_id in range(1, 17):
+            tile_coords = board_tile_dict[tile_id]
+            tile_content = self.board[tile_coords]
+            if tile_content == building:
+                building_count += 1
+        return building_count
