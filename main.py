@@ -6,6 +6,7 @@ from cards import *
 from resources import *
 from layout_variants import *
 from agent import *
+from game_scoring import get_game_score
 
 
 class Game:
@@ -29,11 +30,11 @@ class Game:
             self.theatre_choice,
             self.well_choice]
 
-        number_of_players = int(input("Number of players (2-6): "))
-        for player in range(number_of_players):
+        self.number_of_players = int(input("Number of players (2-6): "))
+        for player in range(self.number_of_players):
             self.agent_dict[player] = Agent(player)
         rdm.shuffle(self.agent_dict)
-        for player in range(number_of_players):
+        for player in range(self.number_of_players):
             self.player_dict[player] = Player(player + 1, rdm.choice(monuments_deck), self.agent_dict[player])
             monuments_deck.remove(self.player_dict[player].get_monument())
             self.player_dict[player].all_cards = self.card_choices + [self.player_dict[player].get_monument()]
@@ -45,18 +46,19 @@ class Game:
     def play(self):
         # SETUP
         finished = False
-        acting_player = self.player_queue[0]   # select current player
-        master_builder = self.player_dict[acting_player]   # assign current player to be first master builder
-        # ALL PLAYERS PLACE CHOSEN RESOURCE (YET TO IMPLEMENT)
+        # acting_player = self.player_queue[0]   # player one becomes first player to act
+        # master_builder = self.player_dict[acting_player]   # assign acting player to be first master builder
         # CHECK FOR CONSTRUCTION POSSIBILITIES
         # CHOOSE IF AND WHERE TO BUILD (YET TO IMPLEMENT)
         # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
 
         # TURN
         while not finished:
-            coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
+            # coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
             building_choice = ""
             while building_choice != "FIN":  # MAIN TURN LOOP
+                acting_player = self.player_queue[0]   # player one becomes first player to act
+                master_builder = self.player_dict[acting_player]   # assign acting player to be first master builder
                 print(f"Player {master_builder.get_player_id()}, your cards this game are {[el.get_name() for el in master_builder.get_all_cards()]}")
                 resource_choice_id = int(input(f"Choose a resource: {resource_names_dict} "))  # MASTER BUILDER CHOOSES A RESOURCE
                 if isinstance(resource_dict[resource_choice_id], Resource):
@@ -88,12 +90,18 @@ class Game:
                             new_factory_count = acting_player.get_building_count(factory)
                             if factory_count != new_factory_count:  # if a factory has been built
                                 self.factory_resources.append(int(input(f"Player {acting_player.get_player_id()}, Choose a resource: {resource_names_dict} ")))
-                            
+                    finished = True
+                    print(get_game_score(self))
 
                         # print(acting_player.largest_contiguous_group())
-                        print(f"{acting_player.get_score()}")
+                        # print(f"{acting_player.get_score()}")
+                    print("EOAP")
+                print("EOT")
+                print(self.player_queue)
                 last_played = self.player_queue.pop(0)   # select current player, and remove them from the front of the player queue
+                print(self.player_queue)
                 self.player_queue.append(last_played)    # add the current player back to the player queue
+                print(self.player_queue)
             finished = True
         print("Game completed!")
 

@@ -12,13 +12,13 @@ class Player:
         self.board = np.full((4, 4), empty)
         self.agent = agent
         self.resource_types = [wood, wheat, glass, brick, stone]
-        self.current_score = 0
+        self.score = get_player_score(self)
         self.all_cards = ""
         self.factory_resources = []
-        self.board = np.array([[tavern, tavern, tavern, tavern],
-                               [tavern, empty, empty, empty],
-                               [empty, almshouse, almshouse, almshouse],
-                               [empty, almshouse, almshouse, almshouse]])
+        # self.board = np.array([[tavern, tavern, tavern, tavern],
+        #                        [tavern, empty, empty, empty],
+        #                        [empty, almshouse, almshouse, almshouse],
+        #                        [empty, almshouse, almshouse, almshouse]])
 
     def describe_player(self):
         return f"""Player {self.get_player_id()} has the current board:
@@ -36,7 +36,10 @@ The cards available to them are {self.display_all_cards()}"""
         return self.agent
     
     def get_score(self):
-        return get_player_score(self)
+        return self.score
+    
+    def display_score(self):
+        return f"Player {self.get_player_id()} has {self.get_score()}VP"
     
     def get_all_cards(self):
         return self.all_cards
