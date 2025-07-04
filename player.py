@@ -15,10 +15,10 @@ class Player:
         self.score = get_player_score(self)
         self.all_cards = ""
         self.factory_resources = []
-        # self.board = np.array([[tavern, tavern, tavern, tavern],
-        #                        [tavern, empty, empty, empty],
-        #                        [empty, almshouse, almshouse, almshouse],
-        #                        [empty, almshouse, almshouse, almshouse]])
+        self.board = np.array([[tavern, tavern, tavern, tavern],
+                               [tavern, empty, empty, empty],
+                               [empty, almshouse, almshouse, almshouse],
+                               [empty, almshouse, almshouse, almshouse]])
 
     def describe_player(self):
         return f"""Player {self.get_player_id()} has the current board:

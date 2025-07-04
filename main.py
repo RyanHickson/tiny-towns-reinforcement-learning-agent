@@ -41,18 +41,11 @@ class Game:
         self.player_queue = list(self.player_dict.keys())
         self.master_builder_queue = self.player_queue.copy()
 
-
-
     def play(self):
         # SETUP
         finished = False
-        # acting_player = self.player_queue[0]   # player one becomes first player to act
-        # master_builder = self.player_dict[acting_player]   # assign acting player to be first master builder
-        # CHECK FOR CONSTRUCTION POSSIBILITIES
-        # CHOOSE IF AND WHERE TO BUILD (YET TO IMPLEMENT)
-        # PASS MASTER BUILDER TO NEXT PLAYER (NEXT TURN)
 
-        # TURN
+        # GAME
         while not finished:
             # coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
             building_choice = ""
@@ -92,16 +85,8 @@ class Game:
                                 self.factory_resources.append(int(input(f"Player {acting_player.get_player_id()}, Choose a resource: {resource_names_dict} ")))
                     finished = True
                     print(get_game_score(self))
-
-                        # print(acting_player.largest_contiguous_group())
-                        # print(f"{acting_player.get_score()}")
-                    print("EOAP")
-                print("EOT")
-                print(self.player_queue)
                 last_played = self.player_queue.pop(0)   # select current player, and remove them from the front of the player queue
-                print(self.player_queue)
                 self.player_queue.append(last_played)    # add the current player back to the player queue
-                print(self.player_queue)
             finished = True
         print("Game completed!")
 

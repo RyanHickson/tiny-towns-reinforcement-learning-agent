@@ -325,6 +325,5 @@ def get_player_score(self):
         total_score += sum([sum(el) for el in greenhouse_feed_list[:greenhouse_count]])
     if orchard in self.board:
         total_score += (3 * len(orchard_fed_dict))
-    print(f"{empty_tile_count=}")
     # total_score += (empty_tile_count * empty_tile_score)
     return total_score
