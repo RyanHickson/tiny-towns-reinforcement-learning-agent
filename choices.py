@@ -6,7 +6,7 @@ from resources import *
 # IF ACTIVE PLAYER (MASTER BUILDER)
 # RESOURCE CHOICE
 resource_dict = {1: wood, 2: wheat, 3: glass, 4: brick, 5: stone}
-resource_names_dict = {1: wood.get_name(), 2: wheat.get_name(), 3: glass.get_name(), 4: brick.get_name(), 5: stone.get_name()}
+resource_names_dict = {1: wood.__str__(), 2: wheat.__str__(), 3: glass.__str__(), 4: brick.__str__(), 5: stone.__str__()}
 
 # RESOURCE PLACEMENT
 board_tile_dict = {

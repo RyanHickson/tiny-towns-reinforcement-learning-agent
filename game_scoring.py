@@ -36,7 +36,7 @@ def get_game_score(self):
             tile_coords = board_tile_dict[tile_id]
             tile_content = currently_scoring.board[tile_coords]
 
-            match tile_content.get_name():
+            match tile_content.__str__():
                 case "Farm":
                     farm_count += 1
                 # fed_count = farm_count * 4 # each farm feeds 4 buildings
@@ -78,9 +78,9 @@ def get_game_score(self):
                     almshouse_count += 1
                 case "Inn":
                     row_content = currently_scoring.check_row(tile_id)[0]
-                    row_content_names = [el.get_name() for el in row_content]
+                    row_content_names = [el.__str__() for el in row_content]
                     col_content = currently_scoring.check_col(tile_id)[0]
-                    col_content_names = [el.get_name() for el in col_content]
+                    col_content_names = [el.__str__() for el in col_content]
                     row_content_names.remove("Inn")
                     col_content_names.remove("Inn")
                     if "Inn" in row_content_names:
@@ -91,7 +91,7 @@ def get_game_score(self):
                 case "Feast Hall":
                     feast_hall_count += 1
                     total_score += 2
-                    # if player_on_right.get_player_id().feast_hall_count < self.feast_hall_count:   # if player on right has lower or equal number of feast halls
+                    # if player_on_right.__str__().feast_hall_count < self.feast_hall_count:   # if player on right has lower or equal number of feast halls
                     #     each_feast_hall_score = 3   # each feast hall scores 3VP
                     # else:   # if it is not the case "that" player being scored has a higher count of feast halls
                     #     each_feast_hall_score = 2   # they are only worth 2VP each
@@ -330,7 +330,7 @@ def get_game_score(self):
             total_score += sum([sum(el) for el in greenhouse_feed_list[:greenhouse_count]])
         if orchard in currently_scoring.board:
             total_score += (3 * len(orchard_fed_dict))
-        print(f"{empty_tile_count=}")
+        print(f"{currently_scoring.__str__()} has {empty_tile_count} empty tiles.")
         # total_score += (empty_tile_count * empty_tile_score)
         feast_halls_per_player.append(feast_hall_count)
         scores_list.append(total_score)

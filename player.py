@@ -5,6 +5,7 @@ from cards import *
 from choices import *
 from scoring import get_player_score
 
+
 class Player:
     def __init__(self, player_id, monument, agent):
         self.player_id = player_id
@@ -15,40 +16,50 @@ class Player:
         self.score = get_player_score(self)
         self.all_cards = ""
         self.factory_resources = []
-        self.board = np.array([[tavern, tavern, tavern, tavern],
-                               [tavern, empty, empty, empty],
-                               [empty, almshouse, almshouse, almshouse],
-                               [empty, almshouse, almshouse, almshouse]])
+        self.board = np.array(
+            [
+                [tavern, tavern, tavern, tavern],
+                [tavern, empty, empty, empty],
+                [empty, almshouse, almshouse, almshouse],
+                [empty, almshouse, almshouse, almshouse],
+            ]
+        )
 
-    def describe_player(self):
-        return f"""Player {self.get_player_id()} has the current board:
-{self.get_display_board()}
-Their monument this game is {self.monument.get_name()}. They are being operated by agent {self.agent.get_name()}
-The cards available to them are {self.display_all_cards()}"""
+    def __repr__(self):
+        return """{} has the current board: \n{}
+Their monument this game is {}. They are being operated by agent {}
+The cards available to them are {}
+""".format(
+            self.__str__(),
+            self.get_display_board(),
+            self.monument.__str__(),
+            self.agent.__str__(),
+            self.display_all_cards(),
+        )
 
-    def get_player_id(self):
-        return self.player_id
+    def __str__(self):
+        return "Player {}".format(self.player_id)
 
     def get_monument(self):
         return self.monument
 
     def get_agent(self):
         return self.agent
-    
+
     def get_score(self):
         return self.score
-    
+
     def display_score(self):
-        return f"Player {self.get_player_id()} has {self.get_score()}VP"
-    
+        return "{} has {}VP".format(self.__str__(), self.get_score())
+
     def get_all_cards(self):
         return self.all_cards
-    
+
     def get_factory_resources(self):
         return self.factory_resources
-    
+
     def display_all_cards(self):
-        return [card.get_name() for card in self.all_cards]
+        return [card.__str__() for card in self.all_cards]
 
     def describe_town_board(self):
         """
@@ -64,18 +75,20 @@ The cards available to them are {self.display_all_cards()}"""
     def get_display_board(self):
         """
         Displays the board in a human friendly manner,
-        by calling the get_name method for each
+        by calling the __str__ method for each
         resource and building on the board.
         """
         self.display_board = np.full((4, 4), empty)
         self.town_board_dict = self.describe_town_board()
         for tile_id, tile_coords in board_tile_dict.items():
             # print(f"{self.town_board_dict[board_tile_dict[tile_id]]=}")
-            self.display_board[tile_coords] = self.town_board_dict[tile_coords].get_name()
+            self.display_board[tile_coords] = self.town_board_dict[
+                tile_coords
+            ].__str__()
         return self.display_board
 
     def get_resource_types(self):
-        return [resource.get_name() for resource in self.resource_types]
+        return [resource.__str__() for resource in self.resource_types]
 
     def check_immediate_adjacent_tiles(self, tile_id):
         """
@@ -169,7 +182,7 @@ The cards available to them are {self.display_all_cards()}"""
                 if len(largest_group) < len(current_group):
                     largest_group = current_group
         return largest_group
-    
+
     def check_row(self, tile_id):
         tile_row, tile_col = board_tile_dict[tile_id]
         row_content_list = []
@@ -180,7 +193,7 @@ The cards available to them are {self.display_all_cards()}"""
             tile_content = self.board[row_coords]
             row_content_list.append(tile_content)
         return row_content_list, row_coords_list
-    
+
     def check_col(self, tile_id):
         tile_row, tile_col = board_tile_dict[tile_id]
         col_content_list = []
@@ -191,7 +204,7 @@ The cards available to them are {self.display_all_cards()}"""
             tile_content = self.board[col_coords]
             col_content_list.append(tile_content)
         return col_content_list, col_coords_list
-    
+
     def construct(self, dict):
         placement = dict["placement"]
         building = dict["card"]
@@ -204,7 +217,7 @@ The cards available to them are {self.display_all_cards()}"""
     def greenhouse_feeding(self):
         score_list = []
         contiguous_feedable_groups = self.check_contiguous_groups()
-        for group_id, grouping in enumerate(contiguous_feedable_groups):
+        for group_index, grouping in enumerate(contiguous_feedable_groups):
             current_grouping = []
             score_list.append(current_grouping)
             for tile_id in grouping:
@@ -214,7 +227,7 @@ The cards available to them are {self.display_all_cards()}"""
                 if isinstance(self.board[tile_coords], Monument):
                     current_grouping.append(5)
         return score_list
-    
+
     def get_building_count(self, building):
         building_count = 0
         for tile_id in range(1, 17):

@@ -57,8 +57,8 @@ def find_placements(board, card):
                     layout_value = variant[r][c]
                     if (
                         board_value
-                        != layout_value.get_name()  # if value on player board is not the same as the value of the layout
-                        and board_value != trading_post.get_name()  #
+                        != layout_value.__str__()  # if value on player board is not the same as the value of the layout
+                        and board_value != trading_post.__str__()  #
                     ):
                         match = False
                         break
@@ -67,11 +67,11 @@ def find_placements(board, card):
                     for el in not_wilds:
                         coord_set.append((i + el[0], j + el[1]))
                     for coord_pair in coord_set:
-                        if board[coord_pair] != trading_post.get_name():
+                        if board[coord_pair] != trading_post.__str__():
                             if coord_pair in placement_dict.keys():
-                                placement_dict[coord_pair].add(card.get_name())
+                                placement_dict[coord_pair].add(card.__str__())
                             else:
-                                placement_dict[coord_pair] = {card.get_name()}
+                                placement_dict[coord_pair] = {card.__str__()}
                             placement_options.append(
                                 {
                                     "placement": coord_pair,

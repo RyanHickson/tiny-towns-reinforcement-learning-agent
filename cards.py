@@ -17,14 +17,8 @@ class Card:
     def get_layout(self):
         return self.layout
 
-    def get_name(self):
-        return self.name
-
-    def get_deck(self):
-        """
-        Determines the type of the building.
-        """
-        return self.deck
+    def __str__(self):
+        return "{}".format(self.name)
 
     def get_card_detail(self):
         if self.is_feedable:
@@ -346,52 +340,3 @@ monuments_deck = [
     the_starloom,
     statue_of_the_bondmaker,
 ]
-
-building_input_dict = {
-    "cottage": cottage,
-    "farm": farm,
-    "orchard": orchard,
-    "greenhouse": greenhouse,
-    "granary": granary,
-    "factory": factory,
-    "warehouse": warehouse,
-    "trading_post": trading_post,
-    "bank": bank,
-    "tavern": tavern,
-    "inn": inn,
-    "almshouse": almshouse,
-    "feast_hall": feast_hall,
-    "chapel": chapel,
-    "temple": temple,
-    "abbey": abbey,
-    "cloister": cloister,
-    "theatre": theatre,
-    "bakery": bakery,
-    "market": market,
-    "tailor": tailor,
-    "well": well,
-    "fountain": fountain,
-    "millstone": millstone,
-    "shed": shed,
-    "architects_guild": architects_guild,
-    "archive_of_the_second_age": archive_of_the_second_age,
-    "barrett_castle": barrett_castle,
-    "cathedral_of_caterina": cathedral_of_caterina,
-    "fort_ironweed": fort_ironweed,
-    "grand_mausoleum_of_the_rodina": grand_mausoleum_of_the_rodina,
-    "grove_university": grove_university,
-    "mandras_palace": mandras_palace,
-    "obelisk_of_the_crescent": obelisk_of_the_crescent,
-    "opaleyes_watch": opaleyes_watch,
-    "shrine_of_the_elder_tree": shrine_of_the_elder_tree,
-    "silva_forum": silva_forum,
-    "the_sky_baths": the_sky_baths,
-    "the_starloom": the_starloom,
-    "statue_of_the_bondmaker": statue_of_the_bondmaker,
-    "wheat": wheat,
-    "wood": wood,
-    "glass": glass,
-    "brick": brick,
-    "stone": stone,
-    "wild": wild,
-}
