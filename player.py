@@ -4,6 +4,7 @@ from resources import *
 from cards import *
 from choices import *
 from scoring import get_player_score
+from construct import player_construct
 
 
 class Player:
@@ -14,27 +15,32 @@ class Player:
         self.agent = agent
         self.resource_types = [wood, wheat, glass, brick, stone]
         self.score = get_player_score(self)
-        self.all_cards = ""
+        self.all_cards = []
         self.factory_resources = []
+        self.warehouse_capacity = 0
+        self.warehouse_resources = []
+        self.bank_resources = []
         self.board = np.array(
             [
-                [tavern, tavern, tavern, tavern],
-                [tavern, empty, empty, empty],
-                [empty, almshouse, almshouse, almshouse],
+                [tavern, tavern, glass, tavern],
+                [brick, stone, stone, brick],
+                [wood, brick, almshouse, almshouse],
                 [empty, almshouse, almshouse, almshouse],
             ]
         )
+        self.environment = [self.board, self.factory_resources, self.warehouse_resources, self.bank_resources]
 
     def __repr__(self):
         return """{} has the current board: \n{}
 Their monument this game is {}. They are being operated by agent {}
-The cards available to them are {}
+The cards available to them are {} Their factory resources are {}
 """.format(
             self.__str__(),
             self.get_display_board(),
             self.monument.__str__(),
             self.agent.__str__(),
             self.display_all_cards(),
+            self.get_factory_resources()
         )
 
     def __str__(self):
@@ -58,10 +64,16 @@ The cards available to them are {}
     def get_factory_resources(self):
         return self.factory_resources
 
+    def get_warehouse_resources(self):
+        return self.warehouse_resources
+    
+    def get_bank_resources(self):
+        return self.bank_resources
+    
     def display_all_cards(self):
         return [card.__str__() for card in self.all_cards]
 
-    def describe_town_board(self):
+    def get_instance_board(self):
         """
         Returns the town board as it is, made up of
         instances of resource and building classes.
@@ -79,12 +91,10 @@ The cards available to them are {}
         resource and building on the board.
         """
         self.display_board = np.full((4, 4), empty)
-        self.town_board_dict = self.describe_town_board()
+        self.town_board_dict = self.get_instance_board()
         for tile_id, tile_coords in board_tile_dict.items():
             # print(f"{self.town_board_dict[board_tile_dict[tile_id]]=}")
-            self.display_board[tile_coords] = self.town_board_dict[
-                tile_coords
-            ].__str__()
+            self.display_board[tile_coords] = self.town_board_dict[tile_coords].__str__()
         return self.display_board
 
     def get_resource_types(self):
@@ -205,15 +215,6 @@ The cards available to them are {}
             col_content_list.append(tile_content)
         return col_content_list, col_coords_list
 
-    def construct(self, dict):
-        placement = dict["placement"]
-        building = dict["card"]
-        co_ords = dict["co-ords"]
-        self.board[placement] = building
-        for coord_pair in co_ords:
-            if coord_pair != placement and isinstance(self.board[coord_pair], Resource):
-                self.board[coord_pair] = empty
-
     def greenhouse_feeding(self):
         score_list = []
         contiguous_feedable_groups = self.check_contiguous_groups()
@@ -236,3 +237,6 @@ The cards available to them are {}
             if tile_content == building:
                 building_count += 1
         return building_count
+    
+    def construct(self, dict):
+        return player_construct(self, dict)
