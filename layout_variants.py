@@ -1,6 +1,7 @@
 import numpy as np
 from building_layouts import *
 from cards import *
+from ry import *
 
 
 def rotate_90(layout):
@@ -89,7 +90,7 @@ def find_placements(board, card):
     for el in placement_options:
         if el not in build_list:
             build_list.append(el)
-    return placement_dict, dict(enumerate(build_list)), placement_display
+    return placement_dict, dict_enum(build_list), placement_display
 
 def find_all_placements(player, cards):
     coord_dictionary = dict()

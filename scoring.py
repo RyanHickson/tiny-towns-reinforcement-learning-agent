@@ -55,11 +55,11 @@ def get_player_score(self):
                 tile_row, tile_col = tile_coords
                 surrounding_tiles = [(-1, -1), (-1, 0), (-1, +1), (0, -1), (0, +1), (+1, -1), (+1, 0), (+1, +1)]
                 for surround_coords in surrounding_tiles:
-                    tile_being_checked = self.board[tile_row + surround_coords[0], tile_col + surround_coords[1]]
-                    if isinstance(tile_being_checked, Card):
-                        if tile_being_checked.is_feedable:
-                            tile_being_checked.is_fed = True
-                            # total_score += tile_being_checked.score_when_fed()
+                    tile_around_granary = self.board[tile_row + surround_coords[0], tile_col + surround_coords[1]]
+                    if isinstance(tile_around_granary, Card):
+                        if tile_around_granary.is_feedable:
+                            tile_around_granary.is_fed = True
+                            # total_score += tile_around_granary.score_when_fed()
             case "Factory":
                 continue    # factory scores nothing
             # case "warehouse":

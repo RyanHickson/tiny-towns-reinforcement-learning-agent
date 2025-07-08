@@ -1,6 +1,7 @@
 from resources import *
 from choices import *
 from cards import Card
+from ry import *
 
 def player_construct(self, construction_dict):
     placement = construction_dict["placement"]
@@ -13,18 +14,18 @@ def player_construct(self, construction_dict):
 
     match construction_dict["card"].__str__():
         case "Factory":
-            resource_choice_index = (int(input(f"Choose a resource to place on this factory: {resource_names_dict}")))
+            resource_choice_index = handle_input(f"Choose a resource to place on this factory: {resource_names_dict}", range_len(resource_names_dict), int)
             self.factory_resources.append(resource_choice_index)
         case "Warehouse":
             self.warehouse_capacity += 3
         case "Bank":
-            resource_choice_index = (int(input(f"Choose a resource to place in this bank: {resource_names_dict}")))
+            resource_choice_index = handle_input(f"Choose a resource to place in this bank: {resource_names_dict}", range_len(resource_names_dict), int)
             self.bank_resources.append(resource_choice_index)
         case "Architect's Guild":
             print("Built Architect's Guild")
             completed_swaps = 0
             allowed_swaps = 2
-            building_dict = dict(enumerate(self.all_cards))
+            building_dict = dict_enum(self.all_cards)
             for i, row in enumerate(self.board):
                 for j ,tile in enumerate(row):
                     print(tile)
@@ -32,11 +33,6 @@ def player_construct(self, construction_dict):
                     print(type(tile))
                     if isinstance(tile, Card):
                         if completed_swaps < allowed_swaps:
-                            swap_index = -1
-                            while swap_index not in building_dict:
-                                try:
-                                    swap_index = int(input(f"Select a building to replace: {building_dict} "))
-                                except:
-                                    continue
+                            swap_index = handle_input(f"Select a building to replace: {building_dict} ", building_dict, parse=int)
                             self.board[i, j] = building_dict[swap_index]
                             completed_swaps += 1

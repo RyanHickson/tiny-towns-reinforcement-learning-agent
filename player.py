@@ -20,14 +20,7 @@ class Player:
         self.warehouse_capacity = 0
         self.warehouse_resources = []
         self.bank_resources = []
-        self.board = np.array(
-            [
-                [tavern, tavern, glass, tavern],
-                [brick, stone, stone, brick],
-                [wood, brick, almshouse, almshouse],
-                [empty, almshouse, almshouse, almshouse],
-            ]
-        )
+
         self.environment = [self.board, self.factory_resources, self.warehouse_resources, self.bank_resources]
 
     def __repr__(self):

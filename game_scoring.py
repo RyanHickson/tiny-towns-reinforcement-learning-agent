@@ -12,7 +12,7 @@ def get_game_score(self):
     feast_halls_per_player = []
     scores_list = []
     for player in range(self.number_of_players):
-        currently_scoring = self.player_dict[player]
+        currently_scoring = self.dictionary_of_players[player]
         total_score = 0
         empty_tile_score = -1
         empty_tile_count = 0
@@ -59,11 +59,14 @@ def get_game_score(self):
                     tile_row, tile_col = tile_coords
                     surrounding_tiles = [(-1, -1), (-1, 0), (-1, +1), (0, -1), (0, +1), (+1, -1), (+1, 0), (+1, +1)]
                     for surround_coords in surrounding_tiles:
-                        tile_being_checked = currently_scoring.board[tile_row + surround_coords[0], tile_col + surround_coords[1]]
-                        if isinstance(tile_being_checked, Card):
-                            if tile_being_checked.is_feedable:
-                                tile_being_checked.is_fed = True
-                                # total_score += tile_being_checked.score_when_fed()
+                        try:
+                            tile_around_granary = currently_scoring.board[tile_row + surround_coords[0], tile_col + surround_coords[1]]
+                        except:
+                            continue
+                        if isinstance(tile_around_granary, Card):
+                            if tile_around_granary.is_feedable:
+                                tile_around_granary.is_fed = True
+                                # total_score += tile_around_granary.score_when_fed()
                 case "Factory":
                     continue    # factory scores nothing
                 # case "warehouse":
@@ -341,5 +344,5 @@ def get_game_score(self):
             except:
                 if feast_halls_per_player[player_id] > feast_halls_per_player[0]:   # exception for last player in list, the player on their right is player 1
                     scores_list[player_id] += (feast_hall_count)
-        self.player_dict[player].score = total_score
-    return f"{[self.player_dict[player].display_score() for player in range(self.number_of_players)]}"
+        self.dictionary_of_players[player].score = total_score
+    return f"{[self.dictionary_of_players[player].display_score() for player in range(self.number_of_players)]}"
