@@ -19,3 +19,9 @@ build_coord_text = "Which co-ordinates should be built on, and which resources u
 game_completion_text = "Game completed!"
 
 not_empty_tile_text = "Tile already occupied, choose another tile."
+
+factory_resource_found_text = "{}, the resource selected by the master builder is in one of your factories."
+
+factory_resource_choice_text = "Choose a resource to place on this factory: {} "
+
+bank_resource_choice_text = "Choose a resource to place in this bank: {} "

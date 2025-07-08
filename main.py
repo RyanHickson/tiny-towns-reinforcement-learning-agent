@@ -89,6 +89,7 @@ class Game:
                 if isinstance(resource_dict[resource_choice_id], Resource):
                     for each_player in self.player_queue:    # RESOURCE PLACEMENT ROUND
                         acting_player = self.dictionary_of_players[each_player]
+                        print(acting_player.__repr__())
                         if acting_player != first_player:
                             if resource_choice_id in acting_player.get_factory_resources(): # CHECK FACTORY RESOURCES
                                 print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_all_cards()]))

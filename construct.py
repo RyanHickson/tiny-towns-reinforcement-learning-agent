@@ -2,6 +2,7 @@ from resources import *
 from choices import *
 from cards import Card
 from ry import *
+from ui import *
 
 def player_construct(self, construction_dict):
     placement = construction_dict["placement"]
@@ -14,15 +15,14 @@ def player_construct(self, construction_dict):
 
     match construction_dict["card"].__str__():
         case "Factory":
-            resource_choice_index = handle_input(f"Choose a resource to place on this factory: {resource_names_dict}", range_len(resource_names_dict), int)
+            resource_choice_index = handle_input(factory_resource_choice_text.format(resource_names_dict), range(1,6), int)
             self.factory_resources.append(resource_choice_index)
         case "Warehouse":
             self.warehouse_capacity += 3
         case "Bank":
-            resource_choice_index = handle_input(f"Choose a resource to place in this bank: {resource_names_dict}", range_len(resource_names_dict), int)
+            resource_choice_index = handle_input(bank_resource_choice_text.format(resource_names_dict), range(1,6), int)
             self.bank_resources.append(resource_choice_index)
         case "Architect's Guild":
-            print("Built Architect's Guild")
             completed_swaps = 0
             allowed_swaps = 2
             building_dict = dict_enum(self.all_cards)
@@ -36,3 +36,9 @@ def player_construct(self, construction_dict):
                             swap_index = handle_input(f"Select a building to replace: {building_dict} ", building_dict, parse=int)
                             self.board[i, j] = building_dict[swap_index]
                             completed_swaps += 1
+        case "Shrine of the Elder Tree":
+            self.shrine_key = 0
+            for row in self.board:
+                for tile in row:
+                    if isinstance(tile, Card):
+                        self.shrine_key += 1

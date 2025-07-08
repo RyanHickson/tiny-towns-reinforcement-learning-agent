@@ -242,6 +242,8 @@ def get_player_score(self):
                 continue
 
             case "Shrine of the Elder Tree":
+                shrine_score_dict = {1:1, 2:2, 3:3, 4:4, 5:5, 6:8}
+                shrine_of_the_elder_tree_score = shrine_score_dict[self.shrine_key]
                 total_score += shrine_of_the_elder_tree_score   # score is locked in when shrine is constructed
 
             case "Silva Forum":

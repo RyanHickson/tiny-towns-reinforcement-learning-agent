@@ -21,19 +21,23 @@ class Player:
         self.warehouse_resources = []
         self.bank_resources = []
 
-        self.environment = [self.board, self.factory_resources, self.warehouse_resources, self.bank_resources]
+        self.environment = [
+            self.board,
+            self.factory_resources,
+            self.warehouse_resources,
+            self.bank_resources,
+        ]
 
     def __repr__(self):
         return """{} has the current board: \n{}
 Their monument this game is {}. They are being operated by agent {}
-The cards available to them are {} Their factory resources are {}
-""".format(
+The cards available to them are {} Their factory resources are {}""".format(
             self.__str__(),
             self.get_display_board(),
             self.monument.__str__(),
             self.agent.__str__(),
             self.display_all_cards(),
-            self.get_factory_resources()
+            self.get_factory_resources(),
         )
 
     def __str__(self):
@@ -59,10 +63,10 @@ The cards available to them are {} Their factory resources are {}
 
     def get_warehouse_resources(self):
         return self.warehouse_resources
-    
+
     def get_bank_resources(self):
         return self.bank_resources
-    
+
     def display_all_cards(self):
         return [card.__str__() for card in self.all_cards]
 
@@ -87,7 +91,9 @@ The cards available to them are {} Their factory resources are {}
         self.town_board_dict = self.get_instance_board()
         for tile_id, tile_coords in board_tile_dict.items():
             # print(f"{self.town_board_dict[board_tile_dict[tile_id]]=}")
-            self.display_board[tile_coords] = self.town_board_dict[tile_coords].__str__()
+            self.display_board[tile_coords] = self.town_board_dict[
+                tile_coords
+            ].__str__()
         return self.display_board
 
     def get_resource_types(self):
@@ -230,6 +236,10 @@ The cards available to them are {} Their factory resources are {}
             if tile_content == building:
                 building_count += 1
         return building_count
-    
+
     def construct(self, dict):
+        """
+        Calls the construct method for handling using resources
+        to build, and immediate effects therein.
+        """
         return player_construct(self, dict)
