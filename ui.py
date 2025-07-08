@@ -17,3 +17,5 @@ build_choice_text = "What would you like to build? "
 build_coord_text = "Which co-ordinates should be built on, and which resources used? "
 
 game_completion_text = "Game completed!"
+
+not_empty_tile_text = "Tile already occupied, choose another tile."

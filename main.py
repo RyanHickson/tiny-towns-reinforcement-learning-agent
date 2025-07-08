@@ -70,6 +70,7 @@ class Game:
         self.player_queue = list(self.dictionary_of_players.keys())
         self.master_builder_queue = self.player_queue.copy()
 
+
     def play(self):
         # SETUP
         finished = False
@@ -77,30 +78,33 @@ class Game:
         # GAME
         while not finished:
             # coord_dictionary, build_options = find_all_placements(master_builder, self.card_choices)
-            building_choice = ""
-            while building_choice != "FIN":  # MAIN TURN LOOP
-                first_player = self.player_queue[0]   # player one becomes first player to act
+            last_turn = False
+            while not last_turn:  # MAIN TURN LOOP
+                first_player = self.master_builder_queue[0]   # player one becomes first player to act
+                self.player_queue = self.master_builder_queue
                 acting_player = self.dictionary_of_players[first_player]   # assign acting player to be first master builder
                 print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_all_cards()]))
                 resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), resource_names_dict), resource_names_dict, parse=int)  # MASTER BUILDER CHOOSES A RESOURCE
 
                 if isinstance(resource_dict[resource_choice_id], Resource):
-                    for each_player in self.dictionary_of_players:    # RESOURCE PLACEMENT ROUND
+                    for each_player in self.player_queue:    # RESOURCE PLACEMENT ROUND
                         acting_player = self.dictionary_of_players[each_player]
-                        if resource_choice_id in acting_player.get_factory_resources(): # CHECK FACTORY RESOURCES
-                            print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_all_cards()]))
-                            acting_player_resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), resource_names_dict), resource_dict, parse=int)
+                        if acting_player != first_player:
+                            if resource_choice_id in acting_player.get_factory_resources(): # CHECK FACTORY RESOURCES
+                                print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_all_cards()]))
+                                acting_player_resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), resource_names_dict), resource_dict, parse=int)
 
-                            resource_choice = resource_dict[acting_player_resource_choice_id]
-                        else:
-                            resource_choice = resource_dict[resource_choice_id]
-                        tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(17), parse=int)   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
+                                resource_choice = resource_dict[acting_player_resource_choice_id]
+                            else:
+                                resource_choice = resource_dict[resource_choice_id]
+                            tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(17), parse=int)   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
 
                         while acting_player.board[board_tile_dict[tile_index]] != empty:
+                            print(not_empty_tile_text)
                             tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(17), parse=int)   # If chosen tile is not empty, ask for a new tile index
                         acting_player.board[board_tile_dict[tile_index]] = resource_choice
                     
-                    for each_player in self.dictionary_of_players:    # BUILDING ROUND
+                    for each_player in self.player_queue:    # BUILDING ROUND
                         acting_player = self.dictionary_of_players[each_player]
                         coord_dictionary, build_options, placement_display = find_all_placements(acting_player, acting_player.get_all_cards())
                         print(acting_player.__repr__())
@@ -125,8 +129,8 @@ class Game:
 
                     finished = True
                     print(get_game_score(self))
-                last_played = self.player_queue.pop(0)   # select current player, and remove them from the front of the player queue
-                self.player_queue.append(last_played)    # add the current player back to the player queue
+                last_played = self.master_builder_queue.pop(0)   # select current player, and remove them from the front of the player queue
+                self.master_builder_queue.append(last_played)    # add the current player back to the player queue
             finished = True
         print(game_completion_text)
 
