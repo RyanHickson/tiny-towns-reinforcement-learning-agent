@@ -182,6 +182,8 @@ def get_game_score(self):
                     adjacent_tiles = currently_scoring.check_immediate_adjacent_tiles(tile_id)
                     if FarmType or TheatreType in adjacent_tiles:
                         total_score += 2
+                case "Shed":
+                    total_score += 1
                 case "Architects Guild":
                     total_score += 1
                 case "Archive of the Second Age":
@@ -334,7 +336,7 @@ def get_game_score(self):
         if orchard in currently_scoring.board:
             total_score += (3 * len(orchard_fed_dict))
         print(f"{currently_scoring.__str__()} has {empty_tile_count} empty tiles.")
-        # total_score += (empty_tile_count * empty_tile_score)
+        total_score += (empty_tile_count * empty_tile_score)
         feast_halls_per_player.append(feast_hall_count)
         scores_list.append(total_score)
         for player_id, feast_hall_count in enumerate(feast_halls_per_player):
