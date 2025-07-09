@@ -25,3 +25,4 @@ factory_resource_found_text = "{}, the resource selected by the master builder i
 factory_resource_choice_text = "Choose a resource to place on this factory: {} "
 
 bank_resource_choice_text = "Choose a resource to place in this bank: {} "
+

@@ -20,6 +20,7 @@ class Player:
         self.warehouse_capacity = 0
         self.warehouse_resources = []
         self.bank_resources = []
+        self.board_full_case = False
 
         self.environment = [
             self.board,
@@ -29,15 +30,32 @@ class Player:
         ]
 
     def __repr__(self):
+        factory_type_text = ""
+        factory_type_function = ""
+        if trading_post in self.get_all_cards():
+            factory_type_string_append = ""
+        else:
+            factory_type_string_append = " Their {} resources are {}"
+        if factory in self.get_all_cards():
+            factory_type_text = "factory"
+            factory_type_function = self.get_factory_resources()
+        elif warehouse in self.get_all_cards():
+            factory_type_text = "warehouse"
+            factory_type_function = self.get_warehouse_resources()
+        elif bank in self.get_all_cards():
+            factory_type_text = "bank"
+            factory_type_function = self.get_bank_resources()
+
         return """{} has the current board: \n{}
 Their monument this game is {}. They are being operated by agent {}
-The cards available to them are {} Their factory resources are {}""".format(
+The cards available to them are {}""".format(
             self.__str__(),
             self.get_display_board(),
             self.monument.__str__(),
             self.agent.__str__(),
             self.display_all_cards(),
-            self.get_factory_resources(),
+        ) + factory_type_string_append.format(
+            factory_type_text, factory_type_function
         )
 
     def __str__(self):
@@ -98,6 +116,9 @@ The cards available to them are {} Their factory resources are {}""".format(
 
     def get_resource_types(self):
         return [resource.__str__() for resource in self.resource_types]
+
+    def get_board_full_case(self):
+        return self.board_full_case
 
     def check_immediate_adjacent_tiles(self, tile_id):
         """
