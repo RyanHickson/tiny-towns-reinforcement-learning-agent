@@ -1,6 +1,6 @@
 number_of_players_text = "Number of players (2-6): "
 
-manual_card_selection_text = "Select card choice mode, 0: Auto, 1: Manual : "
+manual_card_selection_text = "Select card choice mode, 0: Auto, 1: Manual, 2: Default : "
 
 choose_card_text = "Choose a card from  the list: {} "
 

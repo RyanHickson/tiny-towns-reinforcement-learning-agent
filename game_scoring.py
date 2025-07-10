@@ -310,7 +310,7 @@ def get_game_score(self):
                 total_score += 9
             case 4:
                 total_score += 14
-            case 5:
+            case _: # 5+ case
                 total_score += 20
         match almshouse_count:
             case 0:
@@ -325,7 +325,7 @@ def get_game_score(self):
                 total_score += 15
             case 5:
                 total_score -= 5
-            case 6:
+            case _: # 6+ case
                 total_score += 26
         if farm in currently_scoring.board:
             farms_can_feed = farm_count * 4 # each farm feeds four is_feedable buildings
