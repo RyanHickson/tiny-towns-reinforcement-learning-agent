@@ -1,11 +1,6 @@
 import numpy as np
 from resources import *
 
-# W = WOOD
-# C = WHEAT (CROP)
-# B = BRICK
-# G = GLASS
-# S = STONE
 
 # COTTAGE TYPES
 cottage_layout = [[wild,    wheat],
