@@ -22,8 +22,8 @@ class Player:
         self.bank_resources = []
         self.board_full_case = False
         self.board = np.array([[cottage, cottage, cottage, barrett_castle],
-                               [greenhouse, empty, empty, empty],
-                               [empty, empty, cottage, empty],
+                               [farm, empty, empty, empty],
+                               [empty, empty, cottage, chapel],
                                [cottage, cottage, cottage, greenhouse]])
 
         self.environment = [

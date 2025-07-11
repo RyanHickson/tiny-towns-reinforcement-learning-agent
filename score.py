@@ -24,6 +24,10 @@ def get_score(game, player):
     player.monument_score = 0
     player.total_score = 0
 
+    player.fed_cottage_count = 0
+
+    player.chapel_count = 0
+
     def get_factory_score(player):
         player.factory_score = 0
         if factory in cards_this_game:
@@ -49,6 +53,8 @@ def get_score(game, player):
             if tile_content == cottage:
                 player.feedable_count += 1
                 player.feedable_dict[tile_coords] = "cottage"
+            if tile_content == chapel:
+                player.chapel_count += 1
             if tile_content == barrett_castle:
                 player.feedable_count += 1
                 player.feedable_dict[tile_coords] = "barrett_castle"
@@ -110,12 +116,17 @@ def get_score(game, player):
 
         return player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords
     
-    # def get_chapel_score():
-    #     if chapel_choice == chapel:
-    #     if chapel_choice == temple:
-    #     if chapel_choice == abbey:
-    #     if chapel_choice == cloister:
-    #     return chapel_score
+    def get_chapel_score(player):
+        player.chapel_count = 0
+        for tile_coords, tile_content in player_board_dict.items():
+            if isinstance(tile_content, ChapelType):
+                player.chapel_count += 1
+        if chapel in cards_this_game:
+            player.chapel_score = (player.fed_cottage_count * player.chapel_count)
+        # if temple in cards_this_game:
+        # if abbey in cards_this_game:
+        # if cloister in cards_this_game:
+        return player.chapel_score
     
     # def get_tavern_score():
     #     if tavern_choice == tavern:
@@ -172,31 +183,45 @@ def get_score(game, player):
 
         feed_combinations = combinations(player.feedable_dict, number_of_feeds)
         games_dict = {}
+        scores_dict = {}
         for combination in feed_combinations:   # EACH GAME IN WHICH DIFFERENT COMBINATIONS OF FEEDABLE BUILDINGS ARE FED
 
             player.cottage_score = 0
             player.monument_score = 0
             player.total_score = 0
+            player.fed_cottage_count = 0
 
             fed_board = np.full((4, 4), False)
             for coord_pair in combination:
                 fed_board[coord_pair] = True
                 if isinstance(player.board[coord_pair], CottageType):
                     player.cottage_score += 3
+                    player.fed_cottage_count += 1
                 if barrett_castle in player.get_all_cards():
                     if isinstance(player.board[coord_pair], Monument):
                         player.monument_score += 5
+                        player.fed_cottage_count += 2
+            player.unfed_cottage_count = player.cottage_score - player.fed_cottage_count
 
-            player.total_score += get_factory_score(player)
+
+            player.factory_score = get_factory_score(player)
+            player.chapel_score = get_chapel_score(player)
+
+
+            player.total_score += player.factory_score
             player.total_score += player.cottage_score
+            player.total_score += player.chapel_score
             player.total_score += player.monument_score
             games_dict[combination] = player.total_score
+            scores_dict[combination] = [player.factory_score, player.cottage_score, player.chapel_score, player.monument_score, player.total_score]
 
-        best_scoring_game = max(games_dict.values())
-        return print(best_scoring_game)
-        print("FARM TEST")
-        print("{} scores {}VP from their factories.".format(player.__str__(), get_factory_score(player)))
+        best_scoring_game = max(games_dict, key=games_dict.get)
+        player.factory_score, player.cottage_score, player.chapel_score, player.monument_score, player.total_score = scores_dict[best_scoring_game]
+
+        print("{} scores {}VP from their factories.".format(player.__str__(), player.factory_score))
         print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
+        print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
+        print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
         print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
         return player.total_score
 
@@ -205,14 +230,18 @@ def get_score(game, player):
             
 
 
+    player.factory_score = get_factory_score(player)
+    player.chapel_score = get_chapel_score(player)
 
     
-    player.total_score += get_factory_score(player)
+    player.total_score += player.factory_score
     player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords = get_cottage_stats(player)
     player.total_score += player.cottage_score
+    player.total_score += player.chapel_score
     player.total_score += player.monument_score
-    print("{} scores {}VP from their factories.".format(player.__str__(), get_factory_score(player)))
+    print("{} scores {}VP from their factories.".format(player.__str__(), player.factory_score))
     print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
+    print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
     print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
     print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
 
