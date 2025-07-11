@@ -53,8 +53,8 @@ def get_score(game, player):
             if tile_content == cottage:
                 player.feedable_count += 1
                 player.feedable_dict[tile_coords] = "cottage"
-            if tile_content == chapel:
-                player.chapel_count += 1
+            # if tile_content == chapel:
+            #     player.chapel_count +=    # function called correctly elsewhere, REMOVE
             if tile_content == barrett_castle:
                 player.feedable_count += 1
                 player.feedable_dict[tile_coords] = "barrett_castle"
@@ -155,15 +155,69 @@ def get_score(game, player):
                         continue
                 if not isinstance(adjacent_tile_content, FactoryType) or isinstance(adjacent_tile_content, TavernType) or isinstance(adjacent_tile_content, TheatreType):
                         player.chapel_score += 3
-        # if cloister in cards_this_game:
+        if cloister in cards_this_game:
+            cloisters_in_corners = 0
+            if player.board[0,0] == cloister:
+                cloisters_in_corners += 1
+            if player.board[0,3] == cloister:
+                cloisters_in_corners += 1
+            if player.board[3,0] == cloister:
+                cloisters_in_corners += 1
+            if player.board[3,3] == cloister:
+                cloisters_in_corners += 1
+            player.chapel_score += player.chapel_count * cloisters_in_corners
         return player.chapel_score
     
-    # def get_tavern_score():
-    #     if tavern_choice == tavern:
-    #     if tavern_choice == inn:
-    #     if tavern_choice == almshouse:
+    def get_tavern_score(player):
+        player.tavern_score = 0
+        player.tavern_count = 0
+        player.tavern_coords = []
+        for tile_coords, tile_content in player_board_dict.items():
+            if isinstance(tile_content, TavernType):
+                player.tavern_count += 1
+                player.tavern_coords.append(tile_coords)
+        if tavern in cards_this_game:
+            match player.tavern_count:
+                case 0:
+                    pass
+                case 1:
+                    player.tavern_score += 2
+                case 2:
+                    player.tavern_score += 5
+                case 3:
+                    player.tavern_score += 9
+                case 4:
+                    player.tavern_score += 14
+                case _: # 5+ case
+                    player.tavern_score += 20
+        if inn in cards_this_game:
+            for inn_placement in player.tavern_coords:
+                row_coords_list = player.check_row(inn_placement)[1]
+                col_content_list = player.check_col(inn_placement)[1]
+                row_col_combined = set(row_coords_list + col_content_list)
+                for coord_pair in row_col_combined:
+                    if isinstance(player.board[coord_pair], TavernType):
+                        break
+                    else:
+                        player.tavern_score += 3
+        if almshouse in cards_this_game:
+            match player.tavern_count:
+                case 0:
+                    pass
+                case 1:
+                    total_score -= 1
+                case 2:
+                    total_score += 5
+                case 3:
+                    total_score -= 3
+                case 4:
+                    total_score += 15
+                case 5:
+                    total_score -= 5
+                case _: # 6+ case
+                    total_score += 26
     #     if tavern_choice == feast_hall:
-    #     return tavern_score
+        return player.tavern_score
     
     # def get_theatre_score():
     #     if theatre_choice == theatre:
@@ -236,11 +290,13 @@ def get_score(game, player):
 
             player.factory_score = get_factory_score(player)
             player.chapel_score = get_chapel_score(player)
+            player.tavern_score = get_tavern_score(player)
 
 
             player.total_score += player.factory_score
             player.total_score += player.cottage_score
             player.total_score += player.chapel_score
+            player.total_score += player.tavern_score
             player.total_score += player.monument_score
             games_dict[combination] = player.total_score
             scores_dict[combination] = [player.factory_score, player.cottage_score, player.chapel_score, player.monument_score, player.total_score]
@@ -251,6 +307,7 @@ def get_score(game, player):
         print("{} scores {}VP from their factories.".format(player.__str__(), player.factory_score))
         print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
         print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
+        print("{} scores {}VP from their taverns.".format(player.__str__(), player.tavern_score))
         print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
         print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
         return player.total_score
@@ -262,17 +319,19 @@ def get_score(game, player):
 
     player.factory_score = get_factory_score(player)
     player.chapel_score = get_chapel_score(player)
+    player.tavern_score = get_tavern_score(player)
 
     
     player.total_score += player.factory_score
     player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords = get_cottage_stats(player)
     player.total_score += player.cottage_score
     player.total_score += player.chapel_score
+    player.total_score += player.tavern_score
     player.total_score += player.monument_score
     print("{} scores {}VP from their factories.".format(player.__str__(), player.factory_score))
     print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
     print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
+    print("{} scores {}VP from their taverns.".format(player.__str__(), player.tavern_score))
     print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
     print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
-
     return player.total_score
