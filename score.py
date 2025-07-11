@@ -21,6 +21,7 @@ def get_score(game, player):
     cards_this_game = game.get_card_choices()
 
     player_board_dict = player.get_instance_board()
+    player.monument_score = 0
     player.total_score = 0
 
     def get_factory_score(player):
@@ -59,6 +60,7 @@ def get_score(game, player):
 
         player.cottage_count = 0
         player.fed_cottage_count = 0
+        player.greenhouse_count = 0
 
         player.feedable_coords = []
 
@@ -66,15 +68,35 @@ def get_score(game, player):
             if tile_content == cottage:
                 player.cottage_count += 1
                 player.feedable_coords.append(tile_coords)
+            if tile_content == greenhouse:
+                player.greenhouse_count += 1
             if tile_content == barrett_castle:
                 player.barrett_castle_present = True
                 player.feedable_coords.append(tile_coords)
-
         player.unfed_cottage_count = player.cottage_count
 
+
+        if orchard in cards_this_game:
+            for feedable_coord_pair in player.feedable_coords:
+                row_coords_list = player.check_row(feedable_coord_pair)[1]
+                col_content_list = player.check_col(feedable_coord_pair)[1]
+                row_col_combined = set(row_coords_list + col_content_list)
+                print(row_col_combined)
+                for coord_pair in row_col_combined:
+                    if isinstance(player.board[coord_pair], FarmType):
+                        if isinstance(player.board[feedable_coord_pair], CottageType):
+                            player.cottage_score += 3
+                        if barrett_castle in player.get_all_cards():
+                            if isinstance(player.board[feedable_coord_pair], Monument):
+                                player.monument_score += 5
+
+        if greenhouse in cards_this_game:
+            greenhouse_feed_list = player.greenhouse_feeding()
+            player.cottage_score += sum([sum(el) for el in greenhouse_feed_list[:player.greenhouse_count]])
+
         if granary in cards_this_game:
-            for cottage_coord in player.feedable_coords:
-                cottage_surrounding_coords = check_surrounding_tiles(cottage_coord)
+            for coord_pair in player.feedable_coords:
+                cottage_surrounding_coords = check_surrounding_tiles(coord_pair)
                 for coords in cottage_surrounding_coords:
                     try:
                         tile_content = player_board_dict[coords]
@@ -161,15 +183,15 @@ def get_score(game, player):
                 fed_board[coord_pair] = True
                 if isinstance(player.board[coord_pair], CottageType):
                     player.cottage_score += 3
-                if isinstance(player.board[coord_pair], Monument):
-                    player.monument_score += 5
+                if barrett_castle in player.get_all_cards():
+                    if isinstance(player.board[coord_pair], Monument):
+                        player.monument_score += 5
 
             player.total_score += get_factory_score(player)
             player.total_score += player.cottage_score
             player.total_score += player.monument_score
             games_dict[combination] = player.total_score
 
-        print(games_dict)
         best_scoring_game = max(games_dict.values())
         return print(best_scoring_game)
         print("FARM TEST")
@@ -188,9 +210,10 @@ def get_score(game, player):
     player.total_score += get_factory_score(player)
     player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords = get_cottage_stats(player)
     player.total_score += player.cottage_score
-    print("FARM TEST 2 ")
+    player.total_score += player.monument_score
     print("{} scores {}VP from their factories.".format(player.__str__(), get_factory_score(player)))
     print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
+    print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
     print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
 
     return player.total_score
