@@ -24,7 +24,7 @@ class Player:
         self.board = np.array([[cottage, cottage, cottage, barrett_castle],
                                [farm, empty, empty, abbey],
                                [empty, empty, cottage, empty],
-                               [cottage, temple, cottage, empty]])
+                               [cottage, empty, cottage, empty]])
 
         self.environment = [
             self.board,

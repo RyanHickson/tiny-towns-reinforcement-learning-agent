@@ -88,7 +88,6 @@ def get_score(game, player):
                 row_coords_list = player.check_row(feedable_coord_pair)[1]
                 col_content_list = player.check_col(feedable_coord_pair)[1]
                 row_col_combined = set(row_coords_list + col_content_list)
-                print(row_col_combined)
                 for coord_pair in row_col_combined:
                     if isinstance(player.board[coord_pair], FarmType):
                         if isinstance(player.board[feedable_coord_pair], CottageType):
@@ -154,9 +153,8 @@ def get_score(game, player):
                         adjacent_tile_content = player.board[adjacent_coords]
                     except:
                         continue
-                    print(adjacent_tile_content)
-                    if not isinstance(adjacent_tile_content, FactoryType) or isinstance(adjacent_tile_content, TavernType) or isinstance(adjacent_tile_content, TheatreType):
-                          player.chapel_score += 3
+                if not isinstance(adjacent_tile_content, FactoryType) or isinstance(adjacent_tile_content, TavernType) or isinstance(adjacent_tile_content, TheatreType):
+                        player.chapel_score += 3
         # if cloister in cards_this_game:
         return player.chapel_score
     
