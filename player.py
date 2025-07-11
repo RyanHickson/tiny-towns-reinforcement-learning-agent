@@ -22,9 +22,9 @@ class Player:
         self.bank_resources = []
         self.board_full_case = False
         self.board = np.array([[cottage, cottage, cottage, barrett_castle],
-                               [farm, empty, empty, empty],
-                               [empty, empty, cottage, chapel],
-                               [cottage, cottage, cottage, greenhouse]])
+                               [farm, empty, empty, abbey],
+                               [empty, empty, cottage, empty],
+                               [cottage, temple, cottage, empty]])
 
         self.environment = [
             self.board,
@@ -141,6 +141,20 @@ The cards available to them are {}""".format(
             if 0 < tile_id + val < 17:
                 adjacent_tiles_list.append(tile_id + val)
         return adjacent_tiles_list
+    
+    def check_adjacent_tiles(self, tile_coords):
+        """
+        A method to check the 4 surrounding neighbours of a
+        given tile, and return a list of their coordinates.
+        Tiles on town board boundary will have fewer neighbours.
+        """
+        adjacent_relations = [(-1, 0), (0, -1), (0, +1), (+1, 0)]
+        adjacent_tiles_list = []    # initialise return
+        for relational_vector in adjacent_relations:
+            i, j = tile_coords
+            r, c = relational_vector
+            adjacent_tiles_list.append((i + r, j + c))
+        return adjacent_tiles_list
 
     def check_grouping(self, start_tile_id, visited, condition=lambda card: True):
         """
@@ -241,6 +255,7 @@ The cards available to them are {}""".format(
 
     def greenhouse_feeding(self):
         score_list = []
+        fed_coords = []
         contiguous_feedable_groups = self.check_contiguous_groups()
         for group_index, grouping in enumerate(contiguous_feedable_groups):
             current_grouping = []
@@ -249,10 +264,12 @@ The cards available to them are {}""".format(
                 tile_coords = board_tile_dict[tile_id]
                 if isinstance(self.board[tile_coords], CottageType):
                     current_grouping.append(3)
+                    fed_coords.append(tile_coords)
                 if isinstance(self.board[tile_coords], Monument):
                     if barrett_castle in self.get_all_cards():
                         current_grouping.append(5)
-        return score_list
+                        fed_coords.append(tile_coords)
+        return score_list, fed_coords
 
     def get_building_count(self, building):
         building_count = 0

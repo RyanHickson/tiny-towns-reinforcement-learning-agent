@@ -331,7 +331,7 @@ def get_game_score(self):
             farms_can_feed = farm_count * 4 # each farm feeds four is_feedable buildings
             total_score += sum(feedable_list[:farms_can_feed])
         if greenhouse in currently_scoring.board:
-            greenhouse_feed_list = currently_scoring.greenhouse_feeding()
+            greenhouse_feed_list, fed_coords = currently_scoring.greenhouse_feeding()
             total_score += sum([sum(el) for el in greenhouse_feed_list[:greenhouse_count]])
         if orchard in currently_scoring.board:
             total_score += (3 * len(orchard_fed_dict))

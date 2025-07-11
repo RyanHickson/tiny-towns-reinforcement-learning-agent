@@ -83,6 +83,7 @@ def get_score(game, player):
 
 
         if orchard in cards_this_game:
+            player.fed_coords = []
             for feedable_coord_pair in player.feedable_coords:
                 row_coords_list = player.check_row(feedable_coord_pair)[1]
                 col_content_list = player.check_col(feedable_coord_pair)[1]
@@ -92,15 +93,18 @@ def get_score(game, player):
                     if isinstance(player.board[coord_pair], FarmType):
                         if isinstance(player.board[feedable_coord_pair], CottageType):
                             player.cottage_score += 3
+                            player.fed_coords.append(feedable_coord_pair)
                         if barrett_castle in player.get_all_cards():
                             if isinstance(player.board[feedable_coord_pair], Monument):
                                 player.monument_score += 5
+                                player.fed_coords.append(feedable_coord_pair)
 
         if greenhouse in cards_this_game:
-            greenhouse_feed_list = player.greenhouse_feeding()
+            greenhouse_feed_list, player.fed_coords = player.greenhouse_feeding()
             player.cottage_score += sum([sum(el) for el in greenhouse_feed_list[:player.greenhouse_count]])
 
         if granary in cards_this_game:
+            player.fed_coords = []
             for coord_pair in player.feedable_coords:
                 cottage_surrounding_coords = check_surrounding_tiles(coord_pair)
                 for coords in cottage_surrounding_coords:
@@ -112,19 +116,47 @@ def get_score(game, player):
                         player.cottage_score += 3
                         player.fed_cottage_count += 1
                         player.unfed_cottage_count -= 1
+                        player.fed_coords.append(coord_pair)
                         break   # ensures each cottage only fed once
 
         return player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords
     
     def get_chapel_score(player):
+        player.chapel_score = 0
         player.chapel_count = 0
+        player.chapel_coords = []
         for tile_coords, tile_content in player_board_dict.items():
             if isinstance(tile_content, ChapelType):
                 player.chapel_count += 1
+                player.chapel_coords.append(tile_coords)
+
         if chapel in cards_this_game:
             player.chapel_score = (player.fed_cottage_count * player.chapel_count)
-        # if temple in cards_this_game:
-        # if abbey in cards_this_game:
+        if temple in cards_this_game:
+            temple_adjacent_fed_count = 0
+            for coord_pair in player.chapel_coords: # for each temple on the board
+                tiles_next_to_temple = player.check_adjacent_tiles(coord_pair)
+                for tile_coords in tiles_next_to_temple:
+                    if farm in cards_this_game:
+                        player.fed_coords = combination
+                    if tile_coords in player.fed_coords:
+                        if player.board[tile_coords] == cottage:
+                            temple_adjacent_fed_count += 1
+                        if player.board[tile_coords] == barrett_castle:
+                            temple_adjacent_fed_count += 2
+                if 2 <= temple_adjacent_fed_count:
+                    player.chapel_score += 4
+        if abbey in cards_this_game:
+            for coord_pair in player.chapel_coords: # for each abbey on board
+                abbey_adjacent_tile_contents = player.check_adjacent_tiles(coord_pair)
+                for adjacent_coords in abbey_adjacent_tile_contents:
+                    try:
+                        adjacent_tile_content = player.board[adjacent_coords]
+                    except:
+                        continue
+                    print(adjacent_tile_content)
+                    if not isinstance(adjacent_tile_content, FactoryType) or isinstance(adjacent_tile_content, TavernType) or isinstance(adjacent_tile_content, TheatreType):
+                          player.chapel_score += 3
         # if cloister in cards_this_game:
         return player.chapel_score
     
