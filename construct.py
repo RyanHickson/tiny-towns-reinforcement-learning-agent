@@ -20,7 +20,8 @@ def player_construct(self, construction_dict):
         case "Warehouse":
             self.warehouse_capacity += 3
         case "Bank":
-            resource_choice_index = handle_input(bank_resource_choice_text.format(resource_names_dict), range(1,6), int)
+            print("constructing bank")
+            resource_choice_index = handle_input(bank_resource_choice_text.format(self.resource_choice_dict), range(1,6), int)
             self.bank_resources.append(resource_choice_index)
         case "Architect's Guild":
             completed_swaps = 0

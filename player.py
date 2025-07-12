@@ -21,10 +21,11 @@ class Player:
         self.warehouse_resources = []
         self.bank_resources = []
         self.board_is_filled = False
-        self.board = np.array([[empty, empty, empty, empty],
+        self.resource_choice_dict = resource_names_dict
+        self.board = np.array([[wheat, wheat, empty, empty],
+                               [empty, glass, brick, empty],
                                [empty, empty, empty, empty],
-                               [empty, empty, empty, empty],
-                               [empty, empty, empty, obelisk_of_the_crescent]])
+                               [empty, empty, empty, empty]])
 
         self.environment = [
             self.board,

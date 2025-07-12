@@ -100,8 +100,15 @@ class Game:
             acting_player = self.dictionary_of_players[first_player]   # assign acting player to be first master builder
             print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_all_cards()]))
 
-
-            resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), resource_names_dict), resource_names_dict, parse=int)  # MASTER BUILDER CHOOSES A RESOURCE
+            for resource_id in acting_player.bank_resources:
+                print(f"Bank resource found: {resource_id}")
+                try:
+                    print(acting_player.resource_choice_dict)
+                    acting_player.resource_choice_dict.pop(resource_id)
+                    print(acting_player.resource_choice_dict)
+                except:
+                    continue
+            resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), acting_player.resource_choice_dict), acting_player.resource_choice_dict, parse=int)  # MASTER BUILDER CHOOSES A RESOURCE
             resource_choice = resource_dict[resource_choice_id]
 
 
@@ -117,6 +124,7 @@ class Game:
                         resource_choice = resource_dict[acting_player_resource_choice_id]
                     else:
                         resource_choice = resource_dict[resource_choice_id]
+
 
                     tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
                 while acting_player.board[board_tile_dict[tile_index]] != empty:
@@ -135,6 +143,9 @@ class Game:
 
 
                 while len(coord_dictionary) != 0:  # if resources are arranged in such a way that something can be built...
+                    coord_dictionary, build_options, placement_display = find_all_placements(acting_player, acting_player.get_all_cards())
+                    if len(coord_dictionary) == 0:
+                        break
                     which_building_choice = dict_enum(placement_display)
                     dict_presented = dict()
                     for key in which_building_choice:
