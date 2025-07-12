@@ -272,16 +272,67 @@ def get_score(game, player):
                     if isinstance(player.board[coord_pair], FactoryType):
                         player.theatre_score += 3
                         break
-    #     if market in cards_this_game:
-    #     if tailor in cards_this_game:
+        if market in cards_this_game:
+            for market_coords in player.theatre_coords:
+                markets_in_row = 0
+                markets_in_col = 0
+                row_content_list = player.check_row(market_coords)[0]
+                for tile_content in row_content_list:
+                    if tile_content.__class__ is TheatreType:
+                        markets_in_row += 1
+                col_content_list = player.check_col(market_coords)[0]
+                for tile_content in col_content_list:
+                    if tile_content.__class__ is TheatreType:
+                        markets_in_col += 1
+                player.theatre_score += max(markets_in_row, markets_in_col)
+        if tailor in cards_this_game:
+            tailors_in_centre = 0
+            if player.board[1,1] == tailor:
+                tailors_in_centre += 1
+            if player.board[1,2] == tailor:
+                tailors_in_centre += 1
+            if player.board[2,1] == tailor:
+                tailors_in_centre += 1
+            if player.board[2,2] == tailor:
+                tailors_in_centre += 1
+            player.theatre_score += player.theatre_count + (player.theatre_count * tailors_in_centre)
         return player.theatre_score
     
-    # def get_well_score(player):
-    #     if well in cards_this_game:
-    #     if fountain in cards_this_game:
-    #     if millstone in cards_this_game:
-    #     if shed in cards_this_game:
-    #     return player.well_score
+    def get_well_score(player):
+        player.well_score = 0
+        player.well_count = 0
+        player.well_coords = []
+        for tile_coords, tile_content in player_board_dict.items():
+            if isinstance(tile_content, WellType):
+                player.well_count += 1
+                player.well_coords.append(tile_coords)
+        if well in cards_this_game:
+            for well_coords in player.well_coords:
+                tiles_next_to_well = player.check_adjacent_tiles(well_coords)
+                for coord_pair in tiles_next_to_well:
+                    if isinstance(player.board[coord_pair], CottageType):
+                        player.well_score += 1
+                    if barrett_castle in player.get_all_cards():
+                            if isinstance(player.board[coord_pair], Monument):
+                                player.well_score += 2
+                                player.fed_coords.append(coord_pair)
+        if fountain in cards_this_game:
+            for well_coords in player.well_coords:
+                tiles_next_to_well = player.check_adjacent_tiles(well_coords)
+                for coord_pair in tiles_next_to_well:
+                    if isinstance(player.board[coord_pair], WellType):
+                        player.well_score += 2
+        if millstone in cards_this_game:
+            for well_coords in player.well_coords:
+                tiles_next_to_well = player.check_adjacent_tiles(well_coords)
+                for coord_pair in tiles_next_to_well:
+                    if isinstance(player.board[coord_pair], FarmType) or isinstance(player.board[coord_pair], TheatreType):
+                        player.well_score += 2
+                        break
+        if shed in cards_this_game:
+            for well_coords in player.well_coords:
+                player.well_score += 1
+        return player.well_score
     
     # def get_monument_score(player):
     #     if player.get_monument() == architects_guild:

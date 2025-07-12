@@ -21,10 +21,10 @@ class Player:
         self.warehouse_resources = []
         self.bank_resources = []
         self.board_is_filled = False
-        self.board = np.array([[farm, bakery, factory, cloister],
-                               [farm, farm, tavern, tavern],
-                               [empty, tavern, barrett_castle, well],
-                               [cottage, empty, cottage, empty]])
+        self.board = np.array([[empty, empty, empty, empty],
+                               [empty, empty, empty, empty],
+                               [empty, empty, empty, empty],
+                               [empty, empty, empty, obelisk_of_the_crescent]])
 
         self.environment = [
             self.board,

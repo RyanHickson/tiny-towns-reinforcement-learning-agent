@@ -134,22 +134,26 @@ class Game:
                 print(acting_player.__repr__())
 
 
-                if len(coord_dictionary) != 0:  # if resources are arranged in such a way that something can be built...
+                while len(coord_dictionary) != 0:  # if resources are arranged in such a way that something can be built...
                     which_building_choice = dict_enum(placement_display)
                     dict_presented = dict()
                     for key in which_building_choice:
                         if which_building_choice[key] != []:
                             dict_presented[key] = which_building_choice[key]
                     print(f"{dict_presented=}")     # ...print choices of the tile combinations that can be picked up to construct the building in the chosen position
-                    build_choice = handle_input(build_choice_text, dict_presented, parse=int)
+                    want_to_build = handle_input(want_to_build_text.format(acting_player.__str__(), {0: "No", 1: "Yes"}), range(2), parse=int)
+                    if want_to_build:
+                        build_choice = handle_input(build_choice_text, dict_presented, parse=int)
+                        chosen_building_dict = build_options[build_choice]
+                        print(chosen_building_dict)
 
-                    chosen_building_dict = build_options[build_choice]
-                    print(chosen_building_dict)
+                        building_placement_choice = handle_input(build_coord_text, chosen_building_dict, parse=int)
+                        print(f"{building_placement_choice=}")
 
-                    building_placement_choice = handle_input(build_coord_text, chosen_building_dict, parse=int)
+                        acting_player.construct(chosen_building_dict[building_placement_choice])
+                    else:
+                        break
 
-                    print(f"{building_placement_choice=}")
-                    acting_player.construct(chosen_building_dict[building_placement_choice])
                     if empty in acting_player.board:    # check if board has no tiles free for resource placement
                         acting_player.board_is_filled = False   # if player has built since being flagged as having a full board, remove their full board flag so they are not removed from queues of players to act
 

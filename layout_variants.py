@@ -39,6 +39,7 @@ def find_placements(board, card):
     Finds all building placement possibilities and returns a dictionary of
     co-ordinate pair keys and building placement possibility values
     """
+    obelisk_present = False
     variants = create_variants(card.get_layout())
     board_rows, board_cols = len(board), len(board[0])
     placement_dict = {}
@@ -58,7 +59,7 @@ def find_placements(board, card):
                     board_value = board[i + r][j + c]
                     layout_value = variant[r][c]
                     if (
-                        board_value != layout_value.__str__()  # if value on player board is not the same as the value of the layout
+                        board_value != layout_value.__str__()  # if tile content on player board is not the same as the tile content of the layout
                         and board_value != trading_post.__str__()  # trading post is used as a wild resource but not picked up like other resources
                     ):
                         match = False
@@ -73,20 +74,42 @@ def find_placements(board, card):
                                 placement_dict[coord_pair].add(card.__str__())
                             else:
                                 placement_dict[coord_pair] = {card.__str__()}
-                            placement_options.append(
-                                {
-                                    "placement": coord_pair,
-                                    "card": card,
-                                    "co-ords": coord_set,
-                                }
-                            )
-                            placement_display.append(
-                                {
-                                    "placement": coord_pair,
-                                    "card": card.__str__(),
-                                    "co-ords": coord_set,
-                                }
-                            )
+                                placement_options.append(
+                                    {
+                                        "placement": coord_pair,
+                                        "card": card,
+                                        "co-ords": coord_set,
+                                    }
+                                )
+                                placement_display.append(
+                                    {
+                                        "placement": coord_pair,
+                                        "card": card.__str__(),
+                                        "co-ords": coord_set,
+                                    }
+                                )
+                                for row in board:
+                                    if obelisk_of_the_crescent.__str__() in row:
+                                        obelisk_present = True
+                                if card == shed or obelisk_present:
+                                    for row_index, row in enumerate(board):
+                                        for col_index, tile in enumerate(row):
+                                            
+                                            if tile == empty.__str__():
+                                                placement_options.append(
+                                                    {
+                                                    "placement": (row_index, col_index),
+                                                    "card": card,
+                                                    "co-ords": coord_set,
+                                                    }
+                                                )
+                                                placement_display.append(
+                                                {
+                                                    "placement": (row_index, col_index),
+                                                    "card": card.__str__(),
+                                                    "co-ords": coord_set,
+                                                }
+                                                )
     for el in placement_options:
         if el not in build_list:
             build_list.append(el)

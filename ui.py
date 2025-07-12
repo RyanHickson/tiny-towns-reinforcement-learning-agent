@@ -12,7 +12,10 @@ resource_selection_text = "{}, please choose a resource: {} "
 
 tile_index_text = "{}, enter tile ID (1-16): "
 
+
+want_to_build_text = "{}, do you wish to build? {}"
 build_choice_text = "What would you like to build? "
+
 
 build_coord_text = "Which co-ordinates should be built on, and which resources used? "
 
