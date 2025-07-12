@@ -6,7 +6,6 @@ from cards import *
 from resources import *
 from layout_variants import *
 from agent import *
-from game_scoring import get_game_score
 from ry import *
 from ui import *
 from score import get_score
@@ -186,7 +185,7 @@ class Game:
                 if self.master_builder_queue == []:
                     finished = True
         print(game_completion_text)
-        print(get_game_score(self))
+        # print(get_game_score(self))
 
     def get_card_choices(self):
         return [el for el in self.card_choices]
