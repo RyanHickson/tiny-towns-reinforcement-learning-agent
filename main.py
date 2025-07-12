@@ -99,11 +99,11 @@ class Game:
             acting_player = self.dictionary_of_players[first_player]   # assign acting player to be first master builder
 
             if fort_ironweed not in acting_player.board or len(self.master_builder_queue) == 1:
-                if fort_ironweed  in acting_player.board:
+                if fort_ironweed in acting_player.board:
                     print(fort_ironweed_last_player_text.format(acting_player))
 
 
-                print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_all_cards()]))
+                print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_buildable_cards()]))
                 for resource_id in acting_player.bank_resources:
                     acting_player.resource_choice_dict.pop(resource_id, None)
                 resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), acting_player.resource_choice_dict), acting_player.resource_choice_dict, parse=int)  # MASTER BUILDER CHOOSES A RESOURCE
@@ -116,7 +116,7 @@ class Game:
                     print(acting_player.__repr__())
                     if acting_player != first_player:
                         if resource_choice_id in acting_player.get_factory_resources(): # CHECK FACTORY RESOURCES
-                            print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_all_cards()]))
+                            print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_buildable_cards()]))
                             acting_player_resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), resource_names_dict), resource_dict, parse=int)
 
                             resource_choice = resource_dict[acting_player_resource_choice_id]
@@ -136,12 +136,12 @@ class Game:
 
                 for each_player in self.player_queue:    # BUILDING ROUND
                     acting_player = self.dictionary_of_players[each_player]
-                    coord_dictionary, build_options, placement_display = find_all_placements(acting_player, acting_player.get_all_cards())
+                    coord_dictionary, build_options, placement_display = find_all_placements(acting_player, acting_player.get_buildable_cards())
                     print(acting_player.__repr__())
 
 
                     while len(coord_dictionary) != 0:  # if resources are arranged in such a way that something can be built...
-                        coord_dictionary, build_options, placement_display = find_all_placements(acting_player, acting_player.get_all_cards())
+                        coord_dictionary, build_options, placement_display = find_all_placements(acting_player, acting_player.get_buildable_cards())
                         if len(coord_dictionary) == 0:
                             break
                         which_building_choice = dict_enum(placement_display)

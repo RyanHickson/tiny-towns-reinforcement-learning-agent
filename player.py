@@ -16,6 +16,7 @@ class Player:
         self.resource_types = [wood, wheat, glass, brick, stone]
         self.score = 0
         self.all_cards = []
+        self.buildable_cards = []
         self.factory_resources = []
         self.warehouse_capacity = 0
         self.warehouse_resources = []
@@ -24,6 +25,10 @@ class Player:
         self.resource_choice_dict = resource_names_dict
         self.shrine_key = 0
         self.finish_position = 0
+        self.board = np.array([[wheat, wheat, empty, empty],
+                               [empty, glass, brick, empty],
+                               [empty, empty, empty, mandras_palace],
+                               [empty, empty, empty, empty]])
 
         self.environment = [
             self.board,
@@ -81,6 +86,14 @@ The cards available to them are {}""".format(
 
     def get_all_cards(self):
         return self.all_cards
+    
+    def get_buildable_cards(self):
+        self.buildable_cards = self.get_all_cards()
+        if len(self.buildable_cards) == 8:
+            for tile_id, tile_coords in board_tile_dict.items():
+                if isinstance(self.board[tile_coords], Monument):
+                    self.buildable_cards.pop(-1)
+        return self.buildable_cards
 
     def get_factory_resources(self):
         return self.factory_resources
@@ -92,7 +105,7 @@ The cards available to them are {}""".format(
         return self.bank_resources
 
     def display_all_cards(self):
-        return [card.__str__() for card in self.all_cards]
+        return [card.__str__() for card in self.buildable_cards]
 
     def get_instance_board(self):
         """

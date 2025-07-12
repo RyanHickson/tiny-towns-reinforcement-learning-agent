@@ -37,6 +37,8 @@ def player_construct(self, construction_dict):
                             swap_index = handle_input(f"Select a building to replace: {building_dict} ", building_dict, parse=int)
                             self.board[i, j] = building_dict[swap_index]
                             completed_swaps += 1
+        # case "Grove University":
+        #     place a building on an empty tile
         case "Shrine of the Elder Tree":
             self.shrine_key = 0
             for row in self.board:
