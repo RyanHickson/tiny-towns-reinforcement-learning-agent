@@ -101,13 +101,7 @@ class Game:
             print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_all_cards()]))
 
             for resource_id in acting_player.bank_resources:
-                print(f"Bank resource found: {resource_id}")
-                try:
-                    print(acting_player.resource_choice_dict)
-                    acting_player.resource_choice_dict.pop(resource_id)
-                    print(acting_player.resource_choice_dict)
-                except:
-                    continue
+                acting_player.resource_choice_dict.pop(resource_id, None)
             resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), acting_player.resource_choice_dict), acting_player.resource_choice_dict, parse=int)  # MASTER BUILDER CHOOSES A RESOURCE
             resource_choice = resource_dict[resource_choice_id]
 
