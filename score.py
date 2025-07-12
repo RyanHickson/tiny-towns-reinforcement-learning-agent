@@ -262,7 +262,16 @@ def get_score(game, player):
                 if Monument in row_col_combined:
                     unique_building_count += 1
                 player.theatre_score += unique_building_count
-    #     if bakery in cards_this_game:
+        if bakery in cards_this_game:
+            for bakery_coords in player.theatre_coords:
+                tiles_next_to_bakery = player.check_adjacent_tiles(bakery_coords)
+                for coord_pair in tiles_next_to_bakery:
+                    if isinstance(player.board[coord_pair], FarmType):
+                        player.theatre_score += 3
+                        break
+                    if isinstance(player.board[coord_pair], FactoryType):
+                        player.theatre_score += 3
+                        break
     #     if market in cards_this_game:
     #     if tailor in cards_this_game:
         return player.theatre_score
