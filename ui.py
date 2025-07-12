@@ -32,3 +32,14 @@ bank_resource_choice_text = "Choose a resource to place in this bank: {} "
 fort_ironweed_turn_skip_text = "{} cannot be master builder, as they have constructed Fort Ironweed in their town."
 
 fort_ironweed_last_player_text = "{}, you are the last player remaining in the game. You may act as the master builder."
+
+def score_display(player):
+    print("{} scores {}VP from their factories.".format(player.__str__(), player.factory_score))
+    print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
+    print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
+    print("{} scores {}VP from their taverns.".format(player.__str__(), player.tavern_score))
+    print("{} scores {}VP from their theatres.".format(player.__str__(), player.theatre_score))
+    print("{} scores {}VP from their wells.".format(player.__str__(), player.well_score))
+    print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
+    print("{} scores {}VP from their empty tiles.".format(player.__str__(), player.empty_tile_score))
+    print("{} has a total score of {}VP".format(player.__str__(), player.total_score))

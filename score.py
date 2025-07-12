@@ -1,6 +1,7 @@
 from resources import *
 from cards import *
 from itertools import combinations
+from ui import score_display
 
 def check_surrounding_tiles(tile_coords):
     """
@@ -23,6 +24,7 @@ def get_score(game, player):
     player_board_dict = player.get_instance_board()
     player.monument_score = 0
     player.total_score = 0
+    player.empty_tile_score = -1
 
     player.fed_cottage_count = 0
 
@@ -310,12 +312,15 @@ def get_score(game, player):
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
-                    if isinstance(player.board[coord_pair], CottageType):
-                        player.well_score += 1
-                    if barrett_castle in player.get_all_cards():
-                            if isinstance(player.board[coord_pair], Monument):
-                                player.well_score += 2
-                                player.fed_coords.append(coord_pair)
+                    try:
+                        if isinstance(player.board[coord_pair], CottageType):
+                            player.well_score += 1
+                        if barrett_castle in player.get_all_cards():
+                                if isinstance(player.board[coord_pair], Monument):
+                                    player.well_score += 2
+                                    player.fed_coords.append(coord_pair)
+                    except:
+                        continue
         if fountain in cards_this_game:
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
@@ -334,23 +339,146 @@ def get_score(game, player):
                 player.well_score += 1
         return player.well_score
     
-    # def get_monument_score(player):
-    #     if player.get_monument() == architects_guild:
-    #     if player.get_monument() == archive_of_the_second_age:
-    #     if player.get_monument() == barrett_castle:
-    #     if player.get_monument() == cathedral_of_caterina:
-    #     if player.get_monument() == fort_ironweed:
-    #     if player.get_monument() == grand_mausoleum_of_the_rodina:
-    #     if player.get_monument() == grove_university:
-    #     if player.get_monument() == mandras_palace:
-    #     if player.get_monument() == obelisk_of_the_crescent:
-    #     if player.get_monument() == opaleyes_watch:
-    #     if player.get_monument() == shrine_of_the_elder_tree:
-    #     if player.get_monument() == silva_forum:
-    #     if player.get_monument() == the_sky_baths:
-    #     if player.get_monument() == the_starloom:
-    #     if player.get_monument() == statue_of_the_bondmaker:
-    #     return player.monument_score
+    def get_monument_score(player):
+        player.monument_score = 0
+        player.empty_tile_count = 0
+
+
+        player.monument_constructed = False
+        cottage_found = False
+        farm_found = False
+        factory_found = False
+        tavern_found = False
+        theatre_found = False
+        chapel_found = False
+        well_found = False
+
+
+        player.total_cottage_count = 0
+        unique_building_count = 0
+        missing_building_types = 7
+        for tile_coords, tile_content in player_board_dict.items():
+            if isinstance(tile_content, Monument):
+                player.monument_constructed = True
+                player.monument_coords = tile_coords
+            if isinstance(tile_content, Resource):
+                player.empty_tile_count += 1
+        for row in player.board:
+            for tile in row:
+                if isinstance(tile, CottageType):
+                    player.total_cottage_count += 1
+                    if not cottage_found:
+                        unique_building_count += 1
+                        cottage_found = True
+                if isinstance(tile, FarmType):
+                    if not farm_found:
+                        unique_building_count += 1
+                        farm_found = True
+                if isinstance(tile, FactoryType):
+                    if not factory_found:
+                        unique_building_count += 1
+                        factory_found = True
+                if isinstance(tile, TavernType):
+                    if not tavern_found:
+                        unique_building_count += 1
+                        tavern_found = True
+                if isinstance(tile, TheatreType):
+                    if not theatre_found:
+                        unique_building_count += 1
+                        theatre_found = True
+                if isinstance(tile, ChapelType):
+                    if not chapel_found:
+                        unique_building_count += 1
+                        chapel_found = True
+                if isinstance(tile, WellType):
+                    if not well_found:
+                        unique_building_count += 1
+                        well_found = True
+        missing_building_types = 7 - unique_building_count
+
+        if player.monument_constructed:
+            
+            if player.get_monument() == architects_guild:
+                player.monument_score = 1
+            
+            if player.get_monument() == archive_of_the_second_age:
+                player.monument_score = unique_building_count
+
+        #     Barrett_Castle scoring logic handled elsewhere
+
+            if player.get_monument() == cathedral_of_caterina:
+                player.monument_score = 2
+                player.empty_tile_score = 0
+            
+            if player.get_monument() == fort_ironweed:
+                player.monument_score = 7
+            
+            if player.get_monument() == grand_mausoleum_of_the_rodina:
+                player.unfed_cottage_count = player.total_cottage_count - player.fed_cottage_count
+                player.monument_score = player.unfed_cottage_count * 3
+            
+            if player.get_monument() == grove_university:
+                player.monument_score = 3
+            
+            if player.get_monument() == mandras_palace:
+                monument_adjacent_tile_contents = player.check_adjacent_tiles(player.monument_coords)
+                for tile in monument_adjacent_tile_contents:
+                    if isinstance(tile, CottageType):
+                        player.total_cottage_count += 1
+                        if not cottage_found:
+                            unique_building_count += 1
+                            cottage_found = True
+                    if isinstance(tile, FarmType):
+                        if not farm_found:
+                            unique_building_count += 1
+                            farm_found = True
+                    if isinstance(tile, FactoryType):
+                        if not factory_found:
+                            unique_building_count += 1
+                            factory_found = True
+                    if isinstance(tile, TavernType):
+                        if not tavern_found:
+                            unique_building_count += 1
+                            tavern_found = True
+                    if isinstance(tile, TheatreType):
+                        if not theatre_found:
+                            unique_building_count += 1
+                            theatre_found = True
+                    if isinstance(tile, ChapelType):
+                        if not chapel_found:
+                            unique_building_count += 1
+                            chapel_found = True
+                    if isinstance(tile, WellType):
+                        if not well_found:
+                            unique_building_count += 1
+                            well_found = True
+                player.monument_score = unique_building_count * 2
+
+            if player.get_monument() == obelisk_of_the_crescent:
+                player.monument_score = 0
+
+            if player.get_monument() == opaleyes_watch:
+                player.monument_score = 0
+
+            if player.get_monument() == shrine_of_the_elder_tree:
+                shrine_score_dict = {1: 1, 2: 2, 3: 3, 4:4, 5:5, 6:8}
+                player.monument_score = shrine_score_dict[player.shrine_key]
+            
+            if player.get_monument() == silva_forum:
+                player.monument_score = 1 + len(player.largest_contiguous_group())
+
+            if player.get_monument() == the_sky_baths:
+                player.monument_score = 2 * missing_building_types
+
+            if player.get_monument() == the_starloom:
+                starloom_dict = {1: 6, 2: 3, 3: 2, 4: 0, 5: 0, 6: 0}
+                player.monument_score = starloom_dict[player.finish_position]
+
+            if player.get_monument() == statue_of_the_bondmaker:
+                player.monument_score = 0
+
+        player.empty_tile_score *= player.empty_tile_count
+        return player.monument_score, player.empty_tile_score
 
     def get_farm_count(player):
         player.farm_count = 0
@@ -386,58 +514,41 @@ def get_score(game, player):
                     if isinstance(player.board[coord_pair], Monument):
                         player.monument_score += 5
                         player.fed_cottage_count += 2
-            player.unfed_cottage_count = player.cottage_score - player.fed_cottage_count
+            player.unfed_cottage_count = number_of_feeds - player.fed_cottage_count
 
 
             player.factory_score = get_factory_score(player)
             player.chapel_score = get_chapel_score(player)
             player.tavern_score = get_tavern_score(player)
             player.theatre_score = get_theatre_score(player)
+            player.well_score = get_well_score(player)
+            player.monument_score, player.empty_tile_score = get_monument_score(player)
 
 
-            player.total_score += player.factory_score
-            player.total_score += player.cottage_score
-            player.total_score += player.chapel_score
-            player.total_score += player.tavern_score
-            player.total_score += player.theatre_score
-            player.total_score += player.monument_score
+            player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tile_score
+            
             games_dict[combination] = player.total_score
-            scores_dict[combination] = [player.factory_score, player.cottage_score, player.chapel_score, player.monument_score, player.total_score]
+            scores_dict[combination] = [player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tile_score, player.total_score]
 
         best_scoring_game = max(games_dict, key=games_dict.get)
-        player.factory_score, player.cottage_score, player.chapel_score, player.monument_score, player.total_score = scores_dict[best_scoring_game]
+        player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tile_score, player.total_score = scores_dict[best_scoring_game]
 
-        print("{} scores {}VP from their factories.".format(player.__str__(), player.factory_score))
-        print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
-        print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
-        print("{} scores {}VP from their taverns.".format(player.__str__(), player.tavern_score))
-        print("{} scores {}VP from their theatres.".format(player.__str__(), player.theatre_score))
-        print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
-        print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
+        score_display(player)
         return player.total_score
 
-
-
-            
 
 
     player.factory_score = get_factory_score(player)
     player.chapel_score = get_chapel_score(player)
     player.tavern_score = get_tavern_score(player)
     player.theatre_score = get_theatre_score(player)
+    player.well_score = get_well_score(player)
+    player.monument_score, player.empty_tile_score = get_monument_score(player)
+
+
     
-    player.total_score += player.factory_score
     player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords = get_cottage_stats(player)
-    player.total_score += player.cottage_score
-    player.total_score += player.chapel_score
-    player.total_score += player.tavern_score
-    player.total_score += player.theatre_score
-    player.total_score += player.monument_score
-    print("{} scores {}VP from their factories.".format(player.__str__(), player.factory_score))
-    print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
-    print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
-    print("{} scores {}VP from their taverns.".format(player.__str__(), player.tavern_score))
-    print("{} scores {}VP from their theatres.".format(player.__str__(), player.theatre_score))
-    print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
-    print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
+    player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tile_score
+
+    score_display(player)
     return player.total_score

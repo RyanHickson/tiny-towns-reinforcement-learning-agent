@@ -3,7 +3,7 @@ from building_layouts import *
 from resources import *
 from cards import *
 from choices import *
-from scoring import get_player_score
+from score import get_score
 from construct import player_construct
 
 
@@ -14,7 +14,7 @@ class Player:
         self.board = np.full((4, 4), empty)
         self.agent = agent
         self.resource_types = [wood, wheat, glass, brick, stone]
-        self.score = get_player_score(self)
+        self.score = 0
         self.all_cards = []
         self.factory_resources = []
         self.warehouse_capacity = 0
@@ -22,10 +22,12 @@ class Player:
         self.bank_resources = []
         self.board_is_filled = False
         self.resource_choice_dict = resource_names_dict
-        self.board = np.array([[wheat, wheat, brick, brick],
-                               [stone, empty, stone, brick],
-                               [brick, brick, brick, brick],
-                               [brick, brick, brick, brick]])
+        self.shrine_key = 0
+        self.finish_position = 0
+        self.board = np.array([[cottage, cottage, cottage, empty],
+                               [silva_forum, empty, empty, empty],
+                               [empty, brick, wheat, stone],
+                               [empty, wood, glass, empty]])
 
         self.environment = [
             self.board,

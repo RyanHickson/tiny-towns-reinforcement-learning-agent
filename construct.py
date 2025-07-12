@@ -43,3 +43,4 @@ def player_construct(self, construction_dict):
                 for tile in row:
                     if isinstance(tile, Card):
                         self.shrine_key += 1
+            return self.shrine_key

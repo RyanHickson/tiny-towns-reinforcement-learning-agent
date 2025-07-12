@@ -90,6 +90,7 @@ class Game:
     def play(self):
         # SETUP
         finished = False
+        players_finished = 0
 
         # GAME
         while not finished: # MAIN TURN LOOP
@@ -166,10 +167,10 @@ class Game:
                         if empty in acting_player.board:    # check if board has no tiles free for resource placement
                             acting_player.board_is_filled = False   # if player has built since being flagged as having a full board, remove their full board flag so they are not removed from queues of players to act
 
-
+                    acting_player.score = get_score(self, acting_player)
                     print(acting_player.display_score())
                     print("")
-                    print(f"{get_score(self, acting_player)=}")
+                    print(f"{acting_player.score=}")
 
             else:
                 print(fort_ironweed_turn_skip_text.format(acting_player))
@@ -179,6 +180,8 @@ class Game:
             for each_player in self.dictionary_of_players:
                 if self.dictionary_of_players[each_player].get_board_is_filled():   # if player has no empty tiles free for resource placement next turn, remove them from queues of players to act
                     if each_player in self.master_builder_queue:
+                        players_finished += 1
+                        self.dictionary_of_players[each_player].finish_position = players_finished
                         self.master_builder_queue.remove(each_player)
                 if self.master_builder_queue == []:
                     finished = True
