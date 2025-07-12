@@ -29,3 +29,6 @@ factory_resource_choice_text = "Choose a resource to place on this factory: {} "
 
 bank_resource_choice_text = "Choose a resource to place in this bank: {} "
 
+fort_ironweed_turn_skip_text = "{} cannot be master builder, as they have constructed Fort Ironweed in their town."
+
+fort_ironweed_last_player_text = "{}, you are the last player remaining in the game. You may act as the master builder."
