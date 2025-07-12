@@ -28,6 +28,9 @@ class Card:
         
     def score_when_fed(self):
         return self.fed_score
+    
+    def get_type(self):
+        return type(self)
 
 
 class CottageType(Card):

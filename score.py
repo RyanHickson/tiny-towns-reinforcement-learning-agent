@@ -216,40 +216,81 @@ def get_score(game, player):
                     total_score -= 5
                 case _: # 6+ case
                     total_score += 26
-    #     if tavern_choice == feast_hall:
+        if feast_hall in cards_this_game:
+            feast_hall_counts = []
+            for each_player in game.dictionary_of_players.values():
+                feast_hall_counts.append(each_player.get_feast_hall_count())
+            player_to_right_id = (player.get_id() + 1) % len(feast_hall_counts)
+            if player_to_right_id == 0:
+                player_to_right_id = len(feast_hall_counts)
+            player_id = player.get_id()
+            print(f"{player_id=}")
+            print(f"{player_to_right_id=}")
+            if feast_hall_counts[player_id - 1] > feast_hall_counts[player_to_right_id - 1]:
+                player.tavern_score = player.tavern_count * 3
+            else:
+                player.tavern_score = player.tavern_count * 2
         return player.tavern_score
     
-    # def get_theatre_score():
-    #     if theatre_choice == theatre:
-    #     if theatre_choice == bakery:
-    #     if theatre_choice == market:
-    #     if theatre_choice == tailor:
-    #     return theatre_score
+    def get_theatre_score(player):
+        player.theatre_score = 0
+        player.theatre_count = 0
+        player.theatre_coords = []
+        for tile_coords, tile_content in player_board_dict.items():
+            if isinstance(tile_content, TheatreType):
+                player.theatre_count += 1
+                player.theatre_coords.append(tile_coords)
+
+        if theatre in cards_this_game:
+            for theatre_coord_pair in player.theatre_coords:
+                unique_building_count = 0
+                row_content_list = player.check_row(theatre_coord_pair)[0]
+                col_content_list = player.check_col(theatre_coord_pair)[0]
+                row_col_combined = [el.__class__ for el in row_content_list + col_content_list]
+                if CottageType in row_col_combined:
+                    unique_building_count += 1
+                if FarmType in row_col_combined:
+                    unique_building_count += 1
+                if FactoryType in row_col_combined:
+                    unique_building_count += 1
+                if TavernType in row_col_combined:
+                    unique_building_count += 1
+                if ChapelType in row_col_combined:
+                    unique_building_count += 1
+                if WellType in row_col_combined:
+                    unique_building_count += 1
+                if Monument in row_col_combined:
+                    unique_building_count += 1
+                player.theatre_score += unique_building_count
+    #     if bakery in cards_this_game:
+    #     if market in cards_this_game:
+    #     if tailor in cards_this_game:
+        return player.theatre_score
     
-    # def get_well_score():
-    #     if well_choice == well:
-    #     if well_choice == fountain:
-    #     if well_choice == millstone:
-    #     if well_choice == shed:
-    #     return well_score
+    # def get_well_score(player):
+    #     if well in cards_this_game:
+    #     if fountain in cards_this_game:
+    #     if millstone in cards_this_game:
+    #     if shed in cards_this_game:
+    #     return player.well_score
     
-    # def get_monument_score():
-    #     if monument == architects_guild:
-    #     if monument == archive_of_the_second_age:
-    #     if monument == barrett_castle:
-    #     if monument == cathedral_of_caterina:
-    #     if monument == fort_ironweed:
-    #     if monument == grand_mausoleum_of_the_rodina:
-    #     if monument == grove_university:
-    #     if monument == mandras_palace:
-    #     if monument == obelisk_of_the_crescent:
-    #     if monument == opaleyes_watch:
-    #     if monument == shrine_of_the_elder_tree:
-    #     if monument == silva_forum:
-    #     if monument == the_sky_baths:
-    #     if monument == the_starloom:
-    #     if monument == statue_of_the_bondmaker:
-    #     return monument_score
+    # def get_monument_score(player):
+    #     if player.get_monument() == architects_guild:
+    #     if player.get_monument() == archive_of_the_second_age:
+    #     if player.get_monument() == barrett_castle:
+    #     if player.get_monument() == cathedral_of_caterina:
+    #     if player.get_monument() == fort_ironweed:
+    #     if player.get_monument() == grand_mausoleum_of_the_rodina:
+    #     if player.get_monument() == grove_university:
+    #     if player.get_monument() == mandras_palace:
+    #     if player.get_monument() == obelisk_of_the_crescent:
+    #     if player.get_monument() == opaleyes_watch:
+    #     if player.get_monument() == shrine_of_the_elder_tree:
+    #     if player.get_monument() == silva_forum:
+    #     if player.get_monument() == the_sky_baths:
+    #     if player.get_monument() == the_starloom:
+    #     if player.get_monument() == statue_of_the_bondmaker:
+    #     return player.monument_score
 
     def get_farm_count(player):
         player.farm_count = 0
@@ -291,12 +332,14 @@ def get_score(game, player):
             player.factory_score = get_factory_score(player)
             player.chapel_score = get_chapel_score(player)
             player.tavern_score = get_tavern_score(player)
+            player.theatre_score = get_theatre_score(player)
 
 
             player.total_score += player.factory_score
             player.total_score += player.cottage_score
             player.total_score += player.chapel_score
             player.total_score += player.tavern_score
+            player.total_score += player.theatre_score
             player.total_score += player.monument_score
             games_dict[combination] = player.total_score
             scores_dict[combination] = [player.factory_score, player.cottage_score, player.chapel_score, player.monument_score, player.total_score]
@@ -308,6 +351,7 @@ def get_score(game, player):
         print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
         print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
         print("{} scores {}VP from their taverns.".format(player.__str__(), player.tavern_score))
+        print("{} scores {}VP from their theatres.".format(player.__str__(), player.theatre_score))
         print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
         print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
         return player.total_score
@@ -320,18 +364,20 @@ def get_score(game, player):
     player.factory_score = get_factory_score(player)
     player.chapel_score = get_chapel_score(player)
     player.tavern_score = get_tavern_score(player)
-
+    player.theatre_score = get_theatre_score(player)
     
     player.total_score += player.factory_score
     player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords = get_cottage_stats(player)
     player.total_score += player.cottage_score
     player.total_score += player.chapel_score
     player.total_score += player.tavern_score
+    player.total_score += player.theatre_score
     player.total_score += player.monument_score
     print("{} scores {}VP from their factories.".format(player.__str__(), player.factory_score))
     print("{} scores {}VP from their cottages.".format(player.__str__(), player.cottage_score))
     print("{} scores {}VP from their chapels.".format(player.__str__(), player.chapel_score))
     print("{} scores {}VP from their taverns.".format(player.__str__(), player.tavern_score))
+    print("{} scores {}VP from their theatres.".format(player.__str__(), player.theatre_score))
     print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
     print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
     return player.total_score

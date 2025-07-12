@@ -20,11 +20,11 @@ class Player:
         self.warehouse_capacity = 0
         self.warehouse_resources = []
         self.bank_resources = []
-        self.board_full_case = False
-        self.board = np.array([[cloister, cottage, cottage, cloister],
+        self.board_is_filled = False
+        self.board = np.array([[empty, cottage, theatre, cloister],
                                [farm, tavern, tavern, tavern],
-                               [empty, tavern, barrett_castle, well],
-                               [cottage, empty, cottage, cloister]])
+                               [theatre, tavern, barrett_castle, well],
+                               [cottage, empty, cottage, empty]])
 
         self.environment = [
             self.board,
@@ -64,6 +64,9 @@ The cards available to them are {}""".format(
 
     def __str__(self):
         return "Player {}".format(self.player_id)
+    
+    def get_id(self):
+        return self.player_id
 
     def get_monument(self):
         return self.monument
@@ -120,9 +123,16 @@ The cards available to them are {}""".format(
 
     def get_resource_types(self):
         return [resource.__str__() for resource in self.resource_types]
+    
+    def get_feast_hall_count(self):
+        self.feast_hall_count = 0
+        for tile_id, tile_coords in board_tile_dict.items():
+            if self.board[tile_coords] == feast_hall:
+                self.feast_hall_count += 1
+        return self.feast_hall_count
 
-    def get_board_full_case(self):
-        return self.board_full_case
+    def get_board_is_filled(self):
+        return self.board_is_filled
 
     def check_immediate_adjacent_tiles(self, tile_id):
         """

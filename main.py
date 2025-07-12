@@ -124,7 +124,7 @@ class Game:
                     tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # If chosen tile is not empty, ask for a new tile index
                 acting_player.board[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT
                 if empty not in acting_player.board:    # check if board has no tiles free for resource placement
-                    acting_player.board_full_case = True    # mark player as having a full board
+                    acting_player.board_is_filled = True    # mark player as having a full board
 
 
 
@@ -151,7 +151,7 @@ class Game:
                     print(f"{building_placement_choice=}")
                     acting_player.construct(chosen_building_dict[building_placement_choice])
                     if empty in acting_player.board:    # check if board has no tiles free for resource placement
-                        acting_player.board_full_case = False   # if player has built since being flagged as having a full board, remove their full board flag so they are not removed from queues of players to act
+                        acting_player.board_is_filled = False   # if player has built since being flagged as having a full board, remove their full board flag so they are not removed from queues of players to act
 
 
                 print(acting_player.display_score())
@@ -161,7 +161,7 @@ class Game:
             last_played = self.master_builder_queue.pop(0)   # select current player, and remove them from the front of the player queue
             self.master_builder_queue.append(last_played)    # add the current player to the back of the player queue
             for each_player in self.dictionary_of_players:
-                if self.dictionary_of_players[each_player].get_board_full_case():   # if player has no empty tiles free for resource placement next turn, remove them from queues of players to act
+                if self.dictionary_of_players[each_player].get_board_is_filled():   # if player has no empty tiles free for resource placement next turn, remove them from queues of players to act
                     if each_player in self.master_builder_queue:
                         self.master_builder_queue.remove(each_player)
                 if self.master_builder_queue == []:
