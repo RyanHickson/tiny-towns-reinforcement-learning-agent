@@ -26,10 +26,6 @@ class Player:
         self.resource_choice_dict = resource_names_dict
         self.shrine_key = 0
         self.finish_position = 0
-        self.board = np.array([[empty, empty, empty, empty],
-                               [brick, glass, wheat, wheat],
-                               [stone, glass, stone, empty],
-                               [empty, empty, empty, empty]])
 
         self.environment = [
             self.board,

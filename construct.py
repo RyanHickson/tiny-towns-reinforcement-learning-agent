@@ -53,7 +53,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                             completed_swaps += 1
         case "Grove University":
             want_to_build = handle_input(            
-                want_to_build_text.format(self.__str__(), {0: "No", 1: "Yes"}),
+                want_to_build_text.format(self.__str__(), no_yes_dict),
                 range(2),
                 parse=int,)
             if want_to_build:
@@ -94,7 +94,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
         temp_acting_player = dictionary_of_players[each_player]
         opaleyes_watch_holdings_display = [el.__str__() for el in temp_acting_player.opaleyes_watch_holdings]
         if construction_dict["card"].__str__() in opaleyes_watch_holdings_display:
-            want_to_build = handle_input(want_to_build_text.format(temp_acting_player.__str__(), {0: "No", 1: "Yes"}), range(2), parse=int)
+            want_to_build = handle_input(want_to_build_text.format(temp_acting_player.__str__(), no_yes_dict), range(2), parse=int)
             if want_to_build:
                 opaleye_building_choice = construction_dict["card"]
                 opaleye_placement_dict = {}

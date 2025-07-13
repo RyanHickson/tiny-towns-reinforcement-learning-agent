@@ -28,6 +28,10 @@ board_tile_dict = {
     16: (3, 3),
 }
 
+no_yes_dict = {0: "No", 1: "Yes"}
+
+store_swap_dict = {0: "Store", 1: "Swap"}
+
 # BUILDING CHOICE
 
 # BUILDING PLACEMENT

@@ -67,20 +67,22 @@ class Game:
         ]
 
 
-        for player in range(self.number_of_players):
+        for player in range(1, self.number_of_players + 1):
             self.dictionary_of_agents[player] = Agent(player)
-        rdm.shuffle(self.dictionary_of_agents)
+        agent_keys = list(self.dictionary_of_agents.keys())
+        rdm.shuffle(agent_keys) # AGENT SHUFFLE TO NOT OVERFIT TO A SPECIFIC STARTING ORDER
+
         if not manual_card_selection:
-            for player in range(self.number_of_players):
-                self.dictionary_of_players[player] = Player(player + 1, rdm.choice(monuments_deck), self.dictionary_of_agents[player])  # random assignment of a unique monument to each player
+            for player in range(1, self.number_of_players + 1):
+                self.dictionary_of_players[player] = Player(player, rdm.choice(monuments_deck), self.dictionary_of_agents[agent_keys[player -1]])  # random assignment of a unique monument to each player
                 monuments_deck.remove(self.dictionary_of_players[player].get_monument())
                 self.dictionary_of_players[player].all_cards = self.card_choices + [self.dictionary_of_players[player].get_monument()]
         elif manual_card_selection:
-            for player in range(self.number_of_players):
+            for player in range(1, self.number_of_players + 1):
                 monument_names_deck = [monument.__str__() for monument in monuments_deck]
-                monument_index = handle_input(monument_selection_text.format((player + 1), dict_enum(monument_names_deck)), range_len(monument_names_deck), parse=int)  # take player input to select a unique monument for each player
+                monument_index = handle_input(monument_selection_text.format((player), dict_enum(monument_names_deck)), range_len(monument_names_deck), parse=int)  # take player input to select a unique monument for each player
 
-                self.dictionary_of_players[player] = Player(player + 1, monuments_deck[monument_index], self.dictionary_of_agents[player])
+                self.dictionary_of_players[player] = Player(player, monuments_deck[monument_index], self.dictionary_of_agents[agent_keys[player -1]])
                 monuments_deck.remove(self.dictionary_of_players[player].get_monument())
                 self.dictionary_of_players[player].all_cards = self.card_choices + [self.dictionary_of_players[player].get_monument()]
         self.player_queue = list(self.dictionary_of_players.keys())
@@ -115,7 +117,7 @@ class Game:
                 for each_player in self.player_queue:    # RESOURCE PLACEMENT ROUND
                     acting_player = self.dictionary_of_players[each_player]
                     print(acting_player.__repr__())
-                    if acting_player != first_player:
+                    if acting_player.get_id() != first_player:
                         if resource_choice_id in acting_player.get_factory_resources(): # CHECK FACTORY RESOURCES
                             print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_buildable_cards()]))
                             acting_player_resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), resource_names_dict), resource_dict, parse=int)
@@ -124,8 +126,20 @@ class Game:
                         else:
                             resource_choice = resource_dict[resource_choice_id]
 
-
-                        tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
+                        if acting_player.get_id() != first_player:
+                            if len(acting_player.get_warehouse_resources()) < acting_player.warehouse_capacity:   # HANDLE WAREHOUSE STORAGE
+                                place_in_warehouse = handle_input(place_in_warehouse_text.format(acting_player.__str__(), no_yes_dict), no_yes_dict, parse=int)
+                                if place_in_warehouse:
+                                    if 0 < len(acting_player.get_warehouse_resources()):
+                                        warehouse_swap = handle_input(warehouse_swap_text.format(acting_player.__str__(), store_swap_dict), store_swap_dict, parse=int)
+                                        if warehouse_swap:
+                                            warehouse_choice_dict = dict_enum([resource_names_dict[el] for el in acting_player.get_warehouse_resources])
+                                            warehouse_retrieve_choice = handle_input(warehouse_retrieve_text.format(acting_player.__str__(), warehouse_choice_dict), warehouse_choice_dict, parse=int)
+                                            acting_player.get_warehouse_resources.append(resource_choice_id)
+                                            resource_choice_id = resource_dict[warehouse_retrieve_choice]
+                                    else:
+                                        acting_player.warehouse_resources.append(resource_choice_id)
+                    tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
                     while acting_player.board[board_tile_dict[tile_index]] != empty:
                         print(not_empty_tile_text)
                         tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # If chosen tile is not empty, ask for a new tile index
@@ -151,7 +165,7 @@ class Game:
                             if which_building_choice[key] != []:
                                 dict_presented[key] = which_building_choice[key]
                         print(f"{dict_presented=}")     # ...print choices of the tile combinations that can be picked up to construct the building in the chosen position
-                        want_to_build = handle_input(want_to_build_text.format(acting_player.__str__(), {0: "No", 1: "Yes"}), range(2), parse=int)
+                        want_to_build = handle_input(want_to_build_text.format(acting_player.__str__(), no_yes_dict), range(2), parse=int)
                         if want_to_build:
                             build_choice = handle_input(build_choice_text, dict_presented, parse=int)
                             chosen_building_dict = build_options[build_choice]
