@@ -21,13 +21,14 @@ class Player:
         self.warehouse_capacity = 0
         self.warehouse_resources = []
         self.bank_resources = []
+        self.opaleyes_watch_holdings = []
         self.board_is_filled = False
         self.resource_choice_dict = resource_names_dict
         self.shrine_key = 0
         self.finish_position = 0
-        self.board = np.array([[wheat, wheat, empty, empty],
-                               [empty, glass, brick, empty],
-                               [empty, empty, empty, mandras_palace],
+        self.board = np.array([[empty, empty, empty, empty],
+                               [brick, glass, wheat, wheat],
+                               [stone, empty, empty, empty],
                                [empty, empty, empty, empty]])
 
         self.environment = [
@@ -302,7 +303,7 @@ The cards available to them are {}""".format(
                 building_count += 1
         return building_count
 
-    def construct(self, dict):
+    def construct(self, dict, opaleye_construct=False):
         """
         Calls the construct method for handling using resources
         to build, and immediate effects therein.

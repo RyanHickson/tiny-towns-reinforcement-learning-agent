@@ -126,7 +126,6 @@ def find_all_placements(player, cards):
                 coord_dictionary[coord].update(building)
             else:
                 coord_dictionary[coord] = set(building)
-        # if build_options != {}:
         all_build_options.append(build_options)
         full_placement_display.append(placement_display)
     return coord_dictionary, all_build_options, full_placement_display

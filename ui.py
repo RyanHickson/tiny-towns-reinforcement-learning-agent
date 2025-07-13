@@ -4,7 +4,7 @@ manual_card_selection_text = "Select card choice mode, 0: Auto, 1: Manual, 2: De
 
 choose_card_text = "Choose a card from  the list: {} "
 
-current_player_cards_text = "{}, your cards this game are {}"
+current_player_cards_text = "{}, your cards this game are {} "
 
 monument_selection_text = "Select a monument for player {}: {} "
 
@@ -13,7 +13,7 @@ resource_selection_text = "{}, please choose a resource: {} "
 tile_index_text = "{}, enter tile ID (1-16): "
 
 
-want_to_build_text = "{}, do you wish to build? {}"
+want_to_build_text = "{}, do you wish to build? {} "
 build_choice_text = "What would you like to build? "
 
 

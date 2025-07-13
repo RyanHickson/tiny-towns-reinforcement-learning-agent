@@ -103,7 +103,8 @@ class Game:
                     print(fort_ironweed_last_player_text.format(acting_player))
 
 
-                print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_buildable_cards()]))
+                # print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_buildable_cards()]))
+                print(acting_player.__repr__())
                 for resource_id in acting_player.bank_resources:
                     acting_player.resource_choice_dict.pop(resource_id, None)
                 resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), acting_player.resource_choice_dict), acting_player.resource_choice_dict, parse=int)  # MASTER BUILDER CHOOSES A RESOURCE
@@ -157,19 +158,34 @@ class Game:
                             print(chosen_building_dict)
 
                             building_placement_choice = handle_input(build_coord_text, chosen_building_dict, parse=int)
-                            print(f"{building_placement_choice=}")
+                            # print(f"{building_placement_choice=}")
 
-                            acting_player.construct(chosen_building_dict[building_placement_choice])
+                            acting_player.construct(chosen_building_dict[building_placement_choice])    # CONSTRUCTION METHOD CALL
+
+                            for each_player in self.player_queue:
+                                temp_acting_player = self.dictionary_of_players[each_player]
+                                opaleyes_watch_holdings_display = [el.__str__() for el in temp_acting_player.opaleyes_watch_holdings]
+                                if chosen_building_dict[building_placement_choice]["card"].__str__() in opaleyes_watch_holdings_display:
+                                    want_to_build = handle_input(want_to_build_text.format(temp_acting_player.__str__(), {0: "No", 1: "Yes"}), range(2), parse=int)
+                                    if want_to_build:
+                                        opaleye_building_choice = chosen_building_dict[building_placement_choice]["card"]
+                                        opaleye_placement_dict = {}
+                                        for tile_id, tile_coords in board_tile_dict.items():
+                                            if temp_acting_player.board[tile_coords] == empty:
+                                                opaleye_placement_dict[tile_id] = tile_coords
+                                        where_to_build = handle_input(opaleye_placement_dict, opaleye_placement_dict, parse=int)
+                                        temp_acting_player.construct({"placement": opaleye_placement_dict[where_to_build], "card": chosen_building_dict[building_placement_choice]["card"], "co-ords": []}, opaleye_construct=True)
                         else:
                             break
 
-                        if empty in acting_player.board:    # check if board has no tiles free for resource placement
+                        if empty in acting_player.board:    # check if board has tiles free for resource placement
                             acting_player.board_is_filled = False   # if player has built since being flagged as having a full board, remove their full board flag so they are not removed from queues of players to act
 
                     acting_player.score = get_score(self, acting_player)
                     print(acting_player.display_score())
                     print("")
                     print(f"{acting_player.score=}")
+                    print(f"{acting_player.opaleyes_watch_holdings}")
 
             else:
                 print(fort_ironweed_turn_skip_text.format(acting_player))
