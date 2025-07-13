@@ -160,21 +160,9 @@ class Game:
                             building_placement_choice = handle_input(build_coord_text, chosen_building_dict, parse=int)
                             # print(f"{building_placement_choice=}")
 
-                            acting_player.construct(chosen_building_dict[building_placement_choice])    # CONSTRUCTION METHOD CALL
+                            acting_player.construct(chosen_building_dict[building_placement_choice], dictionary_of_players = self.dictionary_of_players)    # CONSTRUCTION METHOD CALL
 
-                            for each_player in self.player_queue:
-                                temp_acting_player = self.dictionary_of_players[each_player]
-                                opaleyes_watch_holdings_display = [el.__str__() for el in temp_acting_player.opaleyes_watch_holdings]
-                                if chosen_building_dict[building_placement_choice]["card"].__str__() in opaleyes_watch_holdings_display:
-                                    want_to_build = handle_input(want_to_build_text.format(temp_acting_player.__str__(), {0: "No", 1: "Yes"}), range(2), parse=int)
-                                    if want_to_build:
-                                        opaleye_building_choice = chosen_building_dict[building_placement_choice]["card"]
-                                        opaleye_placement_dict = {}
-                                        for tile_id, tile_coords in board_tile_dict.items():
-                                            if temp_acting_player.board[tile_coords] == empty:
-                                                opaleye_placement_dict[tile_id] = tile_coords
-                                        where_to_build = handle_input(opaleye_placement_dict, opaleye_placement_dict, parse=int)
-                                        temp_acting_player.construct({"placement": opaleye_placement_dict[where_to_build], "card": chosen_building_dict[building_placement_choice]["card"], "co-ords": []}, opaleye_construct=True)
+                            
                         else:
                             break
 

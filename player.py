@@ -28,7 +28,7 @@ class Player:
         self.finish_position = 0
         self.board = np.array([[empty, empty, empty, empty],
                                [brick, glass, wheat, wheat],
-                               [stone, empty, empty, empty],
+                               [stone, glass, stone, empty],
                                [empty, empty, empty, empty]])
 
         self.environment = [
@@ -303,9 +303,9 @@ The cards available to them are {}""".format(
                 building_count += 1
         return building_count
 
-    def construct(self, dict, opaleye_construct=False):
+    def construct(self, dict, dictionary_of_players, opaleye_construct=False):
         """
         Calls the construct method for handling using resources
         to build, and immediate effects therein.
         """
-        return player_construct(self, dict)
+        return player_construct(self, dict, dictionary_of_players, opaleye_construct)
