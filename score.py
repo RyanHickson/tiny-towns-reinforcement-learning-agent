@@ -93,11 +93,11 @@ def get_score(game, player):
                 for coord_pair in row_col_combined:
                     if isinstance(player.board[coord_pair], FarmType):
                         if isinstance(player.board[feedable_coord_pair], CottageType):
-                            player.cottage_score += 3
+                            player.cottage_score += player.board[feedable_coord_pair].score_when_fed()
                             player.fed_coords.append(feedable_coord_pair)
                         if barrett_castle in player.get_all_cards():
                             if isinstance(player.board[feedable_coord_pair], Monument):
-                                player.monument_score += 5
+                                player.monument_score += player.board[feedable_coord_pair].score_when_fed()
                                 player.fed_coords.append(feedable_coord_pair)
 
         if greenhouse in cards_this_game:
@@ -114,7 +114,7 @@ def get_score(game, player):
                     except:
                         continue
                     if tile_content == granary:
-                        player.cottage_score += 3
+                        player.cottage_score += player.board[coord_pair].score_when_fed()
                         player.fed_cottage_count += 1
                         player.unfed_cottage_count -= 1
                         player.fed_coords.append(coord_pair)
@@ -508,11 +508,11 @@ def get_score(game, player):
             for coord_pair in combination:
                 fed_board[coord_pair] = True
                 if isinstance(player.board[coord_pair], CottageType):
-                    player.cottage_score += 3
+                    player.cottage_score += player.board[coord_pair].score_when_fed()
                     player.fed_cottage_count += 1
                 if barrett_castle in player.get_all_cards():
                     if isinstance(player.board[coord_pair], Monument):
-                        player.monument_score += 5
+                        player.monument_score += player.board[coord_pair].score_when_fed()
                         player.fed_cottage_count += 2
             player.unfed_cottage_count = number_of_feeds - player.fed_cottage_count
 

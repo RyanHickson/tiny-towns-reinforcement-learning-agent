@@ -68,7 +68,7 @@ class Game:
 
 
         for player in range(1, self.number_of_players + 1):
-            self.dictionary_of_agents[player] = Agent(player)   # AGENT INITIALISATION
+            self.dictionary_of_agents[player] = Agent(player, actions=[])   # AGENT INITIALISATION
         agent_keys = list(self.dictionary_of_agents.keys())
         rdm.shuffle(agent_keys) # AGENT SHUFFLE TO NOT OVERFIT TO A SPECIFIC STARTING ORDER
 
