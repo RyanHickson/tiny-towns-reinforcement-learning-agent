@@ -1,4 +1,4 @@
-def handle_input(input_string, input_limits, parse=str, in_or_not=True):
+def handle_input(input_string, input_limits, parse=int, in_or_not=True):
     while True:
         try:
             handled_input = parse(input(input_string))
@@ -7,8 +7,10 @@ def handle_input(input_string, input_limits, parse=str, in_or_not=True):
         except:
             continue
 
+
 def dict_enum(input):
     return dict(enumerate(input))
+
 
 def range_len(input):
     return range(len(input))
