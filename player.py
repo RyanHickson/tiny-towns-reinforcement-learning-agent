@@ -26,6 +26,10 @@ class Player:
         self.resource_choice_dict = resource_names_dict
         self.shrine_key = 0
         self.finish_position = 0
+        self.board = np.array([[cottage, bank, cottage, cottage],
+                               [cottage, farm, cottage, cottage],
+                               [cottage, factory, cottage, cottage],
+                               [cottage, farm, cottage, empty]])
 
         self.environment = [
             self.board,
@@ -97,12 +101,32 @@ The cards available to them are {}""".format(
 
     def get_warehouse_resources(self):
         return self.warehouse_resources
+    
+    def get_trading_post_details(self):
+        trading_post_indexes = []
+        trading_post_coords = []
+        for tile_id, tile_coords in board_tile_dict.items():
+            trading_post_indexes.append(tile_id)
+            trading_post_coords.append(tile_coords)
+        return trading_post_indexes, trading_post_coords
 
     def get_bank_resources(self):
         return self.bank_resources
+    
+    def get_game_factory_type_resources(self):
+        buildable_cards = self.get_buildable_cards()
+        if factory in buildable_cards:
+            return self.get_factory_resources()
+        if warehouse in buildable_cards:
+            return self.get_warehouse_resources()
+        if trading_post in buildable_cards:
+            return self.get_trading_post_details()
+        if bank in buildable_cards:
+            return self.get_bank_resources()
+        
 
     def display_all_cards(self):
-        return [card.__str__() for card in self.buildable_cards]
+        return [card.__str__() for card in self.get_buildable_cards()]
 
     def get_instance_board(self):
         """
@@ -212,7 +236,7 @@ The cards available to them are {}""".format(
             if tile_id in visited:
                 continue
             tile_content = self.board[board_tile_dict[tile_id]]
-            if not isinstance(tile_content, Card):
+            if not isinstance(tile_content, Card):  # skip resources
                 continue
 
             if not tile_attribute(tile_content):
@@ -284,8 +308,9 @@ The cards available to them are {}""".format(
                 if isinstance(self.board[tile_coords], CottageType):
                     current_grouping.append(3)
                     fed_coords.append(tile_coords)
-                if isinstance(self.board[tile_coords], Monument):
-                    if barrett_castle in self.get_all_cards():
+                if barrett_castle == self.get_monument():
+                    print(self.get_all_cards())
+                    if isinstance(self.board[tile_coords], Monument):
                         current_grouping.append(5)
                         fed_coords.append(tile_coords)
         return score_list, fed_coords

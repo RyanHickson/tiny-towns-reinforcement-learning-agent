@@ -92,17 +92,22 @@ def get_score(game, player):
                 row_col_combined = set(row_coords_list + col_content_list)
                 for coord_pair in row_col_combined:
                     if isinstance(player.board[coord_pair], FarmType):
-                        if isinstance(player.board[feedable_coord_pair], CottageType):
-                            player.cottage_score += 3
+                        if player.board[feedable_coord_pair] == cottage:
+                            print("COTTAGE FOUND")
+                            player.cottage_score += player.board[feedable_coord_pair].score_when_fed()
                             player.fed_coords.append(feedable_coord_pair)
-                        if barrett_castle in player.get_all_cards():
-                            if isinstance(player.board[feedable_coord_pair], Monument):
-                                player.monument_score += 5
+                        if barrett_castle == player.get_monument():
+                            if player.board[feedable_coord_pair] == barrett_castle:
+                                print("BARRETT FOCKIN CASLTE")
+                                player.monument_score = player.board[feedable_coord_pair].score_when_fed()
                                 player.fed_coords.append(feedable_coord_pair)
 
         if greenhouse in cards_this_game:
             greenhouse_feed_list, player.fed_coords = player.greenhouse_feeding()
             player.cottage_score += sum([sum(el) for el in greenhouse_feed_list[:player.greenhouse_count]])
+            if player.cottage_score % 3 != 0:
+                player.cottage_score -= 5
+                player.monument_score = 5
 
         if granary in cards_this_game:
             player.fed_coords = []
@@ -114,11 +119,19 @@ def get_score(game, player):
                     except:
                         continue
                     if tile_content == granary:
-                        player.cottage_score += 3
-                        player.fed_cottage_count += 1
-                        player.unfed_cottage_count -= 1
-                        player.fed_coords.append(coord_pair)
-                        break   # ensures each cottage only fed once
+                        if isinstance(player.board[coord_pair], CottageType):
+                            player.cottage_score += player.board[coord_pair].score_when_fed()
+                            player.fed_cottage_count += 1
+                            player.unfed_cottage_count -= 1
+                            player.fed_coords.append(coord_pair)
+                            break   # ensures each cottage only fed once
+                        elif isinstance(player.board[coord_pair], Monument):
+                            if barrett_castle == player.get_monument():
+                                player.monument_score += player.board[coord_pair].score_when_fed()
+                                player.fed_cottage_count += 2
+                                player.unfed_cottage_count -= 2
+                                player.fed_coords.append(coord_pair)
+                                break   # ensures barrett castle only fed once
 
         return player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords
     
@@ -207,17 +220,17 @@ def get_score(game, player):
                 case 0:
                     pass
                 case 1:
-                    total_score -= 1
+                    player.tavern_score -= 1
                 case 2:
-                    total_score += 5
+                    player.tavern_score += 5
                 case 3:
-                    total_score -= 3
+                    player.tavern_score -= 3
                 case 4:
-                    total_score += 15
+                    player.tavern_score += 15
                 case 5:
-                    total_score -= 5
+                    player.tavern_score -= 5
                 case _: # 6+ case
-                    total_score += 26
+                    player.tavern_score += 26
         if feast_hall in cards_this_game:
             feast_hall_counts = []
             for each_player in game.dictionary_of_players.values():
@@ -315,7 +328,7 @@ def get_score(game, player):
                     try:
                         if isinstance(player.board[coord_pair], CottageType):
                             player.well_score += 1
-                        if barrett_castle in player.get_all_cards():
+                        if barrett_castle == player.get_monument():
                                 if isinstance(player.board[coord_pair], Monument):
                                     player.well_score += 2
                                     player.fed_coords.append(coord_pair)
@@ -488,7 +501,7 @@ def get_score(game, player):
         return player.farm_count
 
     
-    if farm in cards_this_game:
+    if farm in cards_this_game: # CALCULATES ALL POSSIBLE FEED COMBINATION SCORES TO RETURN ONLY THE HIGHEST SCORING FARM FEED COMBINATION
         player.farm_count = get_farm_count(player)
         max_number_of_feeds = (player.farm_count * 4)   # each farm can feed four feedable buildings
         player.feedable_count, player.feedable_dict = get_feedable_count(player)
@@ -508,11 +521,11 @@ def get_score(game, player):
             for coord_pair in combination:
                 fed_board[coord_pair] = True
                 if isinstance(player.board[coord_pair], CottageType):
-                    player.cottage_score += 3
+                    player.cottage_score += player.board[coord_pair].score_when_fed()
                     player.fed_cottage_count += 1
-                if barrett_castle in player.get_all_cards():
+                if barrett_castle == player.get_monument():
                     if isinstance(player.board[coord_pair], Monument):
-                        player.monument_score += 5
+                        player.monument_score += player.board[coord_pair].score_when_fed()
                         player.fed_cottage_count += 2
             player.unfed_cottage_count = number_of_feeds - player.fed_cottage_count
 
@@ -530,8 +543,9 @@ def get_score(game, player):
             games_dict[combination] = player.total_score
             scores_dict[combination] = [player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tile_score, player.total_score]
 
-        best_scoring_game = max(games_dict, key=games_dict.get)
+        best_scoring_game = max(games_dict, key=games_dict.get) # finds the best way to feed with farms for maximum score
         player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tile_score, player.total_score = scores_dict[best_scoring_game]
+        print(combination)
 
         score_display(player)
         return player.total_score

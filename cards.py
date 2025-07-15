@@ -12,7 +12,7 @@ class Card:
         self.ability_text = ability_text
         self.is_feedable = is_feedable
         self.is_fed = is_fed
-        self.fed_score = 0
+        self.fed_score = fed_score
 
     def get_layout(self):
         return self.layout
@@ -31,6 +31,9 @@ class Card:
     
     def get_type(self):
         return type(self)
+    
+    def get_is_feedable(self):
+        return self.is_feedable
 
 
 class CottageType(Card):
