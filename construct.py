@@ -80,8 +80,8 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
             return self.shrine_key
 
 
-    player_queue = list(dictionary_of_players.keys())
-    for each_player in player_queue:
+    master_builder_queue = list(dictionary_of_players.keys())
+    for each_player in master_builder_queue:
         temp_acting_player = dictionary_of_players[each_player]
         opaleyes_watch_holdings_display = [el.__str__() for el in temp_acting_player.opaleyes_watch_holdings]
         if construction_dict["card"].__str__() in opaleyes_watch_holdings_display:
