@@ -18,8 +18,8 @@ build_coord_text = "Which co-ordinates should be built on, and which resources u
 
 
 place_in_warehouse_text = "{}, do you wish to store this resource in a warehouse? {} "
-warehouse_swap_text = "Do you wish to store this resource or swap it with an already stored resource? {} "
-warehouse_retrieve_text = "Which warehouse resource should be swapped out? {} "
+warehouse_swap_text = "{}, do you wish to store this resource or swap it with an already stored resource? {} "
+warehouse_retrieve_text = "{}, which warehouse resource should be retrieved? {} "
 
 factory_resource_found_text = "{}, the resource selected by the master builder is in one of your factories."
 factory_resource_choice_text = "Choose a resource to place on this factory: {} "

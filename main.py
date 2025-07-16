@@ -146,18 +146,25 @@ class TinyTownsEnv(Env):
                             if place_in_warehouse:
                                 if 0 < len(acting_player.get_warehouse_resources()):
                                     warehouse_swap = handle_input(warehouse_swap_text.format(acting_player.__str__(), store_swap_dict), store_swap_dict, parse=int)
-                                    if warehouse_swap:
-                                        warehouse_choice_dict = dict_enum([resource_names_dict[el] for el in acting_player.get_warehouse_resources])
-                                        warehouse_retrieve_choice = handle_input(warehouse_retrieve_text.format(acting_player.__str__(), warehouse_choice_dict), warehouse_choice_dict, parse=int)
-                                        acting_player.get_warehouse_resources.append(resource_choice_id)
-                                        resource_choice_id = resource_dict[warehouse_retrieve_choice]
+                                    if warehouse_swap:                                                                                                                                              # player has chosen to swap
+                                        warehouse_choice_dict = dict_enum([resource_names_dict[el] for el in acting_player.get_warehouse_resources()])                                              # create dictionary of enumerated resources in warehouses
+                                        warehouse_retrieve_choice = handle_input(warehouse_retrieve_text.format(acting_player.__str__(), warehouse_choice_dict), warehouse_choice_dict, parse=int)  # handle input of selecting resource
+                                        print(warehouse_retrieve_choice)
+                                        print(acting_player.get_warehouse_resources())
+                                        acting_player.warehouse_resources.append(resource_choice_id)
+                                        resource_choice = warehouse_choice_dict[warehouse_retrieve_choice]
+                                        acting_player.warehouse_resources.pop(warehouse_retrieve_choice)
                                 else:
                                     acting_player.warehouse_resources.append(resource_choice_id)
+                                    break
                     tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
                     while acting_player.board[board_tile_dict[tile_index]] != empty:
                         print(not_empty_tile_text)
                         tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # If chosen tile is not empty, ask for a new tile index
+
                     acting_player.board[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT
+
+
                     if empty not in acting_player.board:    # check if board has no tiles free for resource placement
                         acting_player.board_is_filled = True    # mark player as having a full board
 
