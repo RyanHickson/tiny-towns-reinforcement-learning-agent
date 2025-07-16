@@ -26,10 +26,7 @@ class Player:
         self.resource_choice_dict = resource_names_dict
         self.shrine_key = 0
         self.finish_position = 0
-        self.board = np.array([[cottage, bank, cottage, cottage],
-                               [cottage, farm, cottage, cottage],
-                               [cottage, factory, cottage, cottage],
-                               [cottage, farm, cottage, empty]])
+
 
         self.environment = [
             self.board,
@@ -306,13 +303,13 @@ The cards available to them are {}""".format(
             for tile_id in grouping:
                 tile_coords = board_tile_dict[tile_id]
                 if isinstance(self.board[tile_coords], CottageType):
-                    current_grouping.append(3)
+                    current_grouping.append(self.board[tile_coords].score_when_fed())
                     fed_coords.append(tile_coords)
                 if barrett_castle == self.get_monument():
-                    print(self.get_all_cards())
                     if isinstance(self.board[tile_coords], Monument):
-                        current_grouping.append(5)
+                        current_grouping.append(self.board[tile_coords].score_when_fed())
                         fed_coords.append(tile_coords)
+        score_list = sorted(score_list, reverse=True)   # orders the lists from largest score to smallest, to score in correct order
         return score_list, fed_coords
 
     def get_building_count(self, building):

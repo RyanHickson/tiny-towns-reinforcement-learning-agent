@@ -49,6 +49,9 @@ def get_score(game, player):
         return player.factory_score
     
     def get_feedable_count(player):
+        """
+        Used in games with Farm card.
+        """
         player.feedable_count = 0
         player.feedable_dict = {}
         for tile_coords, tile_content in player_board_dict.items():
@@ -91,20 +94,26 @@ def get_score(game, player):
                 col_content_list = player.check_col(feedable_coord_pair)[1]
                 row_col_combined = set(row_coords_list + col_content_list)
                 for coord_pair in row_col_combined:
-                    if isinstance(player.board[coord_pair], FarmType):
-                        if player.board[feedable_coord_pair] == cottage:
-                            print("COTTAGE FOUND")
-                            player.cottage_score += player.board[feedable_coord_pair].score_when_fed()
-                            player.fed_coords.append(feedable_coord_pair)
-                        if barrett_castle == player.get_monument():
-                            if player.board[feedable_coord_pair] == barrett_castle:
-                                print("BARRETT FOCKIN CASLTE")
-                                player.monument_score = player.board[feedable_coord_pair].score_when_fed()
+                    if feedable_coord_pair not in player.fed_coords:
+                        if isinstance(player.board[coord_pair], FarmType):
+                            if player.board[feedable_coord_pair] == cottage:
+                                player.cottage_score += player.board[feedable_coord_pair].score_when_fed()
                                 player.fed_coords.append(feedable_coord_pair)
+                                player.fed_cottage_count += 1
+                                player.unfed_cottage_count -= 1
+                            if barrett_castle == player.get_monument():
+                                if player.board[feedable_coord_pair] == barrett_castle:
+                                    print("BARRETT FOCKIN CASLTE")
+                                    player.monument_score = player.board[feedable_coord_pair].score_when_fed()
+                                    player.fed_coords.append(feedable_coord_pair)
+                                    player.fed_cottage_count += 2
+                                    player.unfed_cottage_count -= 2
 
         if greenhouse in cards_this_game:
             greenhouse_feed_list, player.fed_coords = player.greenhouse_feeding()
             player.cottage_score += sum([sum(el) for el in greenhouse_feed_list[:player.greenhouse_count]])
+            player.fed_cottage_count += sum([len(el) for el in greenhouse_feed_list[:player.greenhouse_count]])
+            player.unfed_cottage_count -= sum([len(el) for el in greenhouse_feed_list[:player.greenhouse_count]])
             if player.cottage_score % 3 != 0:
                 player.cottage_score -= 5
                 player.monument_score = 5
@@ -132,6 +141,7 @@ def get_score(game, player):
                                 player.unfed_cottage_count -= 2
                                 player.fed_coords.append(coord_pair)
                                 break   # ensures barrett castle only fed once
+            print(f"{player.fed_cottage_count=}")
 
         return player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords
     
@@ -147,8 +157,8 @@ def get_score(game, player):
         if chapel in cards_this_game:
             player.chapel_score = (player.fed_cottage_count * player.chapel_count)
         if temple in cards_this_game:
-            temple_adjacent_fed_count = 0
             for coord_pair in player.chapel_coords: # for each temple on the board
+                temple_adjacent_fed_count = 0
                 tiles_next_to_temple = player.check_adjacent_tiles(coord_pair)
                 for tile_coords in tiles_next_to_temple:
                     if farm in cards_this_game:
@@ -551,7 +561,7 @@ def get_score(game, player):
         return player.total_score
 
 
-
+    player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords = get_cottage_stats(player)
     player.factory_score = get_factory_score(player)
     player.chapel_score = get_chapel_score(player)
     player.tavern_score = get_tavern_score(player)
@@ -560,8 +570,6 @@ def get_score(game, player):
     player.monument_score, player.empty_tile_score = get_monument_score(player)
 
 
-    
-    player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords = get_cottage_stats(player)
     player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tile_score
 
     score_display(player)
