@@ -281,8 +281,6 @@ class TinyTownsEnv(Env):
                     acting_player.score = get_score(self, acting_player)
                     print(acting_player.display_score())
                     print("")
-                    print(f"{acting_player.score=}")
-                    print(f"{acting_player.opaleyes_watch_holdings}")
 
             else:
                 print(fort_ironweed_turn_skip_text.format(acting_player))
@@ -314,9 +312,7 @@ class TinyTownsEnv(Env):
             player = self.dictionary_of_players[each_player]
             player.score = get_score(self, player)
             player_scores[player] = player.score
-        
-        last_place = min(player_scores.values())
-        print(last_place)
+
         for player, score in player_scores.items():
             print("{} scores {}VP!".format(player, score))
 

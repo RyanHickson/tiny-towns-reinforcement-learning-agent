@@ -43,3 +43,4 @@ def score_display(player):
     print("{} scores {}VP from their monument.".format(player.__str__(), player.monument_score))
     print("{} scores {}VP from their empty tiles.".format(player.__str__(), player.empty_tile_score))
     print("{} has a total score of {}VP".format(player.__str__(), player.total_score))
+    print("")
