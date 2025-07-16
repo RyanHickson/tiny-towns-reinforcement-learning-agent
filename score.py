@@ -156,6 +156,7 @@ def get_score(game, player):
 
         if chapel in cards_this_game:
             player.chapel_score = (player.fed_cottage_count * player.chapel_count)
+        
         if temple in cards_this_game:
             for coord_pair in player.chapel_coords: # for each temple on the board
                 temple_adjacent_fed_count = 0
@@ -170,16 +171,27 @@ def get_score(game, player):
                             temple_adjacent_fed_count += 2
                 if 2 <= temple_adjacent_fed_count:
                     player.chapel_score += 4
+        
         if abbey in cards_this_game:
             for coord_pair in player.chapel_coords: # for each abbey on board
+                all_adjacent_contents = []
                 abbey_adjacent_tile_contents = player.check_adjacent_tiles(coord_pair)
                 for adjacent_coords in abbey_adjacent_tile_contents:
                     try:
                         adjacent_tile_content = player.board[adjacent_coords]
+                        print(adjacent_tile_content)
+                        all_adjacent_contents.append(adjacent_tile_content)
                     except:
                         continue
-                if not isinstance(adjacent_tile_content, FactoryType) or isinstance(adjacent_tile_content, TavernType) or isinstance(adjacent_tile_content, TheatreType):
-                        player.chapel_score += 3
+                for adjacent_tile_content in all_adjacent_contents:
+                    if isinstance(adjacent_tile_content, FactoryType) or isinstance(adjacent_tile_content, TavernType) or isinstance(adjacent_tile_content, TheatreType):
+                        still_might_score = False
+                        break
+                    else:
+                        still_might_score = True
+                if still_might_score:
+                    player.chapel_score += 3
+        
         if cloister in cards_this_game:
             cloisters_in_corners = 0
             if player.board[0,0] == cloister:
@@ -438,7 +450,8 @@ def get_score(game, player):
             
             if player.get_monument() == grand_mausoleum_of_the_rodina:
                 player.unfed_cottage_count = player.total_cottage_count - player.fed_cottage_count
-                player.monument_score = player.unfed_cottage_count * 3
+                player.monument_score = player.unfed_cottage_count * 3  # unfed cottage points counted by monument
+                # player.cottage_score = player.unfed_cottage_count * 3
             
             if player.get_monument() == grove_university:
                 player.monument_score = 3

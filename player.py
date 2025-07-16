@@ -193,7 +193,8 @@ The cards available to them are {}""".format(
         for relational_vector in adjacent_relations:
             i, j = tile_coords
             r, c = relational_vector
-            adjacent_tiles_list.append((i + r, j + c))
+            if -1 < i + r < 4 and -1 < j + c < 4:
+                adjacent_tiles_list.append((i + r, j + c))
         return adjacent_tiles_list
 
     def check_grouping(self, start_tile_id, visited, condition=lambda card: True):
