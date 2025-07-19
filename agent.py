@@ -1,15 +1,3 @@
-<<<<<<< Updated upstream
-class Agent:
-    def __init__(
-        self,
-        name,
-        actions,
-        learning_rate=0.1,
-        discount_factor=0.95,
-        exploration_rate=1.0,
-        exploration_decay=0.99,
-    ):
-=======
 from gymnasium.spaces import MultiDiscrete
 from choices import *
 from score import get_score
@@ -21,7 +9,6 @@ class GreedyAgent:
     Agent to act to gain immediate reward
     """
     def __init__(self, name):
->>>>>>> Stashed changes
         self.name = name
         self.actions = actions
         self.learning_rate = learning_rate
@@ -36,13 +23,6 @@ class GreedyAgent:
         pass
         # STATE LOGIC
 
-<<<<<<< Updated upstream
-    def choose_action(self, state):
-        pass
-        # GREEDY CHOICES
-
-    # REMEMBER TO ACTUALLY WRITE SOME AGENT LOGIC IN HERE
-=======
     def choose_resource_and_tile(self, game, player):
         """
         Select a resource and a tile placement.
@@ -81,4 +61,3 @@ class GreedyAgent:
 
     
     # REMEMBER TO ACTUALLY WRITE SOME AGENT LOGIC IN HERE
->>>>>>> Stashed changes
