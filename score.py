@@ -213,6 +213,7 @@ def get_score(game, player):
             if isinstance(tile_content, TavernType):
                 player.tavern_count += 1
                 player.tavern_coords.append(tile_coords)
+        
         if tavern in cards_this_game:
             match player.tavern_count:
                 case 0:
@@ -227,6 +228,7 @@ def get_score(game, player):
                     player.tavern_score += 14
                 case _: # 5+ case
                     player.tavern_score += 20
+        
         if inn in cards_this_game:
             for inn_placement in player.tavern_coords:
                 row_coords_list = player.check_row(inn_placement)[1]
@@ -237,6 +239,7 @@ def get_score(game, player):
                         break
                     else:
                         player.tavern_score += 3
+        
         if almshouse in cards_this_game:
             match player.tavern_count:
                 case 0:
@@ -253,6 +256,7 @@ def get_score(game, player):
                     player.tavern_score -= 5
                 case _: # 6+ case
                     player.tavern_score += 26
+        
         if feast_hall in cards_this_game:
             feast_hall_counts = []
             for each_player in game.dictionary_of_players.values():
@@ -343,6 +347,7 @@ def get_score(game, player):
             if isinstance(tile_content, WellType):
                 player.well_count += 1
                 player.well_coords.append(tile_coords)
+        
         if well in cards_this_game:
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
@@ -356,26 +361,23 @@ def get_score(game, player):
                                     player.fed_coords.append(coord_pair)
                     except:
                         continue
+        
         if fountain in cards_this_game:
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
-                    try:
-                        if isinstance(player.board[coord_pair], WellType):
-                            player.well_score += 2
-                            break
-                    except:
-                        continue
+                    if isinstance(player.board[coord_pair], WellType):
+                        player.well_score += 2
+                        break
+        
         if millstone in cards_this_game:
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
-                    try:
-                        if isinstance(player.board[coord_pair], FarmType) or isinstance(player.board[coord_pair], TheatreType):
-                            player.well_score += 2
-                            break
-                    except:
-                        continue                        
+                    if isinstance(player.board[coord_pair], FarmType) or isinstance(player.board[coord_pair], TheatreType):
+                        player.well_score += 2
+                        break
+        
         if shed in cards_this_game:
             for well_coords in player.well_coords:
                 player.well_score += 1
