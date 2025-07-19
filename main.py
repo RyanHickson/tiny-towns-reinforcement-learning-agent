@@ -1,4 +1,3 @@
-# SINGLE PLAYER PLAYTEST
 import random as rdm
 from player import *
 from building_layouts import *
