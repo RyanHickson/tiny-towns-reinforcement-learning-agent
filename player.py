@@ -110,7 +110,7 @@ The cards available to them are {}""".format(
     def get_bank_resources(self):
         return self.bank_resources
     
-    def get_game_factory_type_resources(self):
+    def get_factory_type_resources(self):
         buildable_cards = self.get_buildable_cards()
         if factory in buildable_cards:
             return self.get_factory_resources()

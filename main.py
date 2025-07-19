@@ -8,6 +8,10 @@ from agent import *
 from ry import *
 from ui import *
 from score import get_score
+from observation import get_observation
+
+from gymnasium import Env
+from gymnasium.spaces import MultiDiscrete
 
 from gymnasium import Env
 from gymnasium.spaces import MultiDiscrete
@@ -28,7 +32,11 @@ class TinyTownsEnv(Env):
         self.theatre_choice = theatre
         self.well_choice = well
 
-        self.number_of_players = handle_input(number_of_players_text, range(2,7))
+        self.get_observation = get_observation
+
+        self.number_of_players = handle_input(number_of_players_text, range(2,7), parse=int)
+        manual_card_selection = handle_input(manual_card_selection_text, range(3), parse=int)
+
         manual_card_selection = handle_input(manual_card_selection_text, range(3))
 
         self.action_space = MultiDiscrete(
@@ -83,9 +91,7 @@ class TinyTownsEnv(Env):
             ]
 
         for player in range(1, self.number_of_players + 1):
-            self.dictionary_of_agents[player] = Agent(
-                player, actions=[]
-            )  # AGENT INITIALISATION
+            self.dictionary_of_agents[player] = GreedyAgent(player)
         agent_keys = list(self.dictionary_of_agents.keys())
         rdm.shuffle(
             agent_keys
@@ -277,6 +283,8 @@ class TinyTownsEnv(Env):
 
                     acting_player.score = get_score(self, acting_player)
                     print(acting_player.display_score())
+                    print("")
+                    print(get_observation(self, each_player))
                     print("")
 
             else:
