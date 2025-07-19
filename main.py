@@ -13,10 +13,6 @@ from observation import get_observation
 from gymnasium import Env
 from gymnasium.spaces import MultiDiscrete
 
-from gymnasium import Env
-from gymnasium.spaces import MultiDiscrete
-
-
 class TinyTownsEnv(Env):
     """
     Setup game environment for RL agent gameplay
@@ -34,9 +30,7 @@ class TinyTownsEnv(Env):
 
         self.get_observation = get_observation
 
-        self.number_of_players = handle_input(number_of_players_text, range(2,7), parse=int)
-        manual_card_selection = handle_input(manual_card_selection_text, range(3), parse=int)
-
+        self.number_of_players = handle_input(number_of_players_text, range(2,7))
         manual_card_selection = handle_input(manual_card_selection_text, range(3))
 
         self.action_space = MultiDiscrete(
@@ -195,13 +189,13 @@ class TinyTownsEnv(Env):
 
 
                         if len(acting_player.get_warehouse_resources()) < acting_player.warehouse_capacity:   # HANDLE WAREHOUSE STORAGE
-                            place_in_warehouse = handle_input(place_in_warehouse_text.format(acting_player.__str__(), no_yes_dict), no_yes_dict, parse=int)
+                            place_in_warehouse = handle_input(place_in_warehouse_text.format(acting_player.__str__(), no_yes_dict), no_yes_dict)
                             if place_in_warehouse:
                                 if 0 < len(acting_player.get_warehouse_resources()):
-                                    warehouse_swap = handle_input(warehouse_swap_text.format(acting_player.__str__(), store_swap_dict), store_swap_dict, parse=int)
+                                    warehouse_swap = handle_input(warehouse_swap_text.format(acting_player.__str__(), store_swap_dict), store_swap_dict)
                                     if warehouse_swap:                                                                                                                                              # player has chosen to swap
                                         warehouse_choice_dict = dict_enum([resource_names_dict[el] for el in acting_player.get_warehouse_resources()])                                              # create dictionary of enumerated resources in warehouses
-                                        warehouse_retrieve_choice = handle_input(warehouse_retrieve_text.format(acting_player.__str__(), warehouse_choice_dict), warehouse_choice_dict, parse=int)  # handle input of selecting resource
+                                        warehouse_retrieve_choice = handle_input(warehouse_retrieve_text.format(acting_player.__str__(), warehouse_choice_dict), warehouse_choice_dict)  # handle input of selecting resource
                                         print(warehouse_retrieve_choice)
                                         print(acting_player.get_warehouse_resources())
                                         acting_player.warehouse_resources.append(resource_choice_id)
@@ -210,10 +204,10 @@ class TinyTownsEnv(Env):
                                 else:
                                     acting_player.warehouse_resources.append(resource_choice_id)
                                     break
-                    tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
+                    tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17))   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
                     while acting_player.board[board_tile_dict[tile_index]] != empty:
                         print(not_empty_tile_text)
-                        tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17), parse=int)   # If chosen tile is not empty, ask for a new tile index
+                        tile_index = handle_input(tile_index_text.format(acting_player.__str__()), range(1, 17))   # If chosen tile is not empty, ask for a new tile index
 
                     acting_player.board[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT
 

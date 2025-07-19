@@ -10,11 +10,11 @@ class GreedyAgent:
     """
     def __init__(self, name):
         self.name = name
-        self.actions = actions
-        self.learning_rate = learning_rate
-        self.discount_factor = discount_factor
-        self.exploration_rate = exploration_rate
-        self.exploration_decay = exploration_decay
+        # self.actions = actions
+        # self.learning_rate = learning_rate
+        # self.discount_factor = discount_factor
+        # self.exploration_rate = exploration_rate
+        # self.exploration_decay = exploration_decay
 
     def __str__(self):
         return "{}".format(self.name)
