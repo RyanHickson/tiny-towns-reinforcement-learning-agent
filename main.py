@@ -9,6 +9,7 @@ from agent import *
 from ry import *
 from ui import *
 from score import get_score
+from observation import get_observation
 
 
 class Game:
@@ -23,7 +24,14 @@ class Game:
         self.theatre_choice = theatre
         self.well_choice = well
 
+<<<<<<< Updated upstream
         self.number_of_players = handle_input(number_of_players_text, range(2, 7))
+=======
+        self.get_observation = get_observation
+
+        self.number_of_players = handle_input(number_of_players_text, range(2,7), parse=int)
+        manual_card_selection = handle_input(manual_card_selection_text, range(3), parse=int)
+>>>>>>> Stashed changes
 
         manual_card_selection = handle_input(manual_card_selection_text, range(3))
 
@@ -68,9 +76,13 @@ class Game:
             ]
 
         for player in range(1, self.number_of_players + 1):
+<<<<<<< Updated upstream
             self.dictionary_of_agents[player] = Agent(
                 player, actions=[]
             )  # AGENT INITIALISATION
+=======
+            self.dictionary_of_agents[player] = GreedyAgent(player)
+>>>>>>> Stashed changes
         agent_keys = list(self.dictionary_of_agents.keys())
         rdm.shuffle(
             agent_keys
@@ -298,8 +310,13 @@ class Game:
                     acting_player.score = get_score(self, acting_player)
                     print(acting_player.display_score())
                     print("")
+<<<<<<< Updated upstream
                     print(f"{acting_player.score=}")
                     print(f"{acting_player.opaleyes_watch_holdings}")
+=======
+                    print(get_observation(self, each_player))
+                    print("")
+>>>>>>> Stashed changes
 
             else:
                 print(fort_ironweed_turn_skip_text.format(acting_player))
