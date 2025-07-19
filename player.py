@@ -103,8 +103,6 @@ The cards available to them are {}""".format(
 
     def get_bank_resources(self):
         return self.bank_resources
-<<<<<<< Updated upstream
-=======
     
     def get_factory_type_resources(self):
         buildable_cards = self.get_buildable_cards()
@@ -117,7 +115,6 @@ The cards available to them are {}""".format(
         if bank in buildable_cards:
             return self.get_bank_resources()
         
->>>>>>> Stashed changes
 
     def display_all_cards(self):
         return [card.__str__() for card in self.buildable_cards]
