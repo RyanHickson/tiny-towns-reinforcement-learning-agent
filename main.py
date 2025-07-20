@@ -88,16 +88,15 @@ class TinyTownsEnv(Env):
         for player in range(1, self.number_of_players + 1):
             self.dictionary_of_agents[player] = GreedyAgent(player)
         agent_keys = list(self.dictionary_of_agents.keys())
-        rdm.shuffle(agent_keys)
+        rdm.shuffle(agent_keys)  # AGENT SHUFFLE TO NOT OVERFIT TO A SPECIFIC STARTING ORDER
 
         if not manual_card_selection:
             for player in range(1, self.number_of_players + 1):
-                # Player instanciation
                 self.dictionary_of_players[player] = Player(
                     player,
                     rdm.choice(monuments_deck),
                     self.dictionary_of_agents[agent_keys[player - 1]],
-                )
+                )  # random assignment of a unique monument to each player
                 monuments_deck.remove(self.dictionary_of_players[player].get_monument())
                 self.dictionary_of_players[player].all_cards = self.card_choices + [
                     self.dictionary_of_players[player].get_monument()
