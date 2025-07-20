@@ -29,6 +29,7 @@ class TinyTownsEnv(Env):
         self.well_choice = well
 
         self.get_observation = get_observation
+        self.game_data = []
 
         self.number_of_players = handle_input(number_of_players_text, range(2,7))
         manual_card_selection = handle_input(manual_card_selection_text, range(3))
@@ -87,17 +88,16 @@ class TinyTownsEnv(Env):
         for player in range(1, self.number_of_players + 1):
             self.dictionary_of_agents[player] = GreedyAgent(player)
         agent_keys = list(self.dictionary_of_agents.keys())
-        rdm.shuffle(
-            agent_keys
-        )  # AGENT SHUFFLE TO NOT OVERFIT TO A SPECIFIC STARTING ORDER
+        rdm.shuffle(agent_keys)
 
         if not manual_card_selection:
             for player in range(1, self.number_of_players + 1):
+                # Player instanciation
                 self.dictionary_of_players[player] = Player(
                     player,
                     rdm.choice(monuments_deck),
                     self.dictionary_of_agents[agent_keys[player - 1]],
-                )  # random assignment of a unique monument to each player
+                )
                 monuments_deck.remove(self.dictionary_of_players[player].get_monument())
                 self.dictionary_of_players[player].all_cards = self.card_choices + [
                     self.dictionary_of_players[player].get_monument()
@@ -125,6 +125,60 @@ class TinyTownsEnv(Env):
                 ]
         self.player_queue = list(self.dictionary_of_players.keys())
         self.master_builder_queue = self.player_queue.copy()
+
+    def step(self, actions):
+        """
+        Step function for agent play
+        """
+
+        rewards = {}
+        observations = {}
+        done = False
+
+        for player_id, action in actions.items():
+            player = self.dictionary_of_players[player_id]
+            agent = player.get_agent()
+
+            resource_id, tile_index = agent.choose_resource_and_tile(self, player)
+            resource = resource_dict[resource_id]
+            if player.board[board_tile_dict[tile_index]] == empty:
+                player.board[board_tile_dict[tile_index]] = resource
+
+            player.score = get_score(self, player)
+            rewards[player_id] = player.score
+            observations[player_id] = get_observation(self, player_id)
+
+        done = all(player.get_board_is_filled() for player in self.dictionary_of_players)
+
+        return rewards, observations, done
+    
+    def reset(self):
+        """
+        Restart play environment
+        """
+        # self.__init__()
+        self.play()
+
+    def record_game(self):
+        game_data = {
+            "card_choices": self.show_card_choices,
+            "players": []
+        }
+        for each_player in self.player_queue:
+            player = self.dictionary_of_players[each_player]
+            player_data = {
+                "player_id": each_player,
+                "agent": player.get_agent(),
+                "monument": player.get_monument(),
+                "final score": player.score
+            }
+            game_data["players"].append(player_data)
+        self.game_data.append(game_data)
+
+    def export_data(self):
+        with open(xyz.json) as f:
+            json.dump(self.game_data, f)
+
 
     def play(self):
         # SETUP
