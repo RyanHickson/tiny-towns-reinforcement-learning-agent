@@ -9,6 +9,7 @@ from ry import *
 from ui import *
 from score import get_score
 from observation import get_observation
+import json
 
 from gymnasium import Env
 from gymnasium.spaces import MultiDiscrete
@@ -31,8 +32,8 @@ class TinyTownsEnv(Env):
         self.get_observation = get_observation
         self.game_data = []
 
-        self.number_of_players = handle_input(number_of_players_text, range(2,7))
-        manual_card_selection = handle_input(manual_card_selection_text, range(3))
+        self.number_of_players = 2  # handle_input(number_of_players_text, range(2,7))
+        self.manual_card_selection = handle_input(manual_card_selection_text, range(3))
 
         self.action_space = MultiDiscrete(
             [
@@ -45,7 +46,7 @@ class TinyTownsEnv(Env):
         )
 
 
-        if not manual_card_selection:   # Normal play, random card choices from each deck
+        if not self.manual_card_selection:   # Normal play, random card choices from each deck
             self.cottage_choice = rdm.choice(cottage_deck)
             self.farm_choice = rdm.choice(farm_deck)
             self.factory_choice = rdm.choice(factory_deck)
@@ -63,7 +64,7 @@ class TinyTownsEnv(Env):
                 self.theatre_choice,
                 self.well_choice,
             ]
-        elif manual_card_selection == 1:  # Allows for manual card choices for a game
+        elif self.manual_card_selection == 1:  # Allows for manual card choices for a game
             self.card_choices = []  # initialise card choice list
             for deck in all_decks:
                 deck_list = []
@@ -74,7 +75,7 @@ class TinyTownsEnv(Env):
                     choose_card_text.format(card_deck_dict), card_deck_dict
                 )  # take player input for each deck, choosing the cards for the community pool
                 self.card_choices.append(deck[card_choice_index])
-        elif manual_card_selection == 2:
+        elif self.manual_card_selection == 2:
             self.card_choices = [  # Creates a list of the chosen cards for this game
                 self.cottage_choice,
                 self.farm_choice,
@@ -85,12 +86,13 @@ class TinyTownsEnv(Env):
                 self.well_choice,
             ]
 
+    def setup_players(self):
         for player in range(1, self.number_of_players + 1):
             self.dictionary_of_agents[player] = GreedyAgent(player)
         agent_keys = list(self.dictionary_of_agents.keys())
         rdm.shuffle(agent_keys)  # AGENT SHUFFLE TO NOT OVERFIT TO A SPECIFIC STARTING ORDER
 
-        if not manual_card_selection:
+        if not self.manual_card_selection:
             for player in range(1, self.number_of_players + 1):
                 self.dictionary_of_players[player] = Player(
                     player,
@@ -101,7 +103,7 @@ class TinyTownsEnv(Env):
                 self.dictionary_of_players[player].all_cards = self.card_choices + [
                     self.dictionary_of_players[player].get_monument()
                 ]
-        elif manual_card_selection:
+        elif self.manual_card_selection:
             for player in range(1, self.number_of_players + 1):
                 monument_names_deck = [
                     monument.__str__() for monument in monuments_deck
@@ -124,6 +126,7 @@ class TinyTownsEnv(Env):
                 ]
         self.player_queue = list(self.dictionary_of_players.keys())
         self.master_builder_queue = self.player_queue.copy()
+        return self.master_builder_queue
 
     def step(self, actions):
         """
@@ -175,38 +178,59 @@ class TinyTownsEnv(Env):
         self.game_data.append(game_data)
 
     def export_data(self):
-        with open(xyz.json) as f:
+        with open("data.json") as f:
             json.dump(self.game_data, f)
 
+    def start_of_game(self):
+        # SETUP
+        self.finished = False
+        self.players_finished = 0
+        return self.finished, self.players_finished
+
+    def start_of_turn(self):
+        self.first_player = self.master_builder_queue[0]   # player one becomes first player to act
+        self.acting_player = self.dictionary_of_players[self.first_player]   # assign acting player to be first master builder
+        return self.first_player, self.acting_player
+
+    def fort_ironweed_checks(self, acting_player):
+        if fort_ironweed not in acting_player.board:
+            return True
+        else:
+            if fort_ironweed in acting_player.board and len(self.master_builder_queue) == 1:
+                print(fort_ironweed_last_player_text.format(acting_player))
+                return True
+            else:
+                print(fort_ironweed_turn_skip_text)
+                return False
+            
+    def end_of_turn(self):
+        last_played = self.master_builder_queue.pop(0)  # select current player, and remove them from the front of the player queue
+        self.master_builder_queue.append(last_played)  # add the current player to the back of the player queue
+        for each_player in self.dictionary_of_players:
+            if self.dictionary_of_players[each_player].get_board_is_filled():  # if player has no empty tiles free for resource placement next turn, remove them from queues of players to act
+                if each_player in self.master_builder_queue:
+                    self.players_finished += 1
+                    self.dictionary_of_players[each_player].finish_position = (self.players_finished)
+                    self.master_builder_queue.remove(each_player)
+        if self.master_builder_queue == []:
+            self.finished = True
+        return self.master_builder_queue, self.players_finished, self.dictionary_of_players, self.finished
 
     def play(self):
-        # SETUP
-        finished = False
-        players_finished = 0
+        self.finished, self.players_finished = self.start_of_game()
 
         # GAME
-        while not finished:  # MAIN TURN LOOP
-
-            first_player = self.master_builder_queue[0]   # player one becomes first player to act
-            acting_player = self.dictionary_of_players[first_player]   # assign acting player to be first master builder
-
-            if (
-                fort_ironweed not in acting_player.board
-                or len(self.master_builder_queue) == 1
-            ):
-                if fort_ironweed in acting_player.board:
-                    print(fort_ironweed_last_player_text.format(acting_player))
-
-                # print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_buildable_cards()]))
+        while not self.finished:  # MAIN TURN LOOP
+            first_player, acting_player = self.start_of_turn()
+            acting_player.can_be_master_builder = self.fort_ironweed_checks(acting_player)
+                        
+            if acting_player.can_be_master_builder:
                 print(acting_player.__repr__())
                 for resource_id in acting_player.bank_resources:
                     acting_player.resource_choice_dict.pop(resource_id, None)
-                resource_choice_id = handle_input(
-                    resource_selection_text.format(
-                        acting_player.__str__(), acting_player.resource_choice_dict
-                    ),
-                    acting_player.resource_choice_dict,
-                )  # MASTER BUILDER CHOOSES A RESOURCE
+                resource_choice_id, tile_index = acting_player.get_agent().choose_resource_and_tile(self, acting_player)
+                print(resource_choice_id, tile_index)
+                # resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), acting_player.resource_choice_dict),acting_player.resource_choice_dict,)  # MASTER BUILDER CHOOSES A RESOURCE
                 resource_choice = resource_dict[resource_choice_id]
 
 
@@ -215,40 +239,23 @@ class TinyTownsEnv(Env):
                     acting_player = self.dictionary_of_players[each_player]
                     print(acting_player.__repr__())
                     if acting_player.get_id() != first_player:
-                        if (
-                            resource_choice_id in acting_player.get_factory_resources()
-                        ):  # CHECK FACTORY RESOURCES
-                            print(
-                                current_player_cards_text.format(
-                                    acting_player.__str__(),
-                                    [
-                                        el.__str__()
-                                        for el in acting_player.get_buildable_cards()
-                                    ],
-                                )
-                            )
-                            acting_player_resource_choice_id = handle_input(
-                                resource_selection_text.format(
-                                    acting_player.__str__(), resource_names_dict
-                                ),
-                                resource_dict,
-                            )
+                        if (resource_choice_id in acting_player.get_factory_resources()):  # CHECK FACTORY RESOURCES
+                            print(current_player_cards_text.format(acting_player.__str__(), [el.__str__() for el in acting_player.get_buildable_cards()],))
+                            acting_player_resource_choice_id = handle_input(resource_selection_text.format(acting_player.__str__(), resource_names_dict),resource_dict,)
 
-                            resource_choice = resource_dict[
-                                acting_player_resource_choice_id
-                            ]
+                            resource_choice = resource_dict[acting_player_resource_choice_id]
                         else:
                             resource_choice = resource_dict[resource_choice_id]
 
 
-                        if len(acting_player.get_warehouse_resources()) < acting_player.warehouse_capacity:   # HANDLE WAREHOUSE STORAGE
+                        if len(acting_player.get_warehouse_resources()) < acting_player.warehouse_capacity: # HANDLE WAREHOUSE STORAGE
                             place_in_warehouse = handle_input(place_in_warehouse_text.format(acting_player.__str__(), no_yes_dict), no_yes_dict)
                             if place_in_warehouse:
                                 if 0 < len(acting_player.get_warehouse_resources()):
                                     warehouse_swap = handle_input(warehouse_swap_text.format(acting_player.__str__(), store_swap_dict), store_swap_dict)
-                                    if warehouse_swap:                                                                                                                                              # player has chosen to swap
-                                        warehouse_choice_dict = dict_enum([resource_names_dict[el] for el in acting_player.get_warehouse_resources()])                                              # create dictionary of enumerated resources in warehouses
-                                        warehouse_retrieve_choice = handle_input(warehouse_retrieve_text.format(acting_player.__str__(), warehouse_choice_dict), warehouse_choice_dict)  # handle input of selecting resource
+                                    if warehouse_swap:  # player has chosen to swap
+                                        warehouse_choice_dict = dict_enum([resource_names_dict[el] for el in acting_player.get_warehouse_resources()])  # create dictionary of enumerated resources in warehouses
+                                        warehouse_retrieve_choice = handle_input(warehouse_retrieve_text.format(acting_player.__str__(), warehouse_choice_dict), warehouse_choice_dict) # handle input of selecting resource
                                         print(warehouse_retrieve_choice)
                                         print(acting_player.get_warehouse_resources())
                                         acting_player.warehouse_resources.append(resource_choice_id)
@@ -272,53 +279,27 @@ class TinyTownsEnv(Env):
 
                 for each_player in self.master_builder_queue:    # BUILDING ROUND
                     acting_player = self.dictionary_of_players[each_player]
-                    coord_dictionary, build_options, placement_display = (
-                        find_all_placements(
-                            acting_player, acting_player.get_buildable_cards()
-                        )
-                    )
+                    coord_dictionary, build_options, placement_display = (find_all_placements(acting_player, acting_player.get_buildable_cards()))
                     print(acting_player.__repr__())
 
-                    while (
-                        len(coord_dictionary) != 0
-                    ):  # if resources are arranged in such a way that something can be built...
-                        coord_dictionary, build_options, placement_display = (
-                            find_all_placements(
-                                acting_player, acting_player.get_buildable_cards()
-                            )
-                        )
+                    while (len(coord_dictionary) != 0):  # if resources are arranged in such a way that something can be built...
+                        coord_dictionary, build_options, placement_display = (find_all_placements(acting_player, acting_player.get_buildable_cards()))
                         if len(coord_dictionary) == 0:
                             break
                         which_building_choice = dict_enum(placement_display)
                         dict_presented = dict()
                         for key in which_building_choice:
-                            if which_building_choice[key] != []:
+                            if which_building_choice[key]:
                                 dict_presented[key] = which_building_choice[key]
-                        print(
-                            f"{dict_presented=}"
-                        )  # ...print choices of the tile combinations that can be picked up to construct the building in the chosen position
-                        want_to_build = handle_input(
-                            want_to_build_text.format(
-                                acting_player.__str__(), no_yes_dict
-                            ),
-                            range(2),
-                        )
+                        print(f"{dict_presented=}")  # ...print choices of the tile combinations that can be picked up to construct the building in the chosen position
+                        want_to_build = handle_input(want_to_build_text.format(acting_player.__str__(), no_yes_dict),range(2),)
                         if want_to_build:
-                            build_choice = handle_input(
-                                build_choice_text, dict_presented
-                            )
+                            build_choice = handle_input(build_choice_text, dict_presented)
                             chosen_building_dict = build_options[build_choice]
                             print(chosen_building_dict)
+                            building_placement_choice = handle_input(build_coord_text, chosen_building_dict)
 
-                            building_placement_choice = handle_input(
-                                build_coord_text, chosen_building_dict
-                            )
-                            # print(f"{building_placement_choice=}")
-
-                            acting_player.construct(
-                                chosen_building_dict[building_placement_choice],
-                                dictionary_of_players=self.dictionary_of_players,
-                            )  # CONSTRUCTION METHOD CALL
+                            acting_player.construct(chosen_building_dict[building_placement_choice], self.dictionary_of_players)  # CONSTRUCTION METHOD CALL
 
                         else:
                             break
@@ -329,34 +310,13 @@ class TinyTownsEnv(Env):
                             acting_player.board_is_filled = False  # if player has built since being flagged as having a full board, remove their full board flag so they are not removed from queues of players to act
 
                     acting_player.score = get_score(self, acting_player)
+                    score_display(acting_player)
                     print(acting_player.display_score())
                     print("")
                     print(get_observation(self, each_player))
                     print("")
 
-            else:
-                print(fort_ironweed_turn_skip_text.format(acting_player))
-
-            last_played = self.master_builder_queue.pop(
-                0
-            )  # select current player, and remove them from the front of the player queue
-            self.master_builder_queue.append(
-                last_played
-            )  # add the current player to the back of the player queue
-            for each_player in self.dictionary_of_players:
-                if self.dictionary_of_players[
-                    each_player
-                ].get_board_is_filled():  # if player has no empty tiles free for resource placement next turn, remove them from queues of players to act
-                    if each_player in self.master_builder_queue:
-                        players_finished += 1
-                        self.dictionary_of_players[each_player].finish_position = (
-                            players_finished
-                        )
-                        self.master_builder_queue.remove(each_player)
-                if self.master_builder_queue == []:
-                    finished = True
-        
-
+            self.master_builder_queue, self.players_finished, self.dictionary_of_players, self.finished = self.end_of_turn()
 
         print(game_completion_text)
         player_scores = {}
@@ -398,6 +358,7 @@ class TinyTownsEnv(Env):
 def main():
     """Main entry point for the game."""
     game = TinyTownsEnv()
+    game.setup_players()
     game.play()
 
 

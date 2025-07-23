@@ -1,7 +1,6 @@
 from resources import *
 from cards import *
 from itertools import combinations
-from ui import score_display
 
 def check_surrounding_tiles(tile_coords):
     """
@@ -17,9 +16,9 @@ def check_surrounding_tiles(tile_coords):
         surrounding_tiles_list.append((i + r, j + c))
     return surrounding_tiles_list
 
-def get_score(game, player):
+def get_score(self, player):
 
-    cards_this_game = game.get_card_choices()
+    cards_this_game = self.get_card_choices()
 
     player_board_dict = player.get_instance_board()
     player.monument_score = 0
@@ -141,7 +140,6 @@ def get_score(game, player):
                                 player.unfed_cottage_count -= 2
                                 player.fed_coords.append(coord_pair)
                                 break   # ensures barrett castle only fed once
-            print(f"{player.fed_cottage_count=}")
 
         return player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords
     
@@ -259,7 +257,7 @@ def get_score(game, player):
         
         if feast_hall in cards_this_game:
             feast_hall_counts = []
-            for each_player in game.dictionary_of_players.values():
+            for each_player in self.dictionary_of_players.values():
                 feast_hall_counts.append(each_player.get_feast_hall_count())
             player_to_right_id = (player.get_id() + 1) % len(feast_hall_counts)
             if player_to_right_id == 0:
@@ -577,9 +575,7 @@ def get_score(game, player):
 
         best_scoring_game = max(games_dict, key=games_dict.get) # finds the best way to feed with farms for maximum score
         player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tile_score, player.total_score = scores_dict[best_scoring_game]
-        print(combination)
 
-        score_display(player)
         return player.total_score
 
 
@@ -594,5 +590,4 @@ def get_score(game, player):
 
     player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tile_score
 
-    score_display(player)
     return player.total_score

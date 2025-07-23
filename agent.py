@@ -3,6 +3,8 @@ from choices import *
 from score import get_score
 from resources import *
 import random as rdm
+from layout_variants import find_all_placements
+from ry import *
 
 class GreedyAgent:
     """
@@ -38,13 +40,16 @@ class GreedyAgent:
         best_score = -float("inf")
         best_resource_id = None
         best_tile_index = None
+        best_choice_list = []
+        empty_tile_list = []
 
-        observation = game.get_observation(player.get_id())
+        # observation = game.get_observation(player.get_id())
 
         for resource_index, resource in resource_dict.items():
             for tile_index in range(1,17):
                 tile_coords = board_tile_dict[tile_index]
                 if player.board[tile_coords] == empty:
+                    empty_tile_list.append(tile_index)
                     saved_board = player.board
                     sim_board = player.board.copy()
 
@@ -52,18 +57,36 @@ class GreedyAgent:
 
                     sim_board[tile_coords] = resource
 
+                    coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
+                    while (len(coord_dictionary) != 0):
+                        coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
+                        which_building_choice = dict_enum(placement_display)
+                        dict_presented = dict()
+                        for key in which_building_choice:
+                            if which_building_choice[key]:
+                                dict_presented[key] = which_building_choice[key]
+                        for build_choice in dict_presented:
+                            chosen_building_dict = build_options[build_choice]
+                            for key in chosen_building_dict:
+                                player.construct(chosen_building_dict[key], game.dictionary_of_players)
+                                score = get_score(game, player)
+
+                                player.board = saved_board
+                                if best_score == score:
+                                    best_choice_list.append((resource_index, tile_index))
+                                elif best_score < score:
+                                    best_choice_list.append((resource_index, tile_index))
+                                    best_score = score
+                                    best_resource_id = resource_index
+                                    best_tile_index = tile_index
                     score = get_score(game, player)
                     player.board = saved_board
-                    if best_score < score:
-                        best_score = score
-                        best_resource_id = resource_index
-                        best_tile_index = tile_index
         
-        if best_resource_id is None or best_tile_index is None:
-            best_resource_id = rdm.choice()
-            empty_tile_index_list = [tile for tile in range(1,17) if player.board[board_tile_dict[tile]] == empty]
-            best_tile_index = rdm.choice(empty_tile_index_list)
-        
+        if 1 < len(best_choice_list):
+            best_resource_id, best_tile_index = rdm.choice(best_choice_list)
+        if best_resource_id == None or best_tile_index == None:
+            best_resource_id = rdm.choice([key for key in resource_dict.keys()])
+            best_tile_index = rdm.choice(empty_tile_list)
         return best_resource_id, best_tile_index
 
     def __str__(self):

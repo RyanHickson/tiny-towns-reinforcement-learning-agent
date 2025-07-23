@@ -103,8 +103,9 @@ The cards available to them are {}""".format(
         trading_post_indexes = []
         trading_post_coords = []
         for tile_id, tile_coords in board_tile_dict.items():
-            trading_post_indexes.append(tile_id)
-            trading_post_coords.append(tile_coords)
+            if self.board[tile_coords] == trading_post:
+                trading_post_indexes.append(tile_id)
+                trading_post_coords.append(tile_coords)
         return trading_post_indexes, trading_post_coords
 
     def get_bank_resources(self):
