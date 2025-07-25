@@ -102,7 +102,6 @@ def get_score(self, player):
                                 player.unfed_cottage_count -= 1
                             if barrett_castle == player.get_monument():
                                 if player.board[feedable_coord_pair] == barrett_castle:
-                                    print("BARRETT FOCKIN CASLTE")
                                     player.monument_score = player.board[feedable_coord_pair].score_when_fed()
                                     player.fed_coords.append(feedable_coord_pair)
                                     player.fed_cottage_count += 2
@@ -177,7 +176,7 @@ def get_score(self, player):
                 for adjacent_coords in abbey_adjacent_tile_contents:
                     try:
                         adjacent_tile_content = player.board[adjacent_coords]
-                        print(adjacent_tile_content)
+                        # print(adjacent_tile_content)
                         all_adjacent_contents.append(adjacent_tile_content)
                     except:
                         continue
@@ -232,11 +231,13 @@ def get_score(self, player):
                 row_coords_list = player.check_row(inn_placement)[1]
                 col_content_list = player.check_col(inn_placement)[1]
                 row_col_combined = set(row_coords_list + col_content_list)
+                inn_found = False
                 for coord_pair in row_col_combined:
                     if isinstance(player.board[coord_pair], TavernType):
+                        inn_found = True
                         break
-                    else:
-                        player.tavern_score += 3
+                if not inn_found:
+                    player.tavern_score += 3
         
         if almshouse in cards_this_game:
             match player.tavern_count:
@@ -263,8 +264,6 @@ def get_score(self, player):
             if player_to_right_id == 0:
                 player_to_right_id = len(feast_hall_counts)
             player_id = player.get_id()
-            print(f"{player_id=}")
-            print(f"{player_to_right_id=}")
             if feast_hall_counts[player_id - 1] > feast_hall_counts[player_to_right_id - 1]:
                 player.tavern_score = player.tavern_count * 3
             else:
@@ -313,8 +312,8 @@ def get_score(self, player):
                         break
         if market in cards_this_game:
             for market_coords in player.theatre_coords:
-                markets_in_row = 0
-                markets_in_col = 0
+                markets_in_row = 1
+                markets_in_col = 1
                 row_content_list = player.check_row(market_coords)[0]
                 for tile_content in row_content_list:
                     if tile_content.__class__ is TheatreType:
@@ -515,7 +514,7 @@ def get_score(self, player):
 
             if player.get_monument() == the_starloom:
                 starloom_dict = {1: 6, 2: 3, 3: 2, 4: 0, 5: 0, 6: 0}
-                player.monument_score = starloom_dict[player.finish_position]
+                player.monument_score = starloom_dict[player.finish_position + 1]
 
             if player.get_monument() == statue_of_the_bondmaker:
                 player.monument_score = 0

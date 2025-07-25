@@ -12,6 +12,9 @@ class Resource:
     def __str__(self):
         return self.name
 
+class EmptyResource(Resource):
+    def __init_subclass__(cls):
+        return super().__init_subclass__()
 
 wood = Resource("wood")
 wheat = Resource("wheat")
@@ -19,5 +22,5 @@ glass = Resource("glass")
 brick = Resource("brick")
 stone = Resource("stone")
 
-empty = Resource("empty")
+empty = EmptyResource("empty")
 wild = Resource("wild")

@@ -32,6 +32,9 @@ class Card:
     def get_type(self):
         return type(self)
     
+    def get_deck(self):
+        return self.deck
+    
     def get_is_feedable(self):
         return self.is_feedable
 

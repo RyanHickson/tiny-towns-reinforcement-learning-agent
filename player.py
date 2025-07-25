@@ -26,6 +26,9 @@ class Player:
         self.resource_choice_dict = resource_names_dict
         self.shrine_key = 0
         self.finish_position = 0
+        self.construction_list = []
+        self.turn = 1
+        self.resource_distribution = []
 
 
         self.environment = [
@@ -146,7 +149,7 @@ The cards available to them are {}""".format(
         self.display_board = np.full((4, 4), empty)
         self.town_board_dict = self.get_instance_board()
         for tile_id, tile_coords in board_tile_dict.items():
-            # print(f"{self.town_board_dict[board_tile_dict[tile_id]]=}")
+            # # print(f"{self.town_board_dict[board_tile_dict[tile_id]]=}")
             self.display_board[tile_coords] = self.town_board_dict[
                 tile_coords
             ].__str__()
@@ -278,10 +281,11 @@ The cards available to them are {}""".format(
         row_content_list = []
         row_coords_list = []
         for col in range(4):
-            row_coords = tile_row, col
-            row_coords_list.append(row_coords)
-            tile_content = self.board[row_coords]
-            row_content_list.append(tile_content)
+            if col != tile_col:
+                row_coords = tile_row, col
+                row_coords_list.append(row_coords)
+                tile_content = self.board[row_coords]
+                row_content_list.append(tile_content)
         return row_content_list, row_coords_list
 
     def check_col(self, coord_pair):
@@ -289,10 +293,11 @@ The cards available to them are {}""".format(
         col_content_list = []
         col_coords_list = []
         for row in range(4):
-            col_coords = row, tile_col
-            col_coords_list.append(col_coords)
-            tile_content = self.board[col_coords]
-            col_content_list.append(tile_content)
+            if row != tile_row:
+                col_coords = row, tile_col
+                col_coords_list.append(col_coords)
+                tile_content = self.board[col_coords]
+                col_content_list.append(tile_content)
         return col_content_list, col_coords_list
 
     def greenhouse_feeding(self):
