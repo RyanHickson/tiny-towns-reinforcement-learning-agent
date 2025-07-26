@@ -32,7 +32,7 @@ class Player:
 
 
         self.environment = [
-            self.board,
+            self.get_board(),
             self.factory_resources,
             self.warehouse_resources,
             self.bank_resources,
@@ -92,7 +92,7 @@ The cards available to them are {}""".format(
         self.buildable_cards = self.get_all_cards()
         if len(self.buildable_cards) == 8:
             for tile_id, tile_coords in board_tile_dict.items():
-                if isinstance(self.board[tile_coords], Monument):
+                if isinstance(self.get_board()[tile_coords], Monument):
                     self.buildable_cards.pop(-1)
         return self.buildable_cards
 
@@ -106,7 +106,7 @@ The cards available to them are {}""".format(
         trading_post_indexes = []
         trading_post_coords = []
         for tile_id, tile_coords in board_tile_dict.items():
-            if self.board[tile_coords] == trading_post:
+            if self.get_board()[tile_coords] == trading_post:
                 trading_post_indexes.append(tile_id)
                 trading_post_coords.append(tile_coords)
         return trading_post_indexes, trading_post_coords
@@ -137,7 +137,7 @@ The cards available to them are {}""".format(
         self.town_board_dict = {}
         for row in range(4):
             for tile in range(4):
-                self.town_board_dict[row, tile] = self.board[row, tile]
+                self.town_board_dict[row, tile] = self.get_board()[row, tile]
         return self.town_board_dict
 
     def get_display_board(self):
@@ -161,9 +161,12 @@ The cards available to them are {}""".format(
     def get_feast_hall_count(self):
         self.feast_hall_count = 0
         for tile_id, tile_coords in board_tile_dict.items():
-            if self.board[tile_coords] == feast_hall:
+            if self.get_board()[tile_coords] == feast_hall:
                 self.feast_hall_count += 1
         return self.feast_hall_count
+
+    def get_board(self):
+        return self.board
 
     def get_board_is_filled(self):
         return self.board_is_filled
@@ -211,7 +214,7 @@ The cards available to them are {}""".format(
             if tile_id in visited:
                 return
             visited.add(tile_id)
-            card = self.board[board_tile_dict[tile_id]]
+            card = self.get_board()[board_tile_dict[tile_id]]
             if not (isinstance(card, Card)) or not condition(card):
                 return
             current_group.append(tile_id)
@@ -237,7 +240,7 @@ The cards available to them are {}""".format(
         for tile_id in board_tile_dict:
             if tile_id in visited:
                 continue
-            tile_content = self.board[board_tile_dict[tile_id]]
+            tile_content = self.get_board()[board_tile_dict[tile_id]]
             if not isinstance(tile_content, Card):  # skip resources
                 continue
 
@@ -264,7 +267,7 @@ The cards available to them are {}""".format(
             for tile_id in board_tile_dict:
                 if tile_id in visited:
                     continue
-                tile_content = self.board[board_tile_dict[tile_id]]
+                tile_content = self.get_board()[board_tile_dict[tile_id]]
                 if not isinstance(tile_content, card_type):
                     continue
                 current_group = self.check_grouping(
@@ -284,7 +287,7 @@ The cards available to them are {}""".format(
             if col != tile_col:
                 row_coords = tile_row, col
                 row_coords_list.append(row_coords)
-                tile_content = self.board[row_coords]
+                tile_content = self.get_board()[row_coords]
                 row_content_list.append(tile_content)
         return row_content_list, row_coords_list
 
@@ -296,7 +299,7 @@ The cards available to them are {}""".format(
             if row != tile_row:
                 col_coords = row, tile_col
                 col_coords_list.append(col_coords)
-                tile_content = self.board[col_coords]
+                tile_content = self.get_board()[col_coords]
                 col_content_list.append(tile_content)
         return col_content_list, col_coords_list
 
@@ -309,12 +312,12 @@ The cards available to them are {}""".format(
             score_list.append(current_grouping)
             for tile_id in grouping:
                 tile_coords = board_tile_dict[tile_id]
-                if isinstance(self.board[tile_coords], CottageType):
-                    current_grouping.append(self.board[tile_coords].score_when_fed())
+                if isinstance(self.get_board()[tile_coords], CottageType):
+                    current_grouping.append(self.get_board()[tile_coords].score_when_fed())
                     fed_coords.append(tile_coords)
                 if barrett_castle == self.get_monument():
-                    if isinstance(self.board[tile_coords], Monument):
-                        current_grouping.append(self.board[tile_coords].score_when_fed())
+                    if isinstance(self.get_board()[tile_coords], Monument):
+                        current_grouping.append(self.get_board()[tile_coords].score_when_fed())
                         fed_coords.append(tile_coords)
         score_list = sorted(score_list, reverse=True)   # orders the lists from largest score to smallest, to score in correct order
         return score_list, fed_coords
@@ -323,7 +326,7 @@ The cards available to them are {}""".format(
         building_count = 0
         for tile_id in range(1, 17):
             tile_coords = board_tile_dict[tile_id]
-            tile_content = self.board[tile_coords]
+            tile_content = self.get_board()[tile_coords]
             if tile_content == building:
                 building_count += 1
         return building_count

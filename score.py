@@ -94,15 +94,15 @@ def get_score(self, player):
                 row_col_combined = set(row_coords_list + col_content_list)
                 for coord_pair in row_col_combined:
                     if feedable_coord_pair not in player.fed_coords:
-                        if isinstance(player.board[coord_pair], FarmType):
-                            if player.board[feedable_coord_pair] == cottage:
-                                player.cottage_score += player.board[feedable_coord_pair].score_when_fed()
+                        if isinstance(player.get_board()[coord_pair], FarmType):
+                            if player.get_board()[feedable_coord_pair] == cottage:
+                                player.cottage_score += player.get_board()[feedable_coord_pair].score_when_fed()
                                 player.fed_coords.append(feedable_coord_pair)
                                 player.fed_cottage_count += 1
                                 player.unfed_cottage_count -= 1
                             if barrett_castle == player.get_monument():
-                                if player.board[feedable_coord_pair] == barrett_castle:
-                                    player.monument_score = player.board[feedable_coord_pair].score_when_fed()
+                                if player.get_board()[feedable_coord_pair] == barrett_castle:
+                                    player.monument_score = player.get_board()[feedable_coord_pair].score_when_fed()
                                     player.fed_coords.append(feedable_coord_pair)
                                     player.fed_cottage_count += 2
                                     player.unfed_cottage_count -= 2
@@ -126,15 +126,15 @@ def get_score(self, player):
                     except:
                         continue
                     if tile_content == granary:
-                        if isinstance(player.board[coord_pair], CottageType):
-                            player.cottage_score += player.board[coord_pair].score_when_fed()
+                        if isinstance(player.get_board()[coord_pair], CottageType):
+                            player.cottage_score += player.get_board()[coord_pair].score_when_fed()
                             player.fed_cottage_count += 1
                             player.unfed_cottage_count -= 1
                             player.fed_coords.append(coord_pair)
                             break   # ensures each cottage only fed once
-                        elif isinstance(player.board[coord_pair], Monument):
+                        elif isinstance(player.get_board()[coord_pair], Monument):
                             if barrett_castle == player.get_monument():
-                                player.monument_score += player.board[coord_pair].score_when_fed()
+                                player.monument_score += player.get_board()[coord_pair].score_when_fed()
                                 player.fed_cottage_count += 2
                                 player.unfed_cottage_count -= 2
                                 player.fed_coords.append(coord_pair)
@@ -162,9 +162,9 @@ def get_score(self, player):
                     if farm in cards_this_game:
                         player.fed_coords = combination
                     if tile_coords in player.fed_coords:
-                        if player.board[tile_coords] == cottage:
+                        if player.get_board()[tile_coords] == cottage:
                             temple_adjacent_fed_count += 1
-                        if player.board[tile_coords] == barrett_castle:
+                        if player.get_board()[tile_coords] == barrett_castle:
                             temple_adjacent_fed_count += 2
                 if 2 <= temple_adjacent_fed_count:
                     player.chapel_score += 4
@@ -175,7 +175,7 @@ def get_score(self, player):
                 abbey_adjacent_tile_contents = player.check_adjacent_tiles(coord_pair)
                 for adjacent_coords in abbey_adjacent_tile_contents:
                     try:
-                        adjacent_tile_content = player.board[adjacent_coords]
+                        adjacent_tile_content = player.get_board()[adjacent_coords]
                         # print(adjacent_tile_content)
                         all_adjacent_contents.append(adjacent_tile_content)
                     except:
@@ -191,13 +191,13 @@ def get_score(self, player):
         
         if cloister in cards_this_game:
             cloisters_in_corners = 0
-            if player.board[0,0] == cloister:
+            if player.get_board()[0,0] == cloister:
                 cloisters_in_corners += 1
-            if player.board[0,3] == cloister:
+            if player.get_board()[0,3] == cloister:
                 cloisters_in_corners += 1
-            if player.board[3,0] == cloister:
+            if player.get_board()[3,0] == cloister:
                 cloisters_in_corners += 1
-            if player.board[3,3] == cloister:
+            if player.get_board()[3,3] == cloister:
                 cloisters_in_corners += 1
             player.chapel_score += player.chapel_count * cloisters_in_corners
         return player.chapel_score
@@ -233,7 +233,7 @@ def get_score(self, player):
                 row_col_combined = set(row_coords_list + col_content_list)
                 inn_found = False
                 for coord_pair in row_col_combined:
-                    if isinstance(player.board[coord_pair], TavernType):
+                    if isinstance(player.get_board()[coord_pair], TavernType):
                         inn_found = True
                         break
                 if not inn_found:
@@ -304,10 +304,10 @@ def get_score(self, player):
             for bakery_coords in player.theatre_coords:
                 tiles_next_to_bakery = player.check_adjacent_tiles(bakery_coords)
                 for coord_pair in tiles_next_to_bakery:
-                    if isinstance(player.board[coord_pair], FarmType):
+                    if isinstance(player.get_board()[coord_pair], FarmType):
                         player.theatre_score += 3
                         break
-                    if isinstance(player.board[coord_pair], FactoryType):
+                    if isinstance(player.get_board()[coord_pair], FactoryType):
                         player.theatre_score += 3
                         break
         if market in cards_this_game:
@@ -325,13 +325,13 @@ def get_score(self, player):
                 player.theatre_score += max(markets_in_row, markets_in_col)
         if tailor in cards_this_game:
             tailors_in_centre = 0
-            if player.board[1,1] == tailor:
+            if player.get_board()[1,1] == tailor:
                 tailors_in_centre += 1
-            if player.board[1,2] == tailor:
+            if player.get_board()[1,2] == tailor:
                 tailors_in_centre += 1
-            if player.board[2,1] == tailor:
+            if player.get_board()[2,1] == tailor:
                 tailors_in_centre += 1
-            if player.board[2,2] == tailor:
+            if player.get_board()[2,2] == tailor:
                 tailors_in_centre += 1
             player.theatre_score += player.theatre_count + (player.theatre_count * tailors_in_centre)
         return player.theatre_score
@@ -350,10 +350,10 @@ def get_score(self, player):
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
                     try:
-                        if isinstance(player.board[coord_pair], CottageType):
+                        if isinstance(player.get_board()[coord_pair], CottageType):
                             player.well_score += 1
                         if barrett_castle == player.get_monument():
-                                if isinstance(player.board[coord_pair], Monument):
+                                if isinstance(player.get_board()[coord_pair], Monument):
                                     player.well_score += 2
                                     player.fed_coords.append(coord_pair)
                     except:
@@ -363,7 +363,7 @@ def get_score(self, player):
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
-                    if isinstance(player.board[coord_pair], WellType):
+                    if isinstance(player.get_board()[coord_pair], WellType):
                         player.well_score += 2
                         break
         
@@ -371,7 +371,7 @@ def get_score(self, player):
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
-                    if isinstance(player.board[coord_pair], FarmType) or isinstance(player.board[coord_pair], TheatreType):
+                    if isinstance(player.get_board()[coord_pair], FarmType) or isinstance(player.get_board()[coord_pair], TheatreType):
                         player.well_score += 2
                         break
         
@@ -404,7 +404,7 @@ def get_score(self, player):
                 player.monument_coords = tile_coords
             if isinstance(tile_content, Resource):
                 player.empty_tile_count += 1
-        for row in player.board:
+        for row in player.get_board():
             for tile in row:
                 if isinstance(tile, CottageType):
                     player.total_cottage_count += 1
@@ -549,12 +549,12 @@ def get_score(self, player):
             fed_board = np.full((4, 4), False)
             for coord_pair in combination:
                 fed_board[coord_pair] = True
-                if isinstance(player.board[coord_pair], CottageType):
-                    player.cottage_score += player.board[coord_pair].score_when_fed()
+                if isinstance(player.get_board()[coord_pair], CottageType):
+                    player.cottage_score += player.get_board()[coord_pair].score_when_fed()
                     player.fed_cottage_count += 1
                 if barrett_castle == player.get_monument():
-                    if isinstance(player.board[coord_pair], Monument):
-                        player.monument_score += player.board[coord_pair].score_when_fed()
+                    if isinstance(player.get_board()[coord_pair], Monument):
+                        player.monument_score += player.get_board()[coord_pair].score_when_fed()
                         player.fed_cottage_count += 2
             player.unfed_cottage_count = number_of_feeds - player.fed_cottage_count
 

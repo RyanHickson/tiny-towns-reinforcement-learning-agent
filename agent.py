@@ -44,67 +44,42 @@ class Agent:
     #     if 16 < score:
             
 
-
-    def board_scan(self, game, player):
-        """
-        Assist in resource placement decision by assessing placement
-        options for what layout variants they assist in completing.
-        """
-        best_placement_score = -float("inf")
-        best_moves = []
-        empty_tile_list = []
-        for tile_index in range(1,17):
-            tile_coords = board_tile_dict[tile_index]
-            if player.board[tile_coords] == empty:
-                empty_tile_list.append(tile_index)
-        saved_board = player.board.copy()
-
-        for resource_index, resource in resource_dict.items():
+    def simulate_turns(self, game, player, empty_tile_list, number_of_turns):
+        saved_board = player.get_board().copy()
+        while number_of_turns:
             for tile_index in empty_tile_list:
+                reduced_empty_tile_list = empty_tile_list.copy()
+                reduced_empty_tile_list.remove(tile_index)
                 tile_coords = board_tile_dict[tile_index]
-                player.board[tile_coords] = resource
+                for resource_index, resource in resource_dict.items():
+                    sim_board = player.get_board().copy()
+                    player.board = sim_board
+                    sim_board[tile_coords] = resource
+                    number_of_turns -= 1
+                    
 
-                current_placement_score = 0
-
-                for card in player.get_buildable_cards():
-                    layout = card.get_layout()
-                    for row_index, row in enumerate(layout):
-                        for cell_index, cell in enumerate(row):
-                            if cell == resource:
-                                board_position = (tile_coords[0] - row_index, tile_coords[1] - cell_index)
-                                try:
-                                    if player.board[board_position] == resource:
-                                        current_placement_score += 5
-                                except:
-                                    continue
-
-                adjacent_coords = player.check_adjacent_tiles(tile_coords)
-                for adjacent_coord_pair in adjacent_coords:
-                    adjacent_tile = player.board[adjacent_coord_pair]
-                    if adjacent_tile == resource:
-                        current_placement_score += 1
-                
-                adjacent_empty = sum(1 for adjacent_coord_pair in adjacent_coords if player.board[adjacent_coord_pair] == empty)
-                if adjacent_empty == 0:
-                    current_placement_score -= 2
-
-                current_placement_score += get_score(game, player)
-
-                if best_placement_score < current_placement_score:
-                    best_placement_score = current_placement_score
-                    best_moves = [(resource_index, tile_index)]
-                elif best_placement_score == current_placement_score:
-                    best_moves.append((resource_index, tile_index))
-
-
-                player.board = saved_board.copy()
-        
-        if best_moves:
-            return rdm.choice(best_moves)
-        else:
-            best_resource_id = rdm.choice([key for key in resource_dict.keys()])
-            best_tile_index = rdm.choice(empty_tile_list)
-        return best_resource_id, best_tile_index
+                    coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
+                    while (len(coord_dictionary) != 0):
+                        coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
+                        which_building_choice = dict_enum(placement_display)
+                        dict_presented = dict()
+                        for key in which_building_choice:
+                            if which_building_choice[key]:
+                                dict_presented[key] = which_building_choice[key]
+                        for build_choice in dict_presented:
+                            chosen_building_dict = build_options[build_choice]
+                            for key in chosen_building_dict:
+                                player.construct(chosen_building_dict[key], game.dictionary_of_players)
+                                score = get_score(game, player)
+                                if best_score == score:
+                                    best_choice_list.append((resource_index, tile_index))
+                                elif best_score < score:
+                                    best_choice_list = [(resource_index, tile_index)]
+                                    best_score = score
+                                    best_resource_id = resource_index
+                                    best_tile_index = tile_index
+                score = get_score(game, player)
+            player.board = saved_board
 
     def choose_resource_and_tile(self, game, player):
         """
@@ -115,17 +90,18 @@ class Agent:
         best_tile_index = None
         best_choice_list = []
         empty_tile_list = []
-
-        self.board_scan(game, player)
+        
 
         
-        saved_board = player.board
+        saved_board = player.get_board()
         # observation = game.get_observation(player.get_id())
 
         for tile_index in range(1,17):
             tile_coords = board_tile_dict[tile_index]
-            if player.board[tile_coords] == empty:
+            if player.get_board()[tile_coords] == empty:
                 empty_tile_list.append(tile_index)
+
+        
 
         if rdm.random() < self.epsilon:
             resource_dist_choice = rdm.randint(0, player.resource_distribution[0])
@@ -148,35 +124,10 @@ class Agent:
             # resource_index = rdm.choice(list(resource_dict.keys()))
             tile_index = rdm.choice(empty_tile_list)
             return resource_index, tile_index
-
-        for resource_index, resource in resource_dict.items():
-            sim_board = player.board.copy()
-            player.board = sim_board
-            sim_board[tile_coords] = resource
-
-            coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
-            while (len(coord_dictionary) != 0):
-                coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
-                which_building_choice = dict_enum(placement_display)
-                dict_presented = dict()
-                for key in which_building_choice:
-                    if which_building_choice[key]:
-                        dict_presented[key] = which_building_choice[key]
-                for build_choice in dict_presented:
-                    chosen_building_dict = build_options[build_choice]
-                    for key in chosen_building_dict:
-                        player.construct(chosen_building_dict[key], game.dictionary_of_players)
-                        score = get_score(game, player)
-                        if best_score == score:
-                            best_choice_list.append((resource_index, tile_index))
-                        elif best_score < score:
-                            best_choice_list = [(resource_index, tile_index)]
-                            best_score = score
-                            best_resource_id = resource_index
-                            best_tile_index = tile_index
-            score = get_score(game, player)
-        player.board = saved_board
         
+        else:
+            best_resource_id, best_tile_index = self.simulate_turns(game, player, empty_tile_list, number_of_turns=12)
+
         if 1 < len(best_choice_list):
             best_resource_id, best_tile_index = rdm.choice(best_choice_list)
         if best_resource_id == None or best_tile_index == None:

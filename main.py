@@ -170,10 +170,10 @@ class TinyTownsEnv(Env):
             player = self.dictionary_of_players[player_id]
             agent = player.get_agent()
 
-            resource_id, tile_index = agent.board_scan(self, player)
+            resource_id, tile_index = agent.choose_resource_and_tile(self, player)
             resource = resource_dict[resource_id]
-            if player.board[board_tile_dict[tile_index]] == empty:
-                player.board[board_tile_dict[tile_index]] = resource
+            if player.get_board()[board_tile_dict[tile_index]] == empty:
+                player.get_board()[board_tile_dict[tile_index]] = resource
 
             player.score = get_score(self, player)
             rewards[player_id] = player.score
@@ -204,7 +204,7 @@ class TinyTownsEnv(Env):
         }
         for each_player in self.player_queue:
             player = self.dictionary_of_players[each_player]
-            board = [player.board[board_tile_dict[el]].__str__() for el in range(1,17)]
+            board = [player.get_board()[board_tile_dict[el]].__str__() for el in range(1,17)]
             player_data = {
                 "player_id": each_player,
                 "agent": player.get_agent().__str__(),
@@ -269,9 +269,9 @@ class TinyTownsEnv(Env):
 
 
     def fort_ironweed_checks(self):
-        if fort_ironweed not in self.acting_player.board:
+        if fort_ironweed not in self.acting_player.get_board():
             return True
-        if fort_ironweed in self.acting_player.board and len(self.master_builder_queue) == 1:
+        if fort_ironweed in self.acting_player.get_board() and len(self.master_builder_queue) == 1:
             # print(fort_ironweed_last_player_text.format(self.acting_player))
             return True
         else:
@@ -325,7 +325,7 @@ class TinyTownsEnv(Env):
             if self.acting_player.can_be_master_builder:
                 # print(self.acting_player.__repr__())
                 self.acting_player.resource_choice_dict = self.bank_resource_check()
-                resource_choice_id, tile_index = self.acting_player.get_agent().board_scan(self, self.acting_player)
+                resource_choice_id, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
                 # print(resource_choice_id, tile_index)
                 # resource_choice_id = handle_input(resource_selection_text.format(self.acting_player.__str__(), self.acting_player.resource_choice_dict),self.acting_player.resource_choice_dict,)  # MASTER BUILDER CHOOSES A RESOURCE
 
@@ -339,7 +339,7 @@ class TinyTownsEnv(Env):
                     if self.acting_player.get_id() != self.first_player:
                         if (resource_choice_id in self.acting_player.get_factory_resources()):  # CHECK FACTORY RESOURCES
                             # print(current_player_cards_text.format(self.acting_player.__str__(), [el.__str__() for el in self.acting_player.get_buildable_cards()],))
-                            _, tile_index = self.acting_player.get_agent().board_scan(self, self.acting_player)
+                            _, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
                             self.acting_player_resource_choice_id = handle_input(resource_selection_text.format(self.acting_player.__str__(), resource_names_dict), list(resource_dict.keys()))
 
                             resource_choice = resource_dict[self.acting_player_resource_choice_id]
@@ -364,15 +364,15 @@ class TinyTownsEnv(Env):
                                     self.acting_player.warehouse_resources.append(resource_choice_id)
                                     break
                     # tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
-                    while self.acting_player.board[board_tile_dict[tile_index]] != empty:
+                    while self.acting_player.get_board()[board_tile_dict[tile_index]] != empty:
                         # print(not_empty_tile_text)
-                        resource_choice_id, tile_index = self.acting_player.get_agent().board_scan(self, self.acting_player)
+                        resource_choice_id, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
                         # tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # If chosen tile is not empty, ask for a new tile index
 
-                    self.acting_player.board[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT
+                    self.acting_player.get_board()[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT
 
 
-                    if empty not in self.acting_player.board:    # check if board has no tiles free for resource placement
+                    if empty not in self.acting_player.get_board():    # check if board has no tiles free for resource placement
                         self.acting_player.board_is_filled = True    # mark player as having a full board
 
 
@@ -405,7 +405,7 @@ class TinyTownsEnv(Env):
                             break
 
                         if (
-                            empty in self.acting_player.board
+                            empty in self.acting_player.get_board()
                         ):  # check if board has tiles free for resource placement
                             self.acting_player.board_is_filled = False  # if player has built since being flagged as having a full board, remove their full board flag so they are not removed from queues of players to act
 
