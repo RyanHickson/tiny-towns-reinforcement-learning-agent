@@ -1,5 +1,5 @@
 from resources import *
-from building_layouts import *
+from sim_layouts import *
 
 
 class Card:

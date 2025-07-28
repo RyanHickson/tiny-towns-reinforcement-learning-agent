@@ -5,20 +5,21 @@ from ry import *
 from ui import *
 
 
-def player_construct(self, construction_dict, dictionary_of_players, opaleye_construct=False):
-    self.construction_list.append((construction_dict["card"].__str__(), self.turn))
+def player_construct(self, construction_dict, dictionary_of_players, opaleye_construct=False, simulated_construct=False):
+    if not simulated_construct:
+        self.construction_list.append((construction_dict["card"].__str__(), self.turn))
     if not opaleye_construct:
         placement = construction_dict["placement"]
         building = construction_dict["card"]
         co_ords = construction_dict["co-ords"]
-        self.get_board()[placement] = building  # BUILDING PLACEMENT ASSIGNMENT
+        self.board[placement] = building  # BUILDING PLACEMENT ASSIGNMENT
         for coord_pair in co_ords:
             if coord_pair != placement and isinstance(self.get_board()[coord_pair], Resource):
-                self.get_board()[coord_pair] = empty
+                self.board[coord_pair] = empty
     else:
         placement = construction_dict["placement"]
         building = construction_dict["card"]
-        self.get_board()[placement] = building
+        self.board[placement] = building
 
     match construction_dict["card"].__str__():
         case "Factory":
@@ -29,6 +30,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
         case "Bank":
             resource_choice_index = handle_input(bank_resource_choice_text.format(self.resource_choice_dict), range(1, 6))
             self.bank_resources.append(resource_choice_index)
+            # self.resource_types.remove(resource_names_dict[resource_choice_index])
         case "Architect's Guild":
             completed_swaps = 0
             allowed_swaps = 2
@@ -38,7 +40,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                     if isinstance(tile, Card):
                         if completed_swaps < allowed_swaps:
                             swap_index = handle_input(f"Select a building to replace: {building_dict} ", list(building_dict.keys()))
-                            self.get_board()[i, j] = building_dict[swap_index]
+                            self.board[i, j] = building_dict[swap_index]
                             completed_swaps += 1
         case "Grove University":
             want_to_build = handle_input(want_to_build_text.format(self.__str__(), no_yes_dict), range(2))
@@ -47,22 +49,23 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                 card = handle_input(possible_cards, list(possible_cards.keys()))
                 grove_university_dict = {}
                 for tile_id, tile_coords in board_tile_dict.items():
-                    if self.get_board()[tile_coords] == empty:
+                    if self.board[tile_coords] == empty:
                          grove_university_dict[tile_id] = tile_coords
-                where_to_build = handle_input(grove_university_dict, list(grove_university_dict.keys()))
-                self.construct({"placement": grove_university_dict[where_to_build], "card": possible_cards[card], "co-ords": []}, dictionary_of_players=dictionary_of_players, opaleye_construct=True)
+                if grove_university_dict:
+                    where_to_build = handle_input(grove_university_dict, list(grove_university_dict.keys()))
+                    self.construct({"placement": grove_university_dict[where_to_build], "card": possible_cards[card], "co-ords": []}, dictionary_of_players=dictionary_of_players, opaleye_construct=True)
 
         case "Opaleye's Watch":
             opaleyes_watch_buildings = 3
-            opaleye_choices = dict_enum(self.get_buildable_cards())
+            opaleye_choice_dict = dict_enum(self.get_buildable_cards())
             for el in range(opaleyes_watch_buildings):
                 opaleye_building_choice = handle_input(
-                    f"Select a building to hold: {opaleye_choices} ",
-                    opaleye_choices)
+                    f"Select a building to hold: {opaleye_choice_dict} ",
+                    list(opaleye_choice_dict.keys()))
                 self.opaleyes_watch_holdings.append(
-                    opaleye_choices[opaleye_building_choice]
+                    opaleye_choice_dict[opaleye_building_choice]
                 )
-                opaleye_choices.pop(opaleye_building_choice)
+                opaleye_choice_dict.pop(opaleye_building_choice)
 
         case "Shrine of the Elder Tree":
             self.shrine_key = 0
@@ -83,8 +86,9 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                 opaleye_building_choice = construction_dict["card"]
                 opaleye_placement_dict = {}
                 for tile_id, tile_coords in board_tile_dict.items():
-                    if temp_acting_player.get_board()[tile_coords] == empty:
+                    if temp_acting_player.board[tile_coords] == empty:
                         opaleye_placement_dict[tile_id] = tile_coords
-                where_to_build = handle_input(where_to_build_text.format(temp_acting_player.__str__(), opaleye_placement_dict), opaleye_placement_dict)
-                temp_acting_player.opaleyes_watch_holdings.remove(construction_dict["card"])
-                temp_acting_player.construct({"placement": opaleye_placement_dict[where_to_build], "card": opaleye_building_choice, "co-ords": []}, dictionary_of_players=dictionary_of_players, opaleye_construct=True)
+                if opaleye_placement_dict:
+                    where_to_build = handle_input(where_to_build_text.format(temp_acting_player.__str__(), opaleye_placement_dict), list(opaleye_placement_dict.keys()))
+                    temp_acting_player.opaleyes_watch_holdings.remove(construction_dict["card"])
+                    temp_acting_player.construct({"placement": opaleye_placement_dict[where_to_build], "card": opaleye_building_choice, "co-ords": []}, dictionary_of_players=dictionary_of_players, opaleye_construct=True)

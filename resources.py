@@ -22,5 +22,9 @@ glass = Resource("glass")
 brick = Resource("brick")
 stone = Resource("stone")
 
+
+
+red_herring = Resource("red_herring")
+
 empty = EmptyResource("empty")
 wild = Resource("wild")

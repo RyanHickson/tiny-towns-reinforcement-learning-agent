@@ -1,5 +1,5 @@
 import numpy as np
-from building_layouts import *
+from sim_layouts import *
 from resources import *
 from cards import *
 from choices import *
@@ -156,6 +156,9 @@ The cards available to them are {}""".format(
         return self.display_board
 
     def get_resource_types(self):
+        return self.resource_types
+    
+    def display_resource_types(self):
         return [resource.__str__() for resource in self.resource_types]
     
     def get_feast_hall_count(self):
@@ -331,9 +334,9 @@ The cards available to them are {}""".format(
                 building_count += 1
         return building_count
 
-    def construct(self, dict, dictionary_of_players, opaleye_construct=False):
+    def construct(self, dict, dictionary_of_players, opaleye_construct=False, simulated_construct=False):
         """
         Calls the construct method for handling using resources
         to build, and immediate effects therein.
         """
-        return player_construct(self, dict, dictionary_of_players, opaleye_construct)
+        return player_construct(self, dict, dictionary_of_players, opaleye_construct, simulated_construct)

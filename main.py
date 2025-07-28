@@ -1,6 +1,6 @@
 import random as rdm
 from player import *
-from building_layouts import *
+from sim_layouts import *
 from cards import *
 from resources import *
 from layout_variants import *
@@ -173,7 +173,7 @@ class TinyTownsEnv(Env):
             resource_id, tile_index = agent.choose_resource_and_tile(self, player)
             resource = resource_dict[resource_id]
             if player.get_board()[board_tile_dict[tile_index]] == empty:
-                player.get_board()[board_tile_dict[tile_index]] = resource
+                player.board[board_tile_dict[tile_index]] = resource
 
             player.score = get_score(self, player)
             rewards[player_id] = player.score
@@ -313,7 +313,6 @@ class TinyTownsEnv(Env):
 
     # GAME
     def play(self):
-        epsilon = 0.5
         self.finished, self.players_finished = self.start_of_game()
 
         while not self.finished:  # MAIN TURN LOOP
@@ -358,18 +357,20 @@ class TinyTownsEnv(Env):
                                         # print(warehouse_retrieve_choice)
                                         # print(self.acting_player.get_warehouse_resources())
                                         self.acting_player.warehouse_resources.append(resource_choice_id)
-                                        resource_choice = warehouse_choice_dict[warehouse_retrieve_choice]
+                                        resource_choice_index = warehouse_choice_dict[warehouse_retrieve_choice]
+                                        resource_choice = resource_dict[resource_choice_index]
                                         self.acting_player.warehouse_resources.pop(warehouse_retrieve_choice)
                                 else:
                                     self.acting_player.warehouse_resources.append(resource_choice_id)
                                     break
                     # tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
-                    while self.acting_player.get_board()[board_tile_dict[tile_index]] != empty:
-                        # print(not_empty_tile_text)
-                        resource_choice_id, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
+
+                    # while self.acting_player.get_board()[board_tile_dict[tile_index]] != empty:
+
+                    resource_choice_id, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
                         # tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # If chosen tile is not empty, ask for a new tile index
 
-                    self.acting_player.get_board()[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT
+                    self.acting_player.board[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT
 
 
                     if empty not in self.acting_player.get_board():    # check if board has no tiles free for resource placement
@@ -409,13 +410,20 @@ class TinyTownsEnv(Env):
                         ):  # check if board has tiles free for resource placement
                             self.acting_player.board_is_filled = False  # if player has built since being flagged as having a full board, remove their full board flag so they are not removed from queues of players to act
 
-                    self.acting_player.score = get_score(self, self.acting_player)
-                    # score_display(self.acting_player)
+                    self.acting_player.score = get_score(self, self.acting_player, simulated_scoring=True)
+
+                    if empty not in self.acting_player.get_board():    # check if board has no tiles free for resource placement
+                        self.acting_player.board_is_filled = True    # mark player as having a full board
+                    print(self.acting_player.get_display_board())
+                    print(self.acting_player.score)
+
+
+                    score_display(self.acting_player)
                     # print(self.acting_player.display_score())
                     # print("")
                     # print(get_observation(self, each_player))
                     # print("")
-
+                    # print(self.acting_player.get_display_board())
             self.master_builder_queue, self.players_finished, self.dictionary_of_players, self.finished = self.end_of_turn()
 
         # print(game_completion_text)

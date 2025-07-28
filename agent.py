@@ -4,6 +4,7 @@ from resources import *
 import random as rdm
 from layout_variants import find_all_placements
 from ry import *
+from itertools import combinations, permutations, product
 
 class Agent:
     """
@@ -14,19 +15,18 @@ class Agent:
 
 
         # self.actions = actions
-        self.learning_rate = 0.1
-        self.discount_factor = 0.95
-        self.epsilon = 1
-        self.epsilon_min = 0.05
-        self.epsilon_decay = 0.995
+        self.epsilon = 0.01
+
         self.policy = {
             "cottage_priority": 4,
-            "farm_priority": 1,
+            "farm_priority": 2,
             "factory_priority": 2,
+            "chapel_priority": 2,
             "tavern_priority": 3,
             "theatre_priority": 3,
+            "well_priority": 0.1,
             "monument_priority": 7,
-            "shrine_priority": 1
+            "shrine_priority": 2
         }
 
         # self.resource_epsilon
@@ -40,46 +40,11 @@ class Agent:
         pass
         # STATE LOGIC
 
+    def get_policy(self):
+        return self.policy
+
     # def update_agent_policy(self, score):
     #     if 16 < score:
-            
-
-    def simulate_turns(self, game, player, empty_tile_list, number_of_turns):
-        saved_board = player.get_board().copy()
-        while number_of_turns:
-            for tile_index in empty_tile_list:
-                reduced_empty_tile_list = empty_tile_list.copy()
-                reduced_empty_tile_list.remove(tile_index)
-                tile_coords = board_tile_dict[tile_index]
-                for resource_index, resource in resource_dict.items():
-                    sim_board = player.get_board().copy()
-                    player.board = sim_board
-                    sim_board[tile_coords] = resource
-                    number_of_turns -= 1
-                    
-
-                    coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
-                    while (len(coord_dictionary) != 0):
-                        coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
-                        which_building_choice = dict_enum(placement_display)
-                        dict_presented = dict()
-                        for key in which_building_choice:
-                            if which_building_choice[key]:
-                                dict_presented[key] = which_building_choice[key]
-                        for build_choice in dict_presented:
-                            chosen_building_dict = build_options[build_choice]
-                            for key in chosen_building_dict:
-                                player.construct(chosen_building_dict[key], game.dictionary_of_players)
-                                score = get_score(game, player)
-                                if best_score == score:
-                                    best_choice_list.append((resource_index, tile_index))
-                                elif best_score < score:
-                                    best_choice_list = [(resource_index, tile_index)]
-                                    best_score = score
-                                    best_resource_id = resource_index
-                                    best_tile_index = tile_index
-                score = get_score(game, player)
-            player.board = saved_board
 
     def choose_resource_and_tile(self, game, player):
         """
@@ -88,22 +53,62 @@ class Agent:
         best_score = -float("inf")
         best_resource_id = None
         best_tile_index = None
-        best_choice_list = []
         empty_tile_list = []
-        
-
-        
         saved_board = player.get_board()
-        # observation = game.get_observation(player.get_id())
-
+        number_of_turns = 3
         for tile_index in range(1,17):
-            tile_coords = board_tile_dict[tile_index]
-            if player.get_board()[tile_coords] == empty:
-                empty_tile_list.append(tile_index)
-
+                tile_coords = board_tile_dict[tile_index]
+                if player.get_board()[tile_coords] == empty:
+                    empty_tile_list.append(tile_index)
+        tile_combos = combinations(empty_tile_list, number_of_turns)
+        resource_combos = product(resource_dict.keys(), repeat=number_of_turns)
         
+        if self.epsilon < rdm.random():
+            for tile_combo in tile_combos:
 
-        if rdm.random() < self.epsilon:
+                for resource_combo in resource_combos:
+                    for index in range(number_of_turns):
+                        sim_board = player.board.copy()
+                        player.board = sim_board
+
+                        resource_index = resource_combo[index]
+                        tile_index = tile_combo[index]
+
+                        player.board[board_tile_dict[tile_index]] = resource_dict[resource_index]
+
+                        build_board = sim_board.copy()
+                        player.board = build_board
+                        coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
+
+                        while (len(coord_dictionary) != 0):
+                            coord_dictionary, build_options, placement_display = (find_all_placements(player, player.get_buildable_cards()))
+                            which_building_choice = dict_enum(placement_display)
+                            dict_presented = dict()
+                            for key in which_building_choice:
+                                if which_building_choice[key]:
+                                    dict_presented[key] = which_building_choice[key]
+                            for build_choice in dict_presented:
+                                chosen_building_dict = build_options[build_choice]
+                                for key in chosen_building_dict:
+                                    player.construct(chosen_building_dict[key], game.dictionary_of_players, simulated_construct=True)
+                                    score = get_score(game, player, simulated_scoring=True)
+                                    if best_score < score:
+                                        best_score = score
+                                        best_resource_combo = resource_combo
+                                        best_tile_combo = tile_combo
+                        player.board = sim_board
+            
+            player.board = saved_board
+            if best_resource_id == None or best_tile_index == None:
+                best_resource_id = rdm.choice([key for key in resource_dict.keys()])
+                best_tile_index = rdm.choice(empty_tile_list)
+                return best_resource_id, best_tile_index
+
+            best_resource_id = rdm.choice(best_resource_combo)
+            best_tile_index = rdm.choice(best_tile_combo)
+            return best_resource_id, best_tile_index
+
+        else:
             resource_dist_choice = rdm.randint(0, player.resource_distribution[0])
             if resource_dist_choice < player.resource_distribution[1]:
                 resource_index = 1
@@ -122,18 +127,14 @@ class Agent:
                         else:
                             resource_index = 5
             # resource_index = rdm.choice(list(resource_dict.keys()))
-            tile_index = rdm.choice(empty_tile_list)
+            if empty_tile_list:
+                tile_index = rdm.choice(empty_tile_list)
+            else:
+                self.finished = True
             return resource_index, tile_index
         
-        else:
-            best_resource_id, best_tile_index = self.simulate_turns(game, player, empty_tile_list, number_of_turns=12)
 
-        if 1 < len(best_choice_list):
-            best_resource_id, best_tile_index = rdm.choice(best_choice_list)
-        if best_resource_id == None or best_tile_index == None:
-            best_resource_id = rdm.choice([key for key in resource_dict.keys()])
-            best_tile_index = rdm.choice(empty_tile_list)
-        return best_resource_id, best_tile_index
+
 
     def __str__(self):
         return "{}".format(self.name)

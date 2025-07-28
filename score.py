@@ -16,7 +16,7 @@ def check_surrounding_tiles(tile_coords):
         surrounding_tiles_list.append((i + r, j + c))
     return surrounding_tiles_list
 
-def get_score(self, player):
+def get_score(self, player, simulated_scoring=False):
 
     cards_this_game = self.get_card_choices()
 
@@ -503,8 +503,19 @@ def get_score(self, player):
                 player.monument_score = 0
 
             if player.get_monument() == shrine_of_the_elder_tree:
-                shrine_score_dict = {1: 1, 2: 2, 3: 3, 4:4, 5:5, 6:8}
-                player.monument_score = shrine_score_dict[player.shrine_key]
+                match player.shrine_key:
+                    case 1:
+                        player.monument_score = 1
+                    case 2:
+                        player.monument_score = 2
+                    case 3:
+                        player.monument_score = 3
+                    case 4:
+                        player.monument_score = 4
+                    case 5:
+                        player.monument_score = 5
+                    case _:
+                        player.monument_score = 8
             
             if player.get_monument() == silva_forum:
                 player.monument_score = 1 + len(player.largest_contiguous_group())
@@ -519,8 +530,15 @@ def get_score(self, player):
             if player.get_monument() == statue_of_the_bondmaker:
                 player.monument_score = 0
 
-        player.empty_tile_score *= player.empty_tile_count
-        return player.monument_score, player.empty_tile_score
+        player.empty_tiles_score = player.empty_tile_score * player.empty_tile_count
+        return player.monument_score, player.empty_tiles_score
+
+    def get_farm_type_count(player):
+        player.farm_type_count = 0
+        for tile_coords, tile_content in player_board_dict.items():
+            if isinstance(tile_content, FarmType):
+                player.farm_type_count += 1
+        return player.farm_type_count
 
     def get_farm_count(player):
         player.farm_count = 0
@@ -564,29 +582,66 @@ def get_score(self, player):
             player.tavern_score = get_tavern_score(player)
             player.theatre_score = get_theatre_score(player)
             player.well_score = get_well_score(player)
-            player.monument_score, player.empty_tile_score = get_monument_score(player)
+            player.monument_score, player.empty_tiles_score = get_monument_score(player)
 
 
-            player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tile_score
+            player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tiles_score
             
             games_dict[combination] = player.total_score
-            scores_dict[combination] = [player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tile_score, player.total_score]
+            scores_dict[combination] = [player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tiles_score, player.total_score]
 
         best_scoring_game = max(games_dict, key=games_dict.get) # finds the best way to feed with farms for maximum score
-        player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tile_score, player.total_score = scores_dict[best_scoring_game]
+        player.factory_score, player.cottage_score, player.chapel_score, player.tavern_score, player.theatre_score, player.well_score, player.monument_score, player.empty_tiles_score, player.total_score = scores_dict[best_scoring_game]
+        
 
+
+        player.farm_type_count = get_farm_type_count(player)
+        if simulated_scoring:
+            farm_present = False
+            for tile_coords, tile_content in player_board_dict.items():
+                if isinstance(tile_content, FarmType):
+                    farm_present = True
+            if farm_present:
+                player.total_score += 10
+            player.factory_score *= player.get_agent().get_policy()["factory_priority"]
+            player.cottage_score *= player.get_agent().get_policy()["cottage_priority"]
+            player.chapel_score *= player.get_agent().get_policy()["chapel_priority"]
+            player.tavern_score *= player.get_agent().get_policy()["tavern_priority"]
+            player.theatre_score *= player.get_agent().get_policy()["theatre_priority"]
+            player.well_score *= player.get_agent().get_policy()["well_priority"]
+            if player.get_monument() == shrine_of_the_elder_tree:
+                player.monument_score *= player.get_agent().get_policy()["shrine_priority"]
+            else:
+                player.monument_score *= player.get_agent().get_policy()["monument_priority"] + 60
+        player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tiles_score
         return player.total_score
 
-
+    player.farm_type_count = get_farm_type_count(player)
     player.cottage_score, player.cottage_count, player.fed_cottage_count, player.unfed_cottage_count, player.feedable_coords = get_cottage_stats(player)
     player.factory_score = get_factory_score(player)
     player.chapel_score = get_chapel_score(player)
     player.tavern_score = get_tavern_score(player)
     player.theatre_score = get_theatre_score(player)
     player.well_score = get_well_score(player)
-    player.monument_score, player.empty_tile_score = get_monument_score(player)
+    player.monument_score, player.empty_tiles_score = get_monument_score(player)
 
-
-    player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tile_score
+    if simulated_scoring:
+        farm_present = False
+        for tile_coords, tile_content in player_board_dict.items():
+            if isinstance(tile_content, FarmType):
+                farm_present = True
+        if farm_present:
+            player.total_score += 10
+        player.factory_score *= player.get_agent().get_policy()["factory_priority"]
+        player.cottage_score *= player.get_agent().get_policy()["cottage_priority"]
+        player.chapel_score *= player.get_agent().get_policy()["chapel_priority"]
+        player.tavern_score *= player.get_agent().get_policy()["tavern_priority"]
+        player.theatre_score *= player.get_agent().get_policy()["theatre_priority"]
+        player.well_score *= player.get_agent().get_policy()["well_priority"]
+        if player.get_monument() == shrine_of_the_elder_tree:
+            player.monument_score *= player.get_agent().get_policy()["shrine_priority"]
+        else:
+            player.monument_score *= player.get_agent().get_policy()["monument_priority"] + 60
+    player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tiles_score
 
     return player.total_score
