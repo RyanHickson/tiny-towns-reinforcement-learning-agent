@@ -1,6 +1,6 @@
 import random as rdm
 from player import *
-from sim_layouts import *
+from building_layouts import *
 from cards import *
 from resources import *
 from layout_variants import *
@@ -124,34 +124,6 @@ class TinyTownsEnv(Env):
                 self.dictionary_of_players[player].all_cards = self.card_choices + [self.dictionary_of_players[player].get_monument()]
         self.player_queue = list(self.dictionary_of_players.keys())
         self.master_builder_queue = self.player_queue.copy()
-
-
-
-        for player in self.dictionary_of_players:
-            total_count = 0
-            wood_count = 0
-            wheat_count = 0
-            glass_count = 0
-            brick_count = 0
-            stone_count = 0
-            acting_player = self.dictionary_of_players[player]
-            for card in acting_player.get_all_cards():
-                layout = card.get_layout()
-                for each_list in layout:
-                    for el in each_list:
-                        if el != wild:
-                            total_count += 1
-                        if el == wood:
-                            wood_count += 1
-                        if el == wheat:
-                            wheat_count += 1
-                        if el == glass:
-                            glass_count += 1
-                        if el == brick:
-                            brick_count += 1
-                        if el == stone:
-                            stone_count += 1
-            acting_player.resource_distribution = [total_count, wood_count, wheat_count, glass_count, brick_count, stone_count]
         return self.master_builder_queue
 
 
@@ -367,7 +339,7 @@ class TinyTownsEnv(Env):
 
                     # while self.acting_player.get_board()[board_tile_dict[tile_index]] != empty:
 
-                    resource_choice_id, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
+                    _, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
                         # tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # If chosen tile is not empty, ask for a new tile index
 
                     self.acting_player.board[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT

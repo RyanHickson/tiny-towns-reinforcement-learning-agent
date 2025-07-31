@@ -1,5 +1,5 @@
 import numpy as np
-from sim_layouts import *
+from building_layouts import *
 from resources import *
 from cards import *
 from choices import *
@@ -29,6 +29,10 @@ class Player:
         self.construction_list = []
         self.turn = 1
         self.resource_distribution = []
+        self.board = np.array([[empty, wheat, empty, empty],
+                               [brick, glass, empty, empty],
+                               [empty, empty, empty, empty],
+                               [empty, empty, empty, empty],])
 
 
         self.environment = [

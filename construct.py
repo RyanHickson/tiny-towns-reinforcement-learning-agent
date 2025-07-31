@@ -39,9 +39,11 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                 for j, tile in enumerate(row):
                     if isinstance(tile, Card):
                         if completed_swaps < allowed_swaps:
-                            swap_index = handle_input(f"Select a building to replace: {building_dict} ", list(building_dict.keys()))
-                            self.board[i, j] = building_dict[swap_index]
-                            completed_swaps += 1
+                            want_to_build = handle_input(want_to_build_text.format(self.__str__(), no_yes_dict), range(2))
+                            if want_to_build:
+                                swap_index = handle_input(f"Select a building to replace: {building_dict} ", list(building_dict.keys()))
+                                self.board[i, j] = building_dict[swap_index]
+                                completed_swaps += 1
         case "Grove University":
             want_to_build = handle_input(want_to_build_text.format(self.__str__(), no_yes_dict), range(2))
             if want_to_build:

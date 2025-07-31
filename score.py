@@ -603,16 +603,16 @@ def get_score(self, player, simulated_scoring=False):
                     farm_present = True
             if farm_present:
                 player.total_score += 10
-            player.factory_score *= player.get_agent().get_policy()["factory_priority"]
-            player.cottage_score *= player.get_agent().get_policy()["cottage_priority"]
-            player.chapel_score *= player.get_agent().get_policy()["chapel_priority"]
-            player.tavern_score *= player.get_agent().get_policy()["tavern_priority"]
-            player.theatre_score *= player.get_agent().get_policy()["theatre_priority"]
-            player.well_score *= player.get_agent().get_policy()["well_priority"]
-            if player.get_monument() == shrine_of_the_elder_tree:
-                player.monument_score *= player.get_agent().get_policy()["shrine_priority"]
-            else:
-                player.monument_score *= player.get_agent().get_policy()["monument_priority"] + 60
+            # player.factory_score *= player.get_agent().get_policy()["factory_priority"]
+            # player.cottage_score *= player.get_agent().get_policy()["cottage_priority"]
+            # player.chapel_score *= player.get_agent().get_policy()["chapel_priority"]
+            # player.tavern_score *= player.get_agent().get_policy()["tavern_priority"]
+            # player.theatre_score *= player.get_agent().get_policy()["theatre_priority"]
+            # player.well_score *= player.get_agent().get_policy()["well_priority"]
+            # if player.get_monument() == shrine_of_the_elder_tree:
+            #     player.monument_score *= player.get_agent().get_policy()["shrine_priority"]
+            # else:
+            #     player.monument_score *= player.get_agent().get_policy()["monument_priority"] + 60
         player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tiles_score
         return player.total_score
 
@@ -632,16 +632,16 @@ def get_score(self, player, simulated_scoring=False):
                 farm_present = True
         if farm_present:
             player.total_score += 10
-        player.factory_score *= player.get_agent().get_policy()["factory_priority"]
-        player.cottage_score *= player.get_agent().get_policy()["cottage_priority"]
-        player.chapel_score *= player.get_agent().get_policy()["chapel_priority"]
-        player.tavern_score *= player.get_agent().get_policy()["tavern_priority"]
-        player.theatre_score *= player.get_agent().get_policy()["theatre_priority"]
-        player.well_score *= player.get_agent().get_policy()["well_priority"]
-        if player.get_monument() == shrine_of_the_elder_tree:
-            player.monument_score *= player.get_agent().get_policy()["shrine_priority"]
-        else:
-            player.monument_score *= player.get_agent().get_policy()["monument_priority"] + 60
+        # player.factory_score *= player.get_agent().get_policy()["factory_priority"]
+        # player.cottage_score *= player.get_agent().get_policy()["cottage_priority"]
+        # player.chapel_score *= player.get_agent().get_policy()["chapel_priority"]
+        # player.tavern_score *= player.get_agent().get_policy()["tavern_priority"]
+        # player.theatre_score *= player.get_agent().get_policy()["theatre_priority"]
+        # player.well_score *= player.get_agent().get_policy()["well_priority"]
+        # if player.get_monument() == shrine_of_the_elder_tree:
+        #     player.monument_score *= player.get_agent().get_policy()["shrine_priority"]
+        # else:
+        #     player.monument_score *= player.get_agent().get_policy()["monument_priority"] + 60
     player.total_score = player.factory_score + player.cottage_score + player.chapel_score + player.tavern_score + player.theatre_score + player.well_score + player.monument_score + player.empty_tiles_score
 
     return player.total_score
