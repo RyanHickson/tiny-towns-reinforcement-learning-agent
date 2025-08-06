@@ -29,7 +29,7 @@ def get_not_wilds(layout):
     co_ords = []
     for row_index, row in enumerate(layout):
         for col_index, cell in enumerate(row):
-            if cell != wild:
+            if cell.__str__() != wild.__str__():
                 co_ords.append((row_index, col_index))
     return co_ords
 
@@ -59,8 +59,8 @@ def find_placements(board, card):
                     board_value = board[i + r][j + c]
                     layout_value = variant[r][c]
                     if (
-                        board_value != layout_value.__str__()  # if tile content on player board is not the same as the tile content of the layout
-                        and board_value != trading_post.__str__()  # trading post is used as a wild resource but not picked up like other resources
+                        board_value.__str__() != layout_value.__str__()  # if tile content on player board is not the same as the tile content of the layout
+                        and board_value.__str__() != trading_post.__str__()  # trading post is used as a wild resource but not picked up like other resources
                     ):
                         match = False
                         break
@@ -69,7 +69,7 @@ def find_placements(board, card):
                     for el in not_wilds:
                         coord_set.append((i + el[0], j + el[1]))
                     for coord_pair in coord_set:
-                        if board[coord_pair] != trading_post.__str__(): # trading post being used as a wild resource is not a valid placement
+                        if board[coord_pair] != trading_post: # trading post being used as a wild resource is not a valid placement
                             if coord_pair in placement_dict.keys():
                                 placement_dict[coord_pair].add(card.__str__())
                             else:
@@ -120,7 +120,7 @@ def find_all_placements(player, cards):
     all_build_options = []
     full_placement_display = []
     for card in cards:
-        build_dict, build_options, placement_display = find_placements(player.get_display_board(), card)
+        build_dict, build_options, placement_display = find_placements(player.get_board(), card)
         for coord, building in build_dict.items():
             if coord in coord_dictionary.keys():
                 coord_dictionary[coord].update(building)

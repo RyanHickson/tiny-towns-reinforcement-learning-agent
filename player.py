@@ -26,7 +26,9 @@ class Player:
         self.resource_choice_dict = resource_names_dict
         self.shrine_key = 0
         self.finish_position = 0
-
+        self.construction_list = []
+        self.turn = 1
+        self.resource_distribution = []
 
         self.environment = [
             self.board,
@@ -86,11 +88,14 @@ The cards available to them are {}""".format(
         return self.all_cards
     
     def get_buildable_cards(self):
+        monumnent_constructed = False
         self.buildable_cards = self.get_all_cards()
         if len(self.buildable_cards) == 8:
             for tile_id, tile_coords in board_tile_dict.items():
-                if isinstance(self.board[tile_coords], Monument):
-                    self.buildable_cards.pop(-1)
+                if isinstance(self.get_board()[tile_coords], Monument):
+                    monumnent_constructed = True
+        if monumnent_constructed:
+            self.buildable_cards.pop(-1)
         return self.buildable_cards
 
     def get_factory_resources(self):

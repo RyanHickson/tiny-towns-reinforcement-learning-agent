@@ -1,0 +1,56 @@
+{
+    "[['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]": {
+        "parents": [],
+        "visits": 0,
+        "reward_sum": 0,
+        "average_reward": 0.0
+    },
+    "[['Cottage' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]": {
+        "parents": [
+            "[['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]"
+        ],
+        "visits": 0,
+        "reward_sum": 0,
+        "average_reward": 0.0
+    },
+    "[['empty' 'empty' 'empty' 'empty']\n ['empty' 'Cottage' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]": {
+        "parents": [
+            "[['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]"
+        ],
+        "visits": 0,
+        "reward_sum": 0,
+        "average_reward": 0.0
+    },
+    "[['empty' 'Cottage' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]": {
+        "parents": [
+            "[['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]"
+        ],
+        "visits": 0,
+        "reward_sum": 0,
+        "average_reward": 0.0
+    },
+    "[['Cottage' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'Cottage']\n ['empty' 'empty' 'empty' 'empty']]": {
+        "parents": [
+            "[['empty' 'empty' 'empty' 'Cottage']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]"
+        ],
+        "visits": 0,
+        "reward_sum": 0,
+        "average_reward": 0.0
+    },
+    "[['Cottage' 'empty' 'empty' 'empty']\n ['empty' 'Cottage' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]": {
+        "parents": [
+            "[['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'Cottage' 'empty']\n ['empty' 'empty' 'empty' 'empty']]"
+        ],
+        "visits": 0,
+        "reward_sum": 0,
+        "average_reward": 0.0
+    },
+    "[['Cottage' 'empty' 'Cottage' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]": {
+        "parents": [
+            "[['empty' 'Cottage' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']\n ['empty' 'empty' 'empty' 'empty']]"
+        ],
+        "visits": 0,
+        "reward_sum": 0,
+        "average_reward": 0.0
+    }
+}

@@ -9,6 +9,8 @@ from ry import *
 from ui import *
 from score import get_score
 from observation import get_observation
+from tqdm import tqdm
+import json
 
 from gymnasium import Env
 from gymnasium.spaces import MultiDiscrete
@@ -139,7 +141,7 @@ class TinyTownsEnv(Env):
             player = self.dictionary_of_players[player_id]
             agent = player.get_agent()
 
-            resource_id, tile_index = agent.choose_resource_and_tile(self, player)
+            resource_id, tile_index = agent.select_resource_and_tile(self, player)
             resource = resource_dict[resource_id]
             if player.board[board_tile_dict[tile_index]] == empty:
                 player.board[board_tile_dict[tile_index]] = resource
@@ -398,8 +400,12 @@ class TinyTownsEnv(Env):
 
 def main():
     """Main entry point for the game."""
-    game = TinyTownsEnv()
-    game.play()
+    for episode in tqdm(range(1)):
+        game = TinyTownsEnv()
+        game.setup_players()
+        game.play()
+        game.record_game()
+        game.monuments_deck = game.refill_monuments_deck()
 
 
 if __name__ == "__main__":
