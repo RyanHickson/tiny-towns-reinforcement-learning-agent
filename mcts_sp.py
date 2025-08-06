@@ -36,7 +36,7 @@ class BoardState:
         ]
 
         self.current_turn = 0
-        self.max_turns = 5
+        self.max_turns = 10
 
     def get_card_choices(self):
         return self.card_choices
@@ -223,12 +223,17 @@ class MCTS:
     def get_or_create_node(self, state, parent=None, action=None):
         board_varieties = self.get_board_varieties(state)
         for board in board_varieties:
-            state_hash = str(board)
-            if state_hash in self.get_transposition_table():
-                return
-        state_hash = sorted(board_varieties)[0]
+            board_string = str(board)
+            if board_string in self.get_transposition_table():
+                existing_node = self.transposition_table[board_string]
+                if parent:
+                    existing_node.add_parent(parent, action)
+                return existing_node
+            self.transposition_table[board_string] = state
+            
+        board_string = sorted(board_varieties)[0]
         node = MCTSNode(state, parent, action)
-        self.transposition_table[str(state_hash)] = {
+        self.transposition_table[str(board_string)] = {
                 "parents": [str(el[0].state.player.get_display_board()) for el in node.parents],
                 "visits": node.visits,
                 "reward_sum": node.total_reward,
