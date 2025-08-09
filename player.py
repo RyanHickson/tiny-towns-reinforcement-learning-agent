@@ -130,6 +130,9 @@ The cards available to them are {}""".format(
     def display_all_cards(self):
         return [card.__str__() for card in self.get_buildable_cards()]
 
+    def get_board(self):
+        return self.board
+    
     def get_instance_board(self):
         """
         Returns the town board as it is, made up of

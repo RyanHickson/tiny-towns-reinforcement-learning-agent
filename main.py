@@ -88,7 +88,7 @@ class TinyTownsEnv(Env):
             ]
 
         for player in range(1, self.number_of_players + 1):
-            self.dictionary_of_agents[player] = GreedyAgent(player)
+            self.dictionary_of_agents[player] = Agent(player)
         agent_keys = list(self.dictionary_of_agents.keys())
         rdm.shuffle(agent_keys)
 

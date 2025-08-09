@@ -10,6 +10,8 @@ from joblib import Parallel, delayed
 import math
 import json
 import numpy as np
+from placement_check import find_all_layouts
+from tqdm import tqdm
 
 
 class BoardState:
@@ -36,13 +38,14 @@ class BoardState:
         ]
 
         self.current_turn = 0
-        self.max_turns = 10
+        self.max_turns =100
 
     def get_card_choices(self):
         return self.card_choices
 
     def create_player(self):
-        monument = rdm.choice(monuments_deck)
+        # monument = rdm.choice(monuments_deck)
+        monument = monuments_deck[0]
         single_agent = Agent(1)
         return Player(1, monument, single_agent)
 
@@ -66,7 +69,8 @@ class BoardState:
 
         new_state = copy.deepcopy(self)
 
-        new_state.player.board[tile_coords] = resource
+        row, col = tile_coords
+        new_state.player.board[row][col] = resource
         new_state.current_turn += 1
 
         new_state.auto_build()
@@ -101,7 +105,7 @@ class BoardState:
 
     def evaluate(self):
         try:
-            score = get_score(self, self.player)
+            score = get_score(self, self.player, simulated_scoring=True)
             if self.finished:
                 print(f"Score: {score}")
 
@@ -143,6 +147,7 @@ class MCTSNode:
         self.visits = 0
         self.total_reward = 0
         self.untried_actions = None
+        self.empty_tiles = []
 
         if parent:
             self.add_parent(parent, action)
@@ -157,10 +162,13 @@ class MCTSNode:
         return len(self.children) == 0
     
     def get_legal_actions(self):
-        empty_tiles = self.state.get_empty_tile_list()
+        self.empty_tiles = self.state.get_empty_tile_list()
 
-        if 8 < len(empty_tiles):
-            tile_sample = rdm.sample(empty_tiles, min(6, len(empty_tiles)))
+        if 8 < len(self.empty_tiles):
+            tile_sample = rdm.sample(self.empty_tiles, min(6, len(self.empty_tiles)))
+        else:
+            tile_sample = self.empty_tiles
+        
         actions = []
         for tile_coords in tile_sample:
             for resource in resource_dict.values():
@@ -204,12 +212,28 @@ class MCTSNode:
             if parent:
                 parent.backpropagate(reward)
 
+    def prioritise_actions(self, actions, board, card_choices):
+        scored_actions = []
+        for action in actions:
+            resource, tile_coords = action
+            sim_board = copy.deepcopy(board)
+            sim_board[tile_coords] = resource
+            coord_dict, build_options, _ = find_all_placements(self.state.player, card_choices)
+            score = 0
+            if build_options:
+                score += sum(len(option) for option in build_options) * 10
+            scored_actions.append((score, action))
+        scored_actions.sort(key=lambda x: x[0], reverse=True)
+        return [action for _, action in scored_actions]
+
 
 class MCTS:
-    def __init__(self, exploration_const=1.414, max_iterations=10):
+    def __init__(self, exploration_const=1.414, max_iterations=9, batch_size=10):
         self.exploration_const = exploration_const
         self.max_iterations = max_iterations
         self.transposition_table = {}
+        self.batch_size = batch_size
+        self.action_list = []
 
     def get_transposition_table(self):
         return self.transposition_table
@@ -222,74 +246,104 @@ class MCTS:
 
     def get_or_create_node(self, state, parent=None, action=None):
         board_varieties = self.get_board_varieties(state)
+        
         for board in board_varieties:
             board_string = str(board)
             if board_string in self.get_transposition_table():
                 existing_node = self.transposition_table[board_string]
+                existing_node.empty_tiles = state.get_empty_tile_list()
                 if parent:
                     existing_node.add_parent(parent, action)
                 return existing_node
-            self.transposition_table[board_string] = state
-            
-        board_string = sorted(board_varieties)[0]
+        
+        recorded_board = sorted(board_varieties)[0]
         node = MCTSNode(state, parent, action)
-        self.transposition_table[str(board_string)] = {
-                "parents": [str(el[0].state.player.get_display_board()) for el in node.parents],
-                "visits": node.visits,
-                "reward_sum": node.total_reward,
-                "average_reward": node.total_reward / max(1, node.visits),
-                "turn": (
-                    node.state.current_turn
-                    if hasattr(node.state, "current_turn")
-                    else 0
-                ),
-                "terminal": (
-                    node.state.is_terminal()
-                    if hasattr(node.state, "is_terminal")
-                    else False
-                ),
-            }
+        node.empty_tiles = state.get_empty_tile_list()
+        self.transposition_table[str(recorded_board)] = node
         return node
 
     def search(self, current_state):
         root_node = MCTSNode(current_state)
+        root_node.empty_tiles = current_state.get_empty_tile_list()
 
-        for iteration in range(self.max_iterations):
-            node = self.select(root_node)
+        for _ in range(self.max_iterations//self.batch_size):
+            nodes_to_simulate = []
+            for _ in range(self.batch_size):
 
-            if not node.state.is_terminal() and not node.is_fully_expanded():
-                node = self.expand(node)
+                node = self.select(root_node)
+                node.empty_tiles = node.state.get_empty_tile_list()
 
-            reward = self.simulate(node)
-            node.backpropagate(reward)
+                if not node.state.is_terminal() and not node.is_fully_expanded():
+                    node = self.expand(node)
+                nodes_to_simulate.append(node)
+            
+            rewards = Parallel(n_jobs=-1)(delayed(self.simulate)(node) for node in nodes_to_simulate)
+
+            for node, reward in zip(nodes_to_simulate, rewards):
+                node.backpropagate(reward)
+
+        actions = []
+        empty_tiles = current_state.get_empty_tile_list()
+
+        if 8 < len(empty_tiles):
+            tile_sample = rdm.sample(empty_tiles, min(6, len(empty_tiles)))
+        else:
+            tile_sample = empty_tiles
+
+        for tile_coords in tile_sample:
+            for resource in resource_dict.values():
+                resource_string = resource.__str__()
+                actions.append((resource, tile_coords))
 
         if root_node.children:
             best_child = max(root_node.children, key=lambda child: child.visits)
             for parent, action in best_child.parents:
                 if parent == root_node:
                     return action
-            actions = root_node.get_legal_actions()
-            return rdm.choice(actions) if actions else None
-        else:
-            actions = root_node.get_legal_actions()
-            return rdm.choice(actions) if actions else None
+        return rdm.choice(actions)
 
     def select(self, node):
         while not node.is_leaf() and not node.state.is_terminal():
             if not node.is_fully_expanded():
                 return node
             node = node.select_best_child(self.exploration_const)
+            node.empty_tiles = node.state.get_empty_tile_list()
         return node
 
     def expand(self, node):
         if node.untried_actions is None:
+            node.empty_tiles = node.state.get_empty_tile_list()
             node.untried_actions = node.get_legal_actions()
-            rdm.shuffle(node.untried_actions)
+            node.untried_actions = node.prioritise_actions(node.untried_actions, node.state.player.get_board(), node.state.get_card_choices())
+            board = node.state.player.get_board()
+            card_choices = node.state.get_card_choices()
+            clever_moves = find_all_layouts(board, card_choices)
+            
+            if clever_moves and any(clever_moves):
+                non_empty_moves = [moves for moves in clever_moves if moves]
+                self.action_list = rdm.choice(non_empty_moves)
+
+            for each_action in self.action_list:
+                if each_action in node.untried_actions:
+                    node.untried_actions.remove(each_action)
+                    action = (each_action)
+                    new_state = node.state.apply_action(action)
+                    child = self.get_or_create_node(new_state, node, action)
+                    child.empty_tiles = new_state.get_empty_tile_list()
+
+                    if child:
+                        if child not in node.children:
+                            node.children.append(child)
+                            if str(node.state.player.get_display_board()) not in child.parents:
+                                child.add_parent(node, action)
+                        return child
+                    
 
         if node.untried_actions:
             action = node.untried_actions.pop()
             new_state = node.state.apply_action(action)
             child = self.get_or_create_node(new_state, node, action)
+            child.empty_tiles = new_state.get_empty_tile_list()
 
             if child:
                 if child not in node.children:
@@ -303,10 +357,23 @@ class MCTS:
         current_state = copy.deepcopy(node.state)
 
         simulation_depth = 0
-        max_depth =10
+        max_depth =6
 
         while not current_state.is_terminal() and simulation_depth < max_depth:
-            actions = node.get_legal_actions()
+            empty_tiles = current_state.get_empty_tile_list()
+            if not empty_tiles:
+                break
+
+            if 8 < len(empty_tiles):
+                tile_sample = rdm.sample(empty_tiles, min(6, len(empty_tiles)))
+            else:
+                tile_sample = empty_tiles
+            
+            actions = []
+            for tile_coords in tile_sample:
+                for resource in resource_dict.values():
+                    actions.append((resource, tile_coords))
+            
             if not actions:
                 break
 
@@ -315,39 +382,51 @@ class MCTS:
             simulation_depth += 1
         return current_state.evaluate()
 
-    def save_transposition_table(self, filename="transposition_table.json"):
+    def save_transposition_table(self, file_path):
+        
+        import os
+        directory = os.path.dirname(file_path)
+        if directory and not os.path.exists(directory):
+            os.makedirs(directory)
         table = {}
 
         for state_hash, node_values in self.get_transposition_table().items():
             table[str(state_hash)] = {
-                "parents": [str(el) for el in node_values["parents"]],
-                "visits": node_values["visits"],
-                "reward_sum": node_values["reward_sum"],
-                "average_reward": node_values["reward_sum"] / max(1, node_values["visits"]),
+                "parents": [str(el) for el in node_values.parents],
+                "visits": node_values.visits,
+                "reward_sum": node_values.total_reward,
+                "average_reward": node_values.total_reward / max(1, node_values.visits),
+                "children": len(node_values.children),
+                "is_terminal": node_values.state.is_terminal() if hasattr(node_values, "state") else False
             }
-        with open(filename, "w") as f:
+        with open(file_path, "a") as f:
             json.dump(table, f, indent=4)
 
-    def load_transposition_table(self, filename="transposition_table.json"):
-        with open(filename, "r") as f:
-            table = json.load(f)
-            return table
+    def load_transposition_table(self, file_path):
+        try:
+            with open(file_path, "r") as f:
+                table = json.load(f)
+                for state_hash, data in table.items():
+                    node = MCTSNode(None)
+                    node.visits = data["visits"]
+                    node.total_reward = data["reward_sum"]
+                    node.transposition_table[state_hash] = node
+                
+                
+                return table
+        except:
+            return {}
 
 
 class MCTSAgent:
-    def __init__(self, name, iterations=20, exploration_const=1.414):
+    def __init__(self, name, iterations=5, exploration_const=1.414):
         self.name = name
         self.mcts = MCTS(exploration_const, iterations)
         self.game_state = None
 
     def choose_resource_and_tile(self, game, player):
-        if self.game_state is None:
-            self.game_state = BoardState(player)
-            self.game_state.card_choices = getattr(
-                game, "card_choices", self.game_state.card_choices
-            )
-        else:
-            self.game_state.player = player
+        self.game_state = BoardState(player)
+        self.game_state.card_choices = getattr(game, "card_choices", self.game_state.card_choices)
 
         best_action = self.mcts.search(self.game_state)
 
@@ -363,24 +442,25 @@ class MCTSAgent:
             if empty_list:
                 resource_index = rdm.choice(list(resource_dict.keys()))
                 tile_coords = rdm.choice(empty_list)
-
                 resource = resource_dict[resource_index]
-
                 return resource, tile_coords
             else:
                 return wood, (0, 0)
 
 
 def test_mcts():
-    mcts_agent = MCTSAgent("Agent Name", iterations=10)
+    mcts_agent = MCTSAgent("Agent Name", iterations=9)
 
     monument = rdm.choice(monuments_deck)
     player = Player(1, monument, mcts_agent)
-
     game_state = BoardState(player)
-    mcts_agent.mcts.get_or_create_node(game_state)
-    print(mcts_agent.mcts.transposition_table)
-    load_dict = mcts_agent.mcts.load_transposition_table()
+
+    file_path = "data.json"
+    print(file_path)
+
+    if file_path:
+        load_dict = mcts_agent.mcts.load_transposition_table(file_path)
+
         
     if load_dict:
         mcts_agent.mcts.transposition_table = load_dict
@@ -393,7 +473,11 @@ def test_mcts():
     while not game_state.is_terminal() and current_turn < 90:
         print(f"\nTurn {current_turn + 1}")
 
-        action = mcts_agent.choose_resource_and_tile(game_state, player)
+        current_node = MCTSNode(game_state)
+
+        action = None
+        while action not in current_node.get_legal_actions():
+            action = mcts_agent.choose_resource_and_tile(game_state, player)
         print(f"Agent chose {action[0]}, {action[1]}")
 
         game_state = game_state.apply_action(action)
@@ -406,14 +490,19 @@ def test_mcts():
         except:
             print("Could not evaluate")
 
-    print(mcts_agent.mcts.get_transposition_table())
-    mcts_agent.mcts.save_transposition_table()
+    
     print("GAME COMPLETE")
     game_state.finished = True
     print(f"Final Score: {game_state.evaluate()}")
+    score = get_score(game_state, game_state.player)
+    mcts_agent.mcts.save_transposition_table(file_path)
 
-    return game_state
+    return game_state, score
 
 
 if __name__ == "__main__":
-    test_mcts()
+    best_score = -17
+    for _ in tqdm(range(1_000_000)):
+        game_state, score = test_mcts()
+        if best_score < score:
+            best_score = score

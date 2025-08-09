@@ -46,6 +46,7 @@ def find_placements(board, card):
     placement_options = []
     placement_display = []
     build_list = []
+    
 
     for variant in variants:
         variant = np.array(variant)

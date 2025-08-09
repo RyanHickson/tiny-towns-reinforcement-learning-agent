@@ -27,6 +27,7 @@ class MCTSNode:
         self.visits = 0
         self.total_reward = 0
         self.average_reward = 0
+        self.empty_tiles = []
 
         self.untried_actions = None
         self.legal_actions = None

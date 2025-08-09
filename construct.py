@@ -21,9 +21,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
 
     match construction_dict["card"].__str__():
         case "Factory":
-            resource_choice_index = handle_input(
-                factory_resource_choice_text.format(resource_names_dict),
-                range(1, 6))
+            resource_choice_index = handle_input(factory_resource_choice_text.format(resource_names_dict), list(range(1, 6)))
             self.factory_resources.append(resource_choice_index)
         case "Warehouse":
             self.warehouse_capacity += 3
@@ -40,9 +38,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                 for j, tile in enumerate(row):
                     if isinstance(tile, Card):
                         if completed_swaps < allowed_swaps:
-                            swap_index = handle_input(
-                                f"Select a building to replace: {building_dict} ",
-                                building_dict)
+                            swap_index = handle_input( f"Select a building to replace: {building_dict} ", list(building_dict.keys()))
                             self.board[i, j] = building_dict[swap_index]
                             completed_swaps += 1
         case "Grove University":
@@ -51,7 +47,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                 range(2))
             if want_to_build:
                 possible_cards = dict_enum(self.get_buildable_cards())
-                card = handle_input(possible_cards, possible_cards)
+                card = handle_input(possible_cards, list(possible_cards.keys()))
                 grove_university_dict = {}
                 for tile_id, tile_coords in board_tile_dict.items():
                     if self.board[tile_coords] == empty:
