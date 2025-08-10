@@ -10,8 +10,10 @@ from joblib import Parallel, delayed
 import math
 import json
 import numpy as np
-from placement_check import find_all_layouts
+from placement_check import find_all_layouts, score_action, actions_equal
 from tqdm import tqdm
+import cProfile
+import pstats
 
 
 class BoardState:
@@ -38,7 +40,7 @@ class BoardState:
         ]
 
         self.current_turn = 0
-        self.max_turns =100
+        self.max_turns =20
 
     def get_card_choices(self):
         return self.card_choices
@@ -67,14 +69,19 @@ class BoardState:
     def apply_action(self, action):
         resource, tile_coords = action
 
-        new_state = copy.deepcopy(self)
+        new_state = copy.copy(self)
+        new_player = copy.copy(self.player)
+
+        current_board = self.player.get_board()
+        new_board = np.array([row.copy() for row in current_board])
 
         row, col = tile_coords
-        new_state.player.board[row][col] = resource
+        new_board[row][col] = resource
+
+        new_player.board = new_board
+        new_state.player = new_player
         new_state.current_turn += 1
-
         new_state.auto_build()
-
         return new_state
 
     def auto_build(self):
@@ -164,8 +171,8 @@ class MCTSNode:
     def get_legal_actions(self):
         self.empty_tiles = self.state.get_empty_tile_list()
 
-        if 8 < len(self.empty_tiles):
-            tile_sample = rdm.sample(self.empty_tiles, min(6, len(self.empty_tiles)))
+        if 12 < len(self.empty_tiles):
+            tile_sample = rdm.sample(self.empty_tiles, min(10, len(self.empty_tiles)))
         else:
             tile_sample = self.empty_tiles
         
@@ -228,7 +235,7 @@ class MCTSNode:
 
 
 class MCTS:
-    def __init__(self, exploration_const=1.414, max_iterations=9, batch_size=10):
+    def __init__(self, exploration_const=1.414, max_iterations=9, batch_size=2):
         self.exploration_const = exploration_const
         self.max_iterations = max_iterations
         self.transposition_table = {}
@@ -285,8 +292,8 @@ class MCTS:
         actions = []
         empty_tiles = current_state.get_empty_tile_list()
 
-        if 8 < len(empty_tiles):
-            tile_sample = rdm.sample(empty_tiles, min(6, len(empty_tiles)))
+        if 12 < len(empty_tiles):
+            tile_sample = rdm.sample(empty_tiles, min(10, len(empty_tiles)))
         else:
             tile_sample = empty_tiles
 
@@ -314,29 +321,40 @@ class MCTS:
         if node.untried_actions is None:
             node.empty_tiles = node.state.get_empty_tile_list()
             node.untried_actions = node.get_legal_actions()
-            node.untried_actions = node.prioritise_actions(node.untried_actions, node.state.player.get_board(), node.state.get_card_choices())
+            # node.untried_actions = node.prioritise_actions(node.untried_actions, node.state.player.get_board(), node.state.get_card_choices())
             board = node.state.player.get_board()
             card_choices = node.state.get_card_choices()
             clever_moves = find_all_layouts(board, card_choices)
+
+            
             
             if clever_moves and any(clever_moves):
                 non_empty_moves = [moves for moves in clever_moves if moves]
-                self.action_list = rdm.choice(non_empty_moves)
+            
+            scored_actions = []
+            for action_list in non_empty_moves:
+                for action in action_list:
+                    scored_action = (action, score_action(action, board, card_choices))
+                    scored_actions.append(scored_action)
+            scored_actions.sort(key=lambda x: x[1], reverse=True)
 
-            for each_action in self.action_list:
-                if each_action in node.untried_actions:
-                    node.untried_actions.remove(each_action)
-                    action = (each_action)
-                    new_state = node.state.apply_action(action)
-                    child = self.get_or_create_node(new_state, node, action)
-                    child.empty_tiles = new_state.get_empty_tile_list()
+            top_scored_actions = [act for act, _ in scored_actions[:5]]
 
-                    if child:
-                        if child not in node.children:
-                            node.children.append(child)
-                            if str(node.state.player.get_display_board()) not in child.parents:
-                                child.add_parent(node, action)
-                        return child
+            for each_action in top_scored_actions:
+                for untried_action in node.untried_actions:
+                    if actions_equal(each_action, untried_action):
+                        node.untried_actions.remove(untried_action)
+                        action = each_action
+                        new_state = node.state.apply_action(action)
+                        child = self.get_or_create_node(new_state, node, action)
+                        child.empty_tiles = new_state.get_empty_tile_list()
+
+                        if child:
+                            if child not in node.children:
+                                node.children.append(child)
+                                if str(node.state.player.get_display_board()) not in child.parents:
+                                    child.add_parent(node, action)
+                            return child
                     
 
         if node.untried_actions:
@@ -357,17 +375,17 @@ class MCTS:
         current_state = copy.deepcopy(node.state)
 
         simulation_depth = 0
-        max_depth =6
+        max_depth = 8
 
         while not current_state.is_terminal() and simulation_depth < max_depth:
             empty_tiles = current_state.get_empty_tile_list()
             if not empty_tiles:
                 break
 
-            if 8 < len(empty_tiles):
-                tile_sample = rdm.sample(empty_tiles, min(6, len(empty_tiles)))
-            else:
-                tile_sample = empty_tiles
+            # if 8 < len(empty_tiles):
+            #     tile_sample = rdm.sample(empty_tiles, len(empty_tiles))
+            # else:
+            tile_sample = empty_tiles
             
             actions = []
             for tile_coords in tile_sample:
@@ -377,7 +395,10 @@ class MCTS:
             if not actions:
                 break
 
-            action = rdm.choice(actions)
+            scored_actions = node.prioritise_actions(actions, current_state.player.get_board(), current_state.get_card_choices())
+
+            top_scoring_actions = scored_actions[:3] if len(scored_actions) >= 3 else scored_actions
+            action = rdm.choice(top_scoring_actions)
             current_state = current_state.apply_action(action)
             simulation_depth += 1
         return current_state.evaluate()
@@ -419,7 +440,7 @@ class MCTS:
 
 
 class MCTSAgent:
-    def __init__(self, name, iterations=5, exploration_const=1.414):
+    def __init__(self, name, iterations=8, exploration_const=1.414):
         self.name = name
         self.mcts = MCTS(exploration_const, iterations)
         self.game_state = None
@@ -502,7 +523,16 @@ def test_mcts():
 
 if __name__ == "__main__":
     best_score = -17
-    for _ in tqdm(range(1_000_000)):
-        game_state, score = test_mcts()
-        if best_score < score:
-            best_score = score
+    profiler = cProfile.Profile()
+    profiler.enable()
+    
+    game_state, score = test_mcts()
+    
+    profiler.disable()
+    profiler.dump_stats("mcts_profile.prof")
+    
+    stats = pstats.Stats(profiler).sort_stats("tottime")
+    stats.print_stats(20)
+    
+    if best_score < score:
+        best_score = score

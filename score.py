@@ -601,6 +601,8 @@ def get_score(self, player, simulated_scoring=False):
             for tile_coords, tile_content in player_board_dict.items():
                 if isinstance(tile_content, FarmType):
                     farm_present = True
+                if isinstance(tile_content, CottageType):
+                    player.total_score += 10
             if farm_present:
                 player.total_score += 10
             # player.factory_score *= player.get_agent().get_policy()["factory_priority"]
@@ -630,6 +632,8 @@ def get_score(self, player, simulated_scoring=False):
         for tile_coords, tile_content in player_board_dict.items():
             if isinstance(tile_content, FarmType):
                 farm_present = True
+            if isinstance(tile_content, CottageType):
+                player.total_score += 10
         if farm_present:
             player.total_score += 10
         # player.factory_score *= player.get_agent().get_policy()["factory_priority"]

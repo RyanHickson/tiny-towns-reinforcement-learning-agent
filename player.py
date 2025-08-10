@@ -141,7 +141,7 @@ The cards available to them are {}""".format(
         self.town_board_dict = {}
         for row in range(4):
             for tile in range(4):
-                self.town_board_dict[row, tile] = self.board[row, tile]
+                self.town_board_dict[row, tile] = self.board[row][tile]
         return self.town_board_dict
 
     def get_display_board(self):

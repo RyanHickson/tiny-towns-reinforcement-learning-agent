@@ -31,11 +31,11 @@ def work_towards_layout(board, layout):
                     board_value = board[i + r][j + c]
                     layout_value = variant[r][c]
                     if (
-                        board_value.__str__() == layout_value.__str__()  # if tile content on player board is not the same as the tile content of the layout
-                        or board_value.__str__() == trading_post.__str__()  # trading post is used as a wild resource but not picked up like other resources
+                        board_value == layout_value  # if tile content on player board is not the same as the tile content of the layout
+                        or board_value == trading_post  # trading post is used as a wild resource but not picked up like other resources
                     ):
                         matching_resources += 1
-                    elif board_value == empty and isinstance(layout_value, Resource):
+                    elif isinstance(board_value, EmptyResource) and isinstance(layout_value, Resource):
                         moves_needed.append((layout_value, (i+r, j+c)))
                         turns_needed += 1
                     else:
@@ -53,9 +53,23 @@ def work_towards_layout(board, layout):
 
 
 def find_all_layouts(board, card_choices):
-    moves_wanted_list = []
-    for card in card_choices:
-        layout = card.get_layout()
-        moves_wanted_list.append(work_towards_layout(board, layout))
+    results = Parallel(n_jobs=-1)(delayed(work_towards_layout)(board, card.get_layout()) for card in card_choices)
+    return results
 
-    return moves_wanted_list
+def score_action(action, board, card_choices):
+    resource, tile_coords = action
+    row, col = tile_coords
+    score = 0
+
+    for card in card_choices:
+        card_layout = card.get_layout()
+        variants = create_variants(card_layout)
+        for variant in variants:
+            not_wilds = get_not_wilds(variant)
+            if tile_coords in [(row, col) for (row, col) in  not_wilds]:
+                if resource.__str__() == variant[tile_coords[0]][tile_coords[1]].__str__():
+                    score += 3
+    return score
+
+def actions_equal(a1, a2):
+    return (a1[0].__str__() == a2[0].__str__()) and ([a1[1] == a2[1]])
