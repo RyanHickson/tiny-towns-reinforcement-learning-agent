@@ -30,7 +30,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
         case "Bank":
             resource_choice_index = handle_input(bank_resource_choice_text.format(self.resource_choice_dict), range(1, 6))
             self.bank_resources.append(resource_choice_index)
-            # self.resource_types.remove(resource_names_dict[resource_choice_index])
+
         case "Architect's Guild":
             completed_swaps = 0
             allowed_swaps = 2

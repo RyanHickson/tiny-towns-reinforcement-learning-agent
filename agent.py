@@ -13,9 +13,6 @@ class Agent:
     """
     def __init__(self, name):
         self.name = name
-
-
-        # self.actions = actions
         self.epsilon = 0.01
 
         self.policy = {
@@ -30,22 +27,14 @@ class Agent:
             "shrine_priority": 2
         }
 
-        # self.resource_epsilon
-        # self.exploration_rate = exploration_rate
-        # self.exploration_decay = exploration_decay
-
     def __str__(self):
         return "{}".format(self.name)
 
     def get_state(self, player, game):
         pass
-        # STATE LOGIC
 
     def get_policy(self):
         return self.policy
-
-    # def update_agent_policy(self, score):
-    #     if 16 < score:
 
     def choose_resource_and_tile(self, game, player):
         """
@@ -126,7 +115,3 @@ class Agent:
 
     def __str__(self):
         return "{}".format(self.name)
-
-    # def dynamic_to_fixed_action_state(self):
-
-    # REMEMBER TO ACTUALLY WRITE SOME AGENT LOGIC IN HERE

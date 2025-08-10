@@ -1,9 +1,6 @@
 from resources import *
 
-# START OF GAME
-# MONUMENT CHOICE
 
-# IF ACTIVE PLAYER (MASTER BUILDER)
 # RESOURCE CHOICE
 resource_dict = {1: wood, 2: wheat, 3: glass, 4: brick, 5: stone}
 resource_names_dict = {1: wood.__str__(), 2: wheat.__str__(), 3: glass.__str__(), 4: brick.__str__(), 5: stone.__str__()}
@@ -31,7 +28,3 @@ board_tile_dict = {
 no_yes_dict = {0: "No", 1: "Yes"}
 
 store_swap_dict = {0: "Store", 1: "Swap"}
-
-# BUILDING CHOICE
-
-# BUILDING PLACEMENT

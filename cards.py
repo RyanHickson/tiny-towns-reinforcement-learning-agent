@@ -237,7 +237,7 @@ all_decks = [
     well_deck,
 ]
 
-# MONUMENTS
+
 
 architects_guild = Monument(
     "Architect's Guild",

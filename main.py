@@ -436,3 +436,17 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# master builder fort_ironwood check
+#     check master builder bank
+#     master_builder choose resource
+
+#     other players
+#         warehouse check or factory check
+#             choose warehouse resource or choose own resource (factory)
+#     all players place chosen resource
+#     all players check if they can build
+#         all players build if they want
+#             deal with construction
+# check if boards filled
+# handle master builder rotation
