@@ -235,7 +235,7 @@ class MCTSNode:
 
 
 class MCTS:
-    def __init__(self, exploration_const=1.414, max_iterations=9, batch_size=2):
+    def __init__(self, exploration_const=1.414, max_iterations=5, batch_size=4):
         self.exploration_const = exploration_const
         self.max_iterations = max_iterations
         self.transposition_table = {}
@@ -440,7 +440,7 @@ class MCTS:
 
 
 class MCTSAgent:
-    def __init__(self, name, iterations=8, exploration_const=1.414):
+    def __init__(self, name, iterations=5, exploration_const=1.414):
         self.name = name
         self.mcts = MCTS(exploration_const, iterations)
         self.game_state = None
@@ -470,7 +470,7 @@ class MCTSAgent:
 
 
 def test_mcts():
-    mcts_agent = MCTSAgent("Agent Name", iterations=9)
+    mcts_agent = MCTSAgent("Agent Name", iterations=5)
 
     monument = rdm.choice(monuments_deck)
     player = Player(1, monument, mcts_agent)
