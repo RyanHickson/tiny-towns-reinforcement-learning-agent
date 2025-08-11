@@ -197,7 +197,7 @@ The cards available to them are {}""".format(
         Tiles on town board boundary will have fewer neighbours.
         """
         adjacent_relations = [(-1, 0), (0, -1), (0, +1), (+1, 0)]
-        adjacent_tiles_list = []    # initialise return
+        adjacent_tiles_list = []
         for relational_vector in adjacent_relations:
             i, j = tile_coords
             r, c = relational_vector

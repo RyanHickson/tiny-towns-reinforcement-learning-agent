@@ -11,6 +11,7 @@ from score import get_score
 from observation import get_observation
 from tqdm import tqdm
 import json
+from find_placements import *
 
 from gymnasium import Env
 from gymnasium.spaces import MultiDiscrete
@@ -189,7 +190,9 @@ class TinyTownsEnv(Env):
 
         # GAME
         while not finished:  # MAIN TURN LOOP
-
+            for card in self.get_card_choices():
+                card_layout = card.get_layout()
+                locate_build_placements(card_layout, player.get_board())
             first_player = self.master_builder_queue[0]   # player one becomes first player to act
             acting_player = self.dictionary_of_players[first_player]   # assign acting player to be first master builder
 

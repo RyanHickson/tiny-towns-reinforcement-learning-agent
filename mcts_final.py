@@ -280,12 +280,12 @@ class TinyTownsEnv(Env):
                                 if t == empty:
                                     empties.append((i, j))
                         if empties:
-                            tile_coords_to_use = rdm.choice(empties)
+                            tile_coords = rdm.choice(empties)
                         else:
                             # no empty tiles
                             continue
 
-                    current_player.board[board_tile_dict[tile_index]] = resource_choice
+                    current_player.board[tile_coords] = resource_choice
 
                     # update filled flag if board has no empty
                     if empty not in current_player.board:
