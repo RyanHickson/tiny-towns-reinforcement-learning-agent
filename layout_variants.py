@@ -95,7 +95,7 @@ def find_placements(board, card):
                                     for row_index, row in enumerate(board):
                                         for col_index, tile in enumerate(row):
                                             
-                                            if tile == empty.__str__():
+                                            if board[row_index][col_index] == empty.__str__():
                                                 placement_options.append(
                                                     {
                                                     "placement": (row_index, col_index),

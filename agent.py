@@ -4,7 +4,7 @@ from score import get_score
 from resources import *
 import random as rdm
 
-class GreedyAgent:
+class Agent:
     """
     Agent to act to gain immediate reward
     """
