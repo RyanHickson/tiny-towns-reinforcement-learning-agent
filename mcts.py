@@ -71,14 +71,14 @@ class MCTS:
     def get_transposition_table(self):
         return self.transposition_table
     
-    def get_board_varieties(self, boardstate):
+    def get_board_strings(self, boardstate):
         boards = create_variants(boardstate.player.get_display_board())
         new_array = np.array([str(board) for board in boards])
         boards = np.unique(new_array)
         return boards
     
     def stable_hash(self, board_string):
-        return hashlib.md5(board_string).hexdigest()
+        return hashlib.md5(board_string.encode()).hexdigest()
     
     def format_board_for_hash(self, board):
         board_hash_list = []
@@ -91,22 +91,21 @@ class MCTS:
         
     
     def get_or_create_node(self, state, parent=None, action=None):
-        board_varieties = self.get_board_varieties(state)
-        sortable_board_varieties = []
-
+        board_varieties = self.get_board_strings(state)
+        # sortable_board_varieties = []
         for board in board_varieties:
-            board_string = self.format_board_for_hash(board)
-            sortable_board_varieties.append(board_string)
-            hash_board = self.stable_hash(board_string)
+            # board_string = self.format_board_for_hash(board)
+            # sortable_board_varieties.append(board_string)
+            hash_board = self.stable_hash(board)
             if hash_board in self.get_transposition_table():
                 existing_node = self.get_transposition_table()[hash_board]
                 if parent:
                     existing_node.add_parent(parent, action)
                 return existing_node
-        canonical_board = sorted(sortable_board_varieties)[0]
+        canonical_board = sorted(board_varieties)[0]
         new_node = MCTSNode(state, parent, action)
         new_node.empty_tiles = state.get_empty_tile_list()
-        self.transposition_table[self.stable_hash[canonical_board]] = new_node
+        self.transposition_table[self.stable_hash(canonical_board)] = new_node
         return new_node
     
     def select(self, node):
@@ -144,11 +143,11 @@ class MCTS:
         
         resource_tiles = []
         board = current_state.player.get_board()
-        for row in board:
-            for col in row:
-                tile = board[row][col]
+        for r_i, row in enumerate(board):
+            for c_i, col in enumerate(row):
+                tile = board[r_i][c_i]
                 if isinstance(tile, Resource) and not isinstance(tile, EmptyResource):
-                    resource_tiles.append((row, col))
+                    resource_tiles.append((r_i, c_i))
                 if tile == wood:
                     wood_count += 1
                 if tile == wheat:
@@ -160,12 +159,16 @@ class MCTS:
                 if tile == stone:
                     stone_count += 1
         resource_count_dict = {wood: wood_count, wheat: wheat_count, glass: glass_count, brick: brick_count, stone: stone_count}
-        rdm.shuffle(resource_tiles)
-        tile_coords_for_adjacency_check = resource_tiles.pop()
-        tiles_adjacent_to_resource = current_state.player.check_adjacent_tiles(tile_coords_for_adjacency_check)
-        for resource in resource_list:
-            for tile_coords in tiles_adjacent_to_resource:
-                actions.append((resource, tile_coords))
+        if resource_tiles:
+            rdm.shuffle(resource_tiles)
+            tile_coords_for_adjacency_check = resource_tiles.pop()
+            tiles_adjacent_to_resource = current_state.player.check_adjacent_tiles(tile_coords_for_adjacency_check)
+            for resource in resource_list:
+                for tile_coords in tiles_adjacent_to_resource:
+                    actions.append((resource, tile_coords))
+        else:
+            resource = rdm.choice(resource_list)
+            tile_coords = rdm.choice(empty_tiles)
 
         if root_node.children:
             best_child = max(root_node.children, key=lambda child: child.visits)
@@ -185,6 +188,7 @@ class MCTS:
             self.community_cards = self.get_community_cards()
 
         scored_actions = []
+        board = node.state.player.get_board()
         for action in node.untried_actions:
             scored_action = (action, score_action(action, board, self.get_community_cards()))
             scored_actions.append(scored_action)
@@ -198,7 +202,6 @@ class MCTS:
                     node.untried_actions.remove(untried_action)
                     new_state = node.state.apply_action(action)
                     child = self.get_or_create_node(new_state, node, action)
-                    child.empty_tiles = new_state.get_empty_tile_list()
 
                     if child:
                         if child not in node.children:
@@ -211,10 +214,10 @@ class MCTS:
                         return child
         
         if node.untried_actions:
-            action = node.untried_actions.pop() # ALWAYS RETURNING STONE (3,3)
+            rdm.shuffle(node.untried_actions)
+            action = node.untried_actions.pop()
             new_state = node.state.apply_action(action)
             child = self.get_or_create_node(new_state, node, action)
-            child.empty_tiles = new_state.get_empty_tile_list()
 
             if child:
                 if child not in node.children:
@@ -224,7 +227,7 @@ class MCTS:
                         child.add_parent(node, action)
                 return child
         return node
-                    
+
 
     def simulate(self, node):
         current_state = copy.deepcopy(node.state)
@@ -346,18 +349,92 @@ class MCTSNode:
 class BoardState:
     def __init__(self, player=None):
         self.player = player
+        self.current_turn = 0
+        self.max_turns = 100
 
     def get_empty_tile_list(self):
         board = self.player.get_board()
         empty_tile_list = []
-        for row in board:
-            for col in row:
-                if board[row][col] == empty:
-                    empty_tile_list.append((row, col))
+        for r_i, row in enumerate(board):
+            for c_i, col in enumerate(row):
+                if isinstance(board[r_i, c_i], EmptyResource):
+                    empty_tile_list.append((r_i, c_i))
         return empty_tile_list
     
     def is_terminal(self):
         return len(self.get_empty_tile_list()) == 0
+    
+    def apply_action(self, action):
+        resource, tile_coords = action
+
+        new_state = copy.copy(self)
+        new_player = copy.deepcopy(self.player)
+
+        row, col = tile_coords
+        new_state.player = new_player
+        new_player.board[row][col] = resource
+        new_state.current_turn += 1
+        new_state.auto_build()
+        return new_state
+
+    def auto_build(self):
+        """
+        Construct one building if possible
+        """
+        try:
+            coord_dictionary, build_options, placement_display = (
+                find_all_placements(self.player, self.player.get_buildable_cards())
+            )
+            if not coord_dictionary:
+                return
+
+            for build_option in build_options:
+                if not build_option:
+                    continue
+
+                for building_dict in build_option.values():
+                    try:
+                        self.player.construct(building_dict, {})
+                        self.player.board = self.player.get_board()
+                        return
+                    except:
+                        continue
+        
+        except:
+            pass
+
+    def evaluate(self):
+        try:
+            score = get_score(self, self.player, simulated_scoring=True)
+            if self.finished:
+                print(f"Score: {score}")
+
+            normalised_score = (score + 16) / 100
+            return max(0, min(1, normalised_score))
+        except:
+            return self.heuristic_evaluate()
+
+    def heuristic_evaluate(self):
+        score = 0
+        building_count = 0
+        resource_count = 0
+
+        for row in self.player.get_board():
+            for tile in row:
+                if isinstance(tile, EmptyResource):
+                    continue
+                elif isinstance(tile, Card):
+                    building_count += 1
+                else:
+                    resource_count += 1
+
+        if building_count < resource_count:
+            score -= resource_count - building_count
+
+        total_placements = building_count + resource_count
+        score += total_placements * 0.5
+
+        return max(0, min(1, score / 50))
 
 
 def run_mcts():
@@ -366,6 +443,21 @@ def run_mcts():
     player = Player(1, monument, mcts_agent)
     player.all_cards = mcts_agent.mcts.community_cards + [monument]
     board_state = BoardState(player)
+    current_turn = 0
+
+    while not board_state.is_terminal() and current_turn < 100:
+        print(f"\nTurn {current_turn + 1}")
+
+        current_node = MCTSNode(board_state)
+        action = mcts_agent.choose_action(board_state, player)
+        print(f"Agent chose {action[0]}, {action[1]}")
+        board_state = board_state.apply_action(action)
+        current_turn += 1
+        player = board_state.player
+        print(player.get_display_board())
+
+        score = board_state.evaluate()
+        print(score)
     
 
 

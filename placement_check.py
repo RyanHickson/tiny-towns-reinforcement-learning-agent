@@ -65,7 +65,7 @@ def score_action(action, board, card_choices):
         variants = create_variants(card_layout)
         for variant in variants:
             not_wilds = get_not_wilds(variant)
-            if tile_coords in [(row, col) for (row, col) in  not_wilds]:
+            if tile_coords in not_wilds:
                 if resource.__str__() == variant[tile_coords[0]][tile_coords[1]].__str__():
                     score += 3
     return score

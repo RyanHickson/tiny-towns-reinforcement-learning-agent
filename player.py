@@ -124,8 +124,11 @@ The cards available to them are {}""".format(
 
     def display_all_cards(self):
         return [card.__str__() for card in self.get_buildable_cards()]
+    
+    def get_board(self):
+        return self.board
 
-    def get_instance_board(self):
+    def get_dict_board(self):
         """
         Returns the town board as it is, made up of
         instances of resource and building classes.
@@ -143,7 +146,7 @@ The cards available to them are {}""".format(
         resource and building on the board.
         """
         self.display_board = np.full((4, 4), empty)
-        self.town_board_dict = self.get_instance_board()
+        self.town_board_dict = self.get_board()
         for tile_id, tile_coords in board_tile_dict.items():
             # print(f"{self.town_board_dict[board_tile_dict[tile_id]]=}")
             self.display_board[tile_coords] = self.town_board_dict[

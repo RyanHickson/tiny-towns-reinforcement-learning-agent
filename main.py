@@ -12,10 +12,7 @@ import json
 from tqdm import tqdm
 import hashlib
 
-from gymnasium import Env
-from gymnasium.spaces import MultiDiscrete
-
-class TinyTownsEnv(Env):
+class TinyTowns:
     """
     Setup game environment for RL agent gameplay
     """
@@ -387,9 +384,8 @@ class TinyTownsEnv(Env):
                         self.acting_player.board_is_filled = True    # mark player as having a full board
                     print(self.acting_player.get_display_board())
                     print(self.acting_player.score)
-                    key = 
-                    with open("transposition.json", "w"):
-                        json.dump()
+                    with open("transposition.json", "w") as f:
+                        json.dump(f)
 
 
                     score_display(self.acting_player)
@@ -429,7 +425,7 @@ class TinyTownsEnv(Env):
 def main():
     """Main entry point for the game."""
     for episode in tqdm(range(10)):
-        game = TinyTownsEnv()
+        game = TinyTowns()
         game.setup_players()
         game.play()
         game.record_game()

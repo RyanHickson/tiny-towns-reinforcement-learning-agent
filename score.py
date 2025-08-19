@@ -20,8 +20,10 @@ def check_surrounding_tiles(tile_coords):
 def get_score(game, player):
 
     cards_this_game = game.get_card_choices()
+    cards_this_game.append(player.get_monument())
+    print(cards_this_game)
 
-    player_board_dict = player.get_instance_board()
+    player_board = player.get_board()
     player.monument_score = 0
     player.total_score = 0
     player.empty_tile_score = -1
@@ -35,15 +37,15 @@ def get_score(game, player):
         if factory in cards_this_game:
             pass    # factory does not affect score
         if warehouse in cards_this_game:
-             for tile_coords, tile_content in player_board_dict.items():
+             for tile_coords, tile_content in player_board.items():
                 if tile_content == warehouse:
                     player.factory_score -= (1 * len(player.warehouse_resources))
         if trading_post in cards_this_game:
-            for tile_coords, tile_content in player_board_dict.items():
+            for tile_coords, tile_content in player_board.items():
                 if tile_content == trading_post:
                     player.factory_score += 1
         if bank in cards_this_game:
-            for tile_coords, tile_content in player_board_dict.items():
+            for tile_coords, tile_content in player_board.items():
                 if tile_content == bank:
                     player.factory_score += 4
         return player.factory_score
@@ -54,7 +56,7 @@ def get_score(game, player):
         """
         player.feedable_count = 0
         player.feedable_dict = {}
-        for tile_coords, tile_content in player_board_dict.items():
+        for tile_coords, tile_content in player_board.items():
             if tile_content == cottage:
                 player.feedable_count += 1
                 player.feedable_dict[tile_coords] = "cottage"
@@ -75,7 +77,7 @@ def get_score(game, player):
 
         player.feedable_coords = []
 
-        for tile_coords, tile_content in player_board_dict.items():
+        for tile_coords, tile_content in player_board.items():
             if tile_content == cottage:
                 player.cottage_count += 1
                 player.feedable_coords.append(tile_coords)
@@ -124,7 +126,7 @@ def get_score(game, player):
                 cottage_surrounding_coords = check_surrounding_tiles(coord_pair)
                 for coords in cottage_surrounding_coords:
                     try:
-                        tile_content = player_board_dict[coords]
+                        tile_content = player_board[coords]
                     except:
                         continue
                     if tile_content == granary:
@@ -149,7 +151,7 @@ def get_score(game, player):
         player.chapel_score = 0
         player.chapel_count = 0
         player.chapel_coords = []
-        for tile_coords, tile_content in player_board_dict.items():
+        for tile_coords, tile_content in player_board.items():
             if isinstance(tile_content, ChapelType):
                 player.chapel_count += 1
                 player.chapel_coords.append(tile_coords)
@@ -209,7 +211,7 @@ def get_score(game, player):
         player.tavern_score = 0
         player.tavern_count = 0
         player.tavern_coords = []
-        for tile_coords, tile_content in player_board_dict.items():
+        for tile_coords, tile_content in player_board.items():
             if isinstance(tile_content, TavernType):
                 player.tavern_count += 1
                 player.tavern_coords.append(tile_coords)
@@ -277,7 +279,7 @@ def get_score(game, player):
         player.theatre_score = 0
         player.theatre_count = 0
         player.theatre_coords = []
-        for tile_coords, tile_content in player_board_dict.items():
+        for tile_coords, tile_content in player_board.items():
             if isinstance(tile_content, TheatreType):
                 player.theatre_count += 1
                 player.theatre_coords.append(tile_coords)
@@ -343,7 +345,7 @@ def get_score(game, player):
         player.well_score = 0
         player.well_count = 0
         player.well_coords = []
-        for tile_coords, tile_content in player_board_dict.items():
+        for tile_coords, tile_content in player_board.items():
             if isinstance(tile_content, WellType):
                 player.well_count += 1
                 player.well_coords.append(tile_coords)
@@ -401,7 +403,7 @@ def get_score(game, player):
         player.total_cottage_count = 0
         unique_building_count = 0
         missing_building_types = 7
-        for tile_coords, tile_content in player_board_dict.items():
+        for tile_coords, tile_content in player_board.items():
             if isinstance(tile_content, Monument):
                 player.monument_constructed = True
                 player.monument_coords = tile_coords
@@ -527,7 +529,7 @@ def get_score(game, player):
 
     def get_farm_count(player):
         player.farm_count = 0
-        for tile_coords, tile_content in player_board_dict.items():
+        for tile_coords, tile_content in player_board.items():
             if tile_content == farm:
                 player.farm_count += 1
         return player.farm_count
