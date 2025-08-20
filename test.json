@@ -1,0 +1,3483 @@
+{
+  "Scott": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "hallway"
+}
+{
+  "Scott": "dining room",
+  "Sam": "hallway",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "hallway",
+  "Ryan": "bathroom",
+  "Zoe": "bathroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "hallway",
+  "Ryan": "hallway",
+  "Zoe": "bathroom"
+}
+{
+  "Scott": "living room",
+  "Sam": "hallway",
+  "Ryan": "hallway",
+  "Zoe": "bathroom"
+}
+{
+  "Scott": "living room",
+  "Sam": "bedroom",
+  "Ryan": "hallway",
+  "Zoe": "bathroom"
+}
+{
+  "Scott": "living room",
+  "Sam": "bedroom",
+  "Ryan": "hallway",
+  "Zoe": "bathroom"
+}
+{
+  "Scott": "living room",
+  "Sam": "bedroom",
+  "Ryan": "bathroom",
+  "Zoe": "bathroom"
+}
+{
+  "Scott": "living room",
+  "Sam": "bedroom",
+  "Ryan": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "living room",
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "living room",
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "living room",
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "living room",
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "living room",
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "living room",
+  "Sam": "living room",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "living room",
+  "Sam": "living room",
+  "Ryan": "kitchen",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "living room",
+  "Ryan": "kitchen",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "kitchen",
+  "Ryan": "kitchen",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "living room",
+  "Ryan": "bedroom",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "living room",
+  "Ryan": "bedroom",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "hallway",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "hallway",
+  "Zoe": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "hallway",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "dining room",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "dining room",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "dining room",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "dining room",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "dining room",
+  "Ryan": "bathroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "dining room",
+  "Ryan": "bathroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "dining room",
+  "Ryan": "bathroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "dining room",
+  "Ryan": "bathroom",
+  "Zoe": "living room"
+}
+{
+  "Ryan": "hallway"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "dining room"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "bathroom",
+  "Scott": "hallway",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "living room",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Scott": "living room",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Scott": "living room",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "living room",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "dining room",
+  "Scott": "bathroom",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "hallway",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "hallway"
+}
+{
+  "Sam": "bedroom"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "bedroom"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "bedroom",
+  "Scott": "dining room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "bedroom",
+  "Scott": "kitchen"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "bedroom",
+  "Scott": "kitchen"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "bedroom",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "bathroom",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bedroom",
+  "Ryan": "dining room",
+  "Scott": "dining room",
+  "Zoe": "living room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "dining room",
+  "Scott": "dining room",
+  "Zoe": "living room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "bedroom",
+  "Scott": "dining room",
+  "Zoe": "living room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "bedroom",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "hallway",
+  "Ryan": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Ryan": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Ryan": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Sam": "dining room",
+  "Ryan": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "dining room",
+  "Ryan": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "dining room",
+  "Ryan": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "kitchen",
+  "Ryan": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "kitchen",
+  "Ryan": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Sam": "kitchen",
+  "Ryan": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bathroom",
+  "Ryan": "hallway",
+  "Scott": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bathroom",
+  "Ryan": "dining room",
+  "Scott": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bathroom",
+  "Ryan": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Sam": "bathroom",
+  "Ryan": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "dining room",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "dining room",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "living room",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Ryan": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "kitchen"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "hallway"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "bedroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bedroom",
+  "Zoe": "living room",
+  "Ryan": "hallway"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bedroom",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "hallway",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "hallway",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "hallway",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "hallway",
+  "Zoe": "living room",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "hallway",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "hallway",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "hallway",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "dining room",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "dining room",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "living room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "bathroom",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "dining room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "dining room",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "bathroom",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "bathroom",
+  "Ryan": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "bedroom",
+  "Ryan": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "bedroom",
+  "Ryan": "bedroom"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "bedroom",
+  "Ryan": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bathroom",
+  "Zoe": "bedroom",
+  "Ryan": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bathroom",
+  "Zoe": "bedroom",
+  "Ryan": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Zoe": "bedroom",
+  "Ryan": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Zoe": "bedroom",
+  "Ryan": "hallway"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bedroom",
+  "Zoe": "bedroom",
+  "Ryan": "hallway"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bedroom",
+  "Zoe": "bedroom",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "kitchen",
+  "Zoe": "bedroom",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "kitchen",
+  "Zoe": "bathroom",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Zoe": "bathroom",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Zoe": "living room",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Zoe": "living room",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "bathroom"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "living room",
+  "Zoe": "dining room",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "living room",
+  "Zoe": "dining room",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "living room",
+  "Zoe": "living room",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Zoe": "living room",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Zoe": "hallway",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Zoe": "hallway",
+  "Ryan": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "kitchen",
+  "Zoe": "hallway",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bedroom",
+  "Zoe": "hallway",
+  "Ryan": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bedroom",
+  "Zoe": "hallway",
+  "Ryan": "kitchen"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bedroom",
+  "Zoe": "hallway",
+  "Ryan": "hallway"
+}
+{
+  "Ryan": "living room"
+}
+{
+  "Ryan": "living room",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Scott": "bathroom",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "hallway"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Ryan": "bathroom",
+  "Scott": "kitchen",
+  "Zoe": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "hallway",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "living room",
+  "Scott": "kitchen",
+  "Zoe": "living room",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "living room",
+  "Scott": "living room",
+  "Zoe": "living room",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "living room",
+  "Scott": "living room",
+  "Zoe": "living room",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "living room",
+  "Scott": "living room",
+  "Zoe": "dining room",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "living room",
+  "Scott": "living room",
+  "Zoe": "hallway",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "living room",
+  "Zoe": "hallway",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "living room",
+  "Zoe": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "living room",
+  "Zoe": "hallway",
+  "Sam": "dining room"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "dining room"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "kitchen",
+  "Sam": "dining room"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "kitchen",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "dining room"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "dining room"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "dining room",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "bathroom",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "dining room",
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "dining room",
+  "Scott": "bedroom",
+  "Zoe": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Scott": "bedroom",
+  "Zoe": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "hallway",
+  "Scott": "bedroom",
+  "Zoe": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "hallway",
+  "Scott": "bedroom",
+  "Zoe": "dining room",
+  "Sam": "living room"
+}
+{
+  "Ryan": "hallway",
+  "Scott": "bathroom",
+  "Zoe": "dining room",
+  "Sam": "living room"
+}
+{
+  "Ryan": "hallway",
+  "Scott": "bathroom",
+  "Zoe": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "hallway",
+  "Scott": "bedroom",
+  "Zoe": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "hallway",
+  "Scott": "bedroom",
+  "Zoe": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "dining room",
+  "Scott": "bedroom",
+  "Zoe": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "dining room",
+  "Scott": "bathroom",
+  "Zoe": "dining room",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "dining room",
+  "Scott": "bathroom",
+  "Zoe": "bedroom",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "bedroom",
+  "Sam": "bedroom"
+}
+{
+  "Ryan": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "bedroom",
+  "Sam": "living room"
+}
+{
+  "Ryan": "kitchen",
+  "Scott": "kitchen",
+  "Zoe": "bedroom",
+  "Sam": "living room"
+}
+{
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "bedroom",
+  "Sam": "living room"
+}
+{
+  "Ryan": "kitchen",
+  "Scott": "dining room",
+  "Zoe": "bedroom",
+  "Sam": "hallway"
+}
+{
+  "Ryan": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "bedroom",
+  "Sam": "hallway"
+}
+{
+  "Ryan": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "bedroom",
+  "Sam": "dining room"
+}
+{
+  "Ryan": "bathroom",
+  "Scott": "dining room",
+  "Zoe": "bedroom",
+  "Sam": "dining room"
+}
+{
+  "Ryan": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "hallway"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "hallway",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Zoe": "living room"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "dining room",
+  "Zoe": "living room"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "dining room",
+  "Zoe": "living room",
+  "Scott": "dining room"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "dining room",
+  "Zoe": "living room",
+  "Scott": "dining room"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "dining room",
+  "Zoe": "living room",
+  "Scott": "dining room"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "dining room",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "bathroom",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "bathroom",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "living room",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "living room",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "living room",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "living room",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "bathroom",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "bathroom",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "bathroom",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "bathroom",
+  "Zoe": "hallway",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "bathroom",
+  "Zoe": "hallway",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Zoe": "hallway",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "kitchen",
+  "Zoe": "hallway",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Zoe": "hallway",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "kitchen",
+  "Zoe": "hallway",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "bedroom",
+  "Zoe": "hallway",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "bedroom",
+  "Zoe": "bedroom",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "bedroom",
+  "Zoe": "bedroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "bedroom",
+  "Zoe": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "bedroom",
+  "Zoe": "bathroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "bedroom",
+  "Zoe": "bathroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "hallway",
+  "Zoe": "bathroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "hallway",
+  "Zoe": "bathroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Zoe": "bathroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "hallway",
+  "Zoe": "bathroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "kitchen",
+  "Zoe": "bathroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "kitchen",
+  "Zoe": "bathroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "kitchen",
+  "Zoe": "bedroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Zoe": "bedroom",
+  "Scott": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Zoe": "bedroom",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "hallway",
+  "Zoe": "bedroom",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Zoe": "bedroom",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Zoe": "bedroom",
+  "Scott": "hallway"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Zoe": "bedroom",
+  "Scott": "hallway"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Zoe": "hallway",
+  "Scott": "hallway"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Zoe": "hallway",
+  "Scott": "hallway"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Zoe": "hallway",
+  "Scott": "kitchen"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "bathroom",
+  "Zoe": "hallway",
+  "Scott": "kitchen"
+}
+{
+  "Scott": "kitchen"
+}
+{
+  "Scott": "bathroom"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "kitchen",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "dining room",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "bathroom",
+  "Ryan": "dining room",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "dining room",
+  "Sam": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "dining room",
+  "Ryan": "dining room",
+  "Sam": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "dining room",
+  "Ryan": "hallway",
+  "Sam": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "dining room",
+  "Ryan": "bathroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "hallway",
+  "Ryan": "bathroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "hallway",
+  "Ryan": "bathroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "kitchen",
+  "Ryan": "bathroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "kitchen",
+  "Ryan": "bathroom",
+  "Sam": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "kitchen",
+  "Ryan": "bathroom",
+  "Sam": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "bedroom"
+}
+{
+  "Scott": "hallway",
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "bathroom"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "bathroom"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "bedroom",
+  "Ryan": "kitchen",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "kitchen",
+  "Ryan": "kitchen",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "dining room",
+  "Ryan": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "bathroom",
+  "Ryan": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "bathroom",
+  "Ryan": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "hallway",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "bedroom",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "bedroom",
+  "Sam": "bathroom"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "bedroom",
+  "Sam": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "living room",
+  "Sam": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "bathroom",
+  "Sam": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "bathroom",
+  "Sam": "living room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "bathroom",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "dining room",
+  "Sam": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "dining room",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Zoe": "hallway",
+  "Ryan": "bedroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Ryan": "bedroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Ryan": "kitchen",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Zoe": "hallway",
+  "Ryan": "kitchen",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Zoe": "bedroom",
+  "Ryan": "kitchen",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Zoe": "bedroom",
+  "Ryan": "living room",
+  "Sam": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Zoe": "bedroom",
+  "Ryan": "dining room",
+  "Sam": "dining room"
+}
+{
+  "Zoe": "living room"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Zoe": "dining room",
+  "Ryan": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "hallway",
+  "Sam": "bathroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "kitchen",
+  "Sam": "bathroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "bathroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "bathroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "bathroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "kitchen"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "kitchen",
+  "Scott": "bathroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "hallway",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "hallway",
+  "Sam": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "hallway",
+  "Sam": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "dining room"
+}
+{
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "dining room"
+}
+{
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "kitchen"
+}
+{
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "bedroom",
+  "Scott": "kitchen"
+}
+{
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "kitchen",
+  "Scott": "kitchen"
+}
+{
+  "Zoe": "kitchen",
+  "Ryan": "hallway",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "hallway",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bathroom",
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bathroom",
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bathroom",
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "dining room",
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "dining room",
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "dining room",
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "dining room",
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "bathroom",
+  "Sam": "hallway",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "bedroom",
+  "Sam": "hallway",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "bedroom",
+  "Sam": "hallway",
+  "Scott": "kitchen"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "bedroom",
+  "Sam": "hallway",
+  "Scott": "kitchen"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "kitchen"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "living room",
+  "Sam": "living room",
+  "Scott": "kitchen"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "living room",
+  "Sam": "living room",
+  "Scott": "hallway"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "dining room",
+  "Sam": "living room",
+  "Scott": "hallway"
+}
+{
+  "Zoe": "living room",
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "hallway"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "hallway"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "living room"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "living room"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "living room"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "living room"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "living room",
+  "Scott": "living room"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "living room",
+  "Scott": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Ryan": "bathroom",
+  "Sam": "living room",
+  "Scott": "bathroom"
+}
+{
+  "Scott": "bathroom"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bathroom"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bathroom",
+  "Ryan": "dining room"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bathroom",
+  "Ryan": "dining room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "living room",
+  "Ryan": "dining room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "dining room",
+  "Ryan": "dining room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "living room",
+  "Sam": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "living room",
+  "Sam": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "living room",
+  "Sam": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "living room"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "hallway",
+  "Ryan": "hallway",
+  "Zoe": "living room"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "bedroom",
+  "Ryan": "hallway",
+  "Zoe": "living room"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "kitchen",
+  "Ryan": "hallway",
+  "Zoe": "living room"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Ryan": "living room",
+  "Zoe": "living room"
+}
+{
+  "Scott": "kitchen",
+  "Sam": "bathroom",
+  "Ryan": "living room",
+  "Zoe": "living room"
+}
+{
+  "Scott": "living room",
+  "Sam": "bathroom",
+  "Ryan": "living room",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "living room",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "dining room",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "hallway",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "hallway",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "bathroom",
+  "Zoe": "living room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "kitchen",
+  "Ryan": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "kitchen",
+  "Ryan": "hallway",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "dining room",
+  "Ryan": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "dining room",
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "hallway",
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bathroom",
+  "Ryan": "bedroom",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bathroom",
+  "Ryan": "living room",
+  "Zoe": "hallway"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bathroom",
+  "Ryan": "living room",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bedroom",
+  "Ryan": "living room",
+  "Zoe": "kitchen"
+}
+{
+  "Scott": "bathroom",
+  "Sam": "bedroom",
+  "Ryan": "living room",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "bedroom",
+  "Ryan": "living room",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "bedroom",
+  "Ryan": "hallway",
+  "Zoe": "dining room"
+}
+{
+  "Scott": "bedroom",
+  "Sam": "bedroom",
+  "Ryan": "kitchen",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "dining room"
+}
+{
+  "Ryan": "bedroom"
+}
+{
+  "Ryan": "kitchen"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "kitchen"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "kitchen",
+  "Scott": "kitchen"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "kitchen",
+  "Scott": "kitchen"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Scott": "kitchen"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Scott": "bathroom"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Scott": "living room"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Scott": "living room",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bathroom",
+  "Sam": "kitchen",
+  "Scott": "living room",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "kitchen",
+  "Scott": "living room",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "kitchen",
+  "Scott": "hallway",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Ryan": "kitchen",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Scott": "bathroom",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "living room",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "living room",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "living room",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "living room",
+  "Sam": "living room",
+  "Scott": "kitchen",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "living room",
+  "Scott": "kitchen",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "living room",
+  "Scott": "kitchen",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "hallway",
+  "Sam": "living room",
+  "Scott": "bedroom",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "living room",
+  "Scott": "bedroom",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "living room",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "living room",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "kitchen",
+  "Scott": "bedroom",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "hallway",
+  "Scott": "bedroom",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "hallway",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "hallway",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "hallway",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "hallway",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "living room",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "dining room",
+  "Sam": "dining room",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Scott": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Scott": "dining room",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Scott": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Ryan": "bedroom",
+  "Sam": "dining room",
+  "Scott": "dining room",
+  "Zoe": "kitchen"
+}
+{
+  "Zoe": "dining room"
+}
+{
+  "Zoe": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "dining room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "dining room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "dining room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "dining room",
+  "Scott": "kitchen"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "dining room",
+  "Scott": "kitchen",
+  "Ryan": "dining room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "dining room",
+  "Scott": "kitchen",
+  "Ryan": "dining room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "bathroom",
+  "Scott": "kitchen",
+  "Ryan": "dining room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "bathroom",
+  "Scott": "kitchen",
+  "Ryan": "living room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "kitchen",
+  "Ryan": "living room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "kitchen",
+  "Ryan": "bedroom"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "kitchen",
+  "Ryan": "kitchen"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "kitchen",
+  "Ryan": "kitchen"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "kitchen",
+  "Ryan": "bathroom"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "living room",
+  "Ryan": "bathroom"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "living room",
+  "Ryan": "kitchen"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "living room",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "hallway",
+  "Scott": "living room",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "living room",
+  "Scott": "living room",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "living room",
+  "Scott": "living room",
+  "Ryan": "living room"
+}
+{
+  "Zoe": "living room",
+  "Sam": "living room",
+  "Scott": "living room",
+  "Ryan": "living room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "living room",
+  "Scott": "living room",
+  "Ryan": "living room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "living room",
+  "Ryan": "living room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "living room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "living room"
+}
+{
+  "Zoe": "bathroom",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "bathroom"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "bathroom"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "kitchen"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Ryan": "hallway"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "bathroom",
+  "Scott": "bathroom",
+  "Ryan": "bedroom"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Ryan": "bedroom"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "dining room",
+  "Scott": "bathroom",
+  "Ryan": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "dining room",
+  "Scott": "bathroom",
+  "Ryan": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "hallway",
+  "Scott": "bathroom",
+  "Ryan": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "hallway",
+  "Scott": "bathroom",
+  "Ryan": "bedroom"
+}
+{
+  "Zoe": "bedroom",
+  "Sam": "hallway",
+  "Scott": "bathroom",
+  "Ryan": "dining room"
+}
+{
+  "Zoe": "living room",
+  "Sam": "hallway",
+  "Scott": "bathroom",
+  "Ryan": "dining room"
+}
+{
+  "Zoe": "living room",
+  "Sam": "hallway",
+  "Scott": "bathroom",
+  "Ryan": "dining room"
+}
+{
+  "Zoe": "living room",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Ryan": "dining room"
+}
+{
+  "Zoe": "dining room",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Ryan": "dining room"
+}
+{
+  "Zoe": "hallway",
+  "Sam": "living room",
+  "Scott": "bathroom",
+  "Ryan": "dining room"
+}
+{
+  "Sam": "dining room"
+}
+{
+  "Sam": "dining room",
+  "Scott": "hallway"
+}
+{
+  "Sam": "dining room",
+  "Scott": "hallway",
+  "Ryan": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Scott": "bathroom",
+  "Ryan": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Scott": "hallway",
+  "Ryan": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Scott": "hallway",
+  "Ryan": "bathroom",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "dining room",
+  "Scott": "hallway",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "dining room",
+  "Scott": "hallway",
+  "Ryan": "bedroom",
+  "Zoe": "hallway"
+}
+{
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "bedroom",
+  "Zoe": "hallway"
+}
+{
+  "Sam": "hallway",
+  "Scott": "hallway",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "hallway",
+  "Scott": "kitchen",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "hallway",
+  "Scott": "dining room",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "hallway",
+  "Scott": "dining room",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "hallway",
+  "Scott": "bedroom",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "hallway",
+  "Scott": "bedroom",
+  "Ryan": "bedroom",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "hallway",
+  "Scott": "bedroom",
+  "Ryan": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "hallway",
+  "Scott": "bedroom",
+  "Ryan": "bathroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "hallway",
+  "Scott": "bedroom",
+  "Ryan": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "bedroom",
+  "Ryan": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "bedroom",
+  "Ryan": "bedroom",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "bedroom",
+  "Ryan": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "kitchen",
+  "Ryan": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "living room",
+  "Ryan": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "living room",
+  "Ryan": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Ryan": "living room",
+  "Zoe": "kitchen"
+}
+{
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Ryan": "living room",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "living room",
+  "Scott": "dining room",
+  "Ryan": "living room",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "living room",
+  "Scott": "dining room",
+  "Ryan": "living room",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "living room",
+  "Scott": "hallway",
+  "Ryan": "living room",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "hallway",
+  "Ryan": "living room",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "hallway",
+  "Ryan": "living room",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "hallway",
+  "Ryan": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "hallway",
+  "Ryan": "kitchen",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "bathroom",
+  "Ryan": "kitchen",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "hallway",
+  "Ryan": "kitchen",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "dining room",
+  "Ryan": "kitchen",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "dining room",
+  "Ryan": "dining room",
+  "Zoe": "bedroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "dining room",
+  "Ryan": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "kitchen",
+  "Scott": "dining room",
+  "Ryan": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "bedroom",
+  "Scott": "dining room",
+  "Ryan": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Scott": "dining room",
+  "Ryan": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Scott": "living room",
+  "Ryan": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "bedroom",
+  "Scott": "living room",
+  "Ryan": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Scott": "living room",
+  "Ryan": "dining room",
+  "Zoe": "bathroom"
+}
+{
+  "Sam": "dining room",
+  "Scott": "living room",
+  "Ryan": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "dining room",
+  "Scott": "bathroom",
+  "Ryan": "dining room",
+  "Zoe": "dining room"
+}
+{
+  "Sam": "dining room",
+  "Scott": "bathroom",
+  "Ryan": "dining room",
+  "Zoe": "living room"
+}

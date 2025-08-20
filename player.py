@@ -128,7 +128,7 @@ The cards available to them are {}""".format(
     def get_board(self):
         return self.board
 
-    def get_dict_board(self):
+    def board_to_dictionary(self):
         """
         Returns the town board as it is, made up of
         instances of resource and building classes.

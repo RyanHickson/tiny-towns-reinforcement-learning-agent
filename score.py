@@ -23,7 +23,7 @@ def get_score(game, player):
     cards_this_game.append(player.get_monument())
     print(cards_this_game)
 
-    player_board = player.get_board()
+    player_board = player.board_to_dictionary()
     player.monument_score = 0
     player.total_score = 0
     player.empty_tile_score = -1

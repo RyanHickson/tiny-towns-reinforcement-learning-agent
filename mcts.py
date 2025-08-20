@@ -37,12 +37,11 @@ class MCTSAgent:
                 tile_coords = rdm.choice(empty_list)
                 resource = resource_dict[resource_index]
                 return resource, tile_coords
-        
 
 
 
 class MCTS:
-    def __init__(self, exploration_const=1.414, max_search_depth=5):
+    def __init__(self, exploration_const=1.414, max_search_depth=10):
         self.cottage_choice = rdm.choice(cottage_deck)
         self.farm_choice = rdm.choice(farm_deck)
         self.factory_choice = rdm.choice(factory_deck)
@@ -141,33 +140,36 @@ class MCTS:
         brick_count = 0
         stone_count = 0
         
-        resource_tiles = []
-        board = current_state.player.get_board()
+        tile_coords_with_resources = []
+        board = current_state.player.get_display_board()
         for r_i, row in enumerate(board):
             for c_i, col in enumerate(row):
                 tile = board[r_i][c_i]
                 if isinstance(tile, Resource) and not isinstance(tile, EmptyResource):
-                    resource_tiles.append((r_i, c_i))
-                if tile == wood:
+                    tile_coords_with_resources.append((r_i, c_i))
+                if tile.__str__() == wood.__str__():
                     wood_count += 1
-                if tile == wheat:
+                if tile.__str__() == wheat.__str__():
                     wheat_count += 1
-                if tile == glass:
+                if tile.__str__() == glass.__str__():
                     glass_count += 1
-                if tile == brick:
+                if tile.__str__() == brick.__str__():
                     brick_count += 1
-                if tile == stone:
+                if tile.__str__() == stone.__str__():
                     stone_count += 1
         resource_count_dict = {wood: wood_count, wheat: wheat_count, glass: glass_count, brick: brick_count, stone: stone_count}
-        if resource_tiles:
-            rdm.shuffle(resource_tiles)
-            tile_coords_for_adjacency_check = resource_tiles.pop()
+        if tile_coords_with_resources:
+            rdm.shuffle(tile_coords_with_resources)
+            tile_coords_for_adjacency_check = tile_coords_with_resources.pop()
             tiles_adjacent_to_resource = current_state.player.check_adjacent_tiles(tile_coords_for_adjacency_check)
             for resource in resource_list:
                 for tile_coords in tiles_adjacent_to_resource:
                     actions.append((resource, tile_coords))
         else:
-            resource = rdm.choice(resource_list)
+            overrepresented_resource = max(resource_count_dict, key=resource_count_dict.get)
+            resource = overrepresented_resource
+            while resource == overrepresented_resource:
+                resource = rdm.choice(resource_list)
             tile_coords = rdm.choice(empty_tiles)
 
         if root_node.children:
@@ -200,8 +202,8 @@ class MCTS:
             for untried_action in node.untried_actions:
                 if actions_equal(action, untried_action):
                     node.untried_actions.remove(untried_action)
-                    new_state = node.state.apply_action(action)
-                    child = self.get_or_create_node(new_state, node, action)
+                    current_state = node.state.apply_action(action)
+                    child = self.get_or_create_node(current_state, node, action)
 
                     if child:
                         if child not in node.children:
@@ -216,8 +218,8 @@ class MCTS:
         if node.untried_actions:
             rdm.shuffle(node.untried_actions)
             action = node.untried_actions.pop()
-            new_state = node.state.apply_action(action)
-            child = self.get_or_create_node(new_state, node, action)
+            current_state = node.state.apply_action(action)
+            child = self.get_or_create_node(current_state, node, action)
 
             if child:
                 if child not in node.children:
@@ -252,9 +254,9 @@ class MCTS:
 
             top_scoring_actions = scored_actions[:3] if len(scored_actions) >= 3 else scored_actions
             action = rdm.choice(top_scoring_actions)
-            new_state = current_state.apply_action(action)
+            current_state = current_state.apply_action(action)
             sim_depth += 1
-        return new_state.evaluate()
+        return current_state.evaluate()
 
 
 
@@ -367,15 +369,15 @@ class BoardState:
     def apply_action(self, action):
         resource, tile_coords = action
 
-        new_state = copy.copy(self)
+        current_state = copy.copy(self)
         new_player = copy.deepcopy(self.player)
 
         row, col = tile_coords
-        new_state.player = new_player
+        current_state.player = new_player
         new_player.board[row][col] = resource
-        new_state.current_turn += 1
-        new_state.auto_build()
-        return new_state
+        current_state.current_turn += 1
+        current_state.auto_build()
+        return current_state
 
     def auto_build(self):
         """
