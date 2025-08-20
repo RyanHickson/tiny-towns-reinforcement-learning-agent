@@ -13,10 +13,8 @@ from tqdm import tqdm
 import json
 from find_placements import *
 
-from gymnasium import Env
-from gymnasium.spaces import MultiDiscrete
 
-class TinyTownsEnv(Env):
+class TinyTownsEnv:
     """
     Setup game environment for RL agent gameplay
     """
@@ -36,17 +34,6 @@ class TinyTownsEnv(Env):
 
         self.number_of_players = handle_input(number_of_players_text, range(2,7))
         manual_card_selection = handle_input(manual_card_selection_text, range(3))
-
-        self.action_space = MultiDiscrete(
-            [
-                5,  # RESOURCE INDEX
-                16,  # TILE ID INDEX
-                2,  # NO/ YES
-                8,  # BUILDING TYPE
-                7,  # BUILDING TYPE WITHOUT MONUMENT
-            ]
-        )
-
 
         if not manual_card_selection:   # Normal play, random card choices from each deck
             self.cottage_choice = rdm.choice(cottage_deck)
@@ -179,7 +166,7 @@ class TinyTownsEnv(Env):
         self.game_data.append(game_data)
 
     def export_data(self):
-        with open(xyz.json) as f:
+        with open("xyz.json", "w") as f:
             json.dump(self.game_data, f)
 
 

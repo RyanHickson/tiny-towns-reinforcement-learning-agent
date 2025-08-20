@@ -29,6 +29,10 @@ class Player:
         self.construction_list = []
         self.turn = 1
         self.resource_distribution = []
+        self.board = np.array([[wheat, glass, empty, empty],
+                               [empty, empty, empty, empty],
+                               [empty, empty, empty, empty],
+                               [empty, empty, empty, empty],])
 
         self.environment = [
             self.board,

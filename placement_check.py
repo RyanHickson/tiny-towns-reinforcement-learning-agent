@@ -11,7 +11,7 @@ from agent import Agent
 def work_towards_layout(board, layout):
     variants = create_variants(layout)
     board_rows, board_cols = len(board), len(board[0])
-    min_turns_needed = 16
+    min_turns_needed = 10
     moves_wanted = []
     best_matching_resources = 0
 

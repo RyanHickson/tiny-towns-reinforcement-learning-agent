@@ -18,7 +18,7 @@ class Card:
         return self.layout
 
     def __str__(self):
-        return "{}".format(self.name)
+        return self.name
 
     def get_card_detail(self):
         if self.is_feedable:
@@ -218,7 +218,7 @@ shed = WellType(
 cottage_deck = [cottage]
 farm_deck = [farm, orchard, greenhouse, granary]
 factory_deck = [factory, warehouse, trading_post, bank]
-tavern_deck = [tavern, inn, almshouse] #, feast_hall]
+tavern_deck = [tavern, inn, almshouse, feast_hall]
 chapel_deck = [chapel, temple, abbey, cloister]
 theatre_deck = [theatre, bakery, market, tailor]
 well_deck = [well, fountain, millstone, shed]

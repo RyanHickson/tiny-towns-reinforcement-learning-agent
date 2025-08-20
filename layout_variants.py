@@ -49,8 +49,8 @@ def find_placements(board, card):
                     if el in row:
                         res_in_board = True
                         break
-                    if not res_in_board:
-                        return {}, [], []
+                if not res_in_board:
+                    return {}, [], []
     variants = create_variants(card_layout)
     board_rows, board_cols = len(board), len(board[0])
     placement_dict = {}

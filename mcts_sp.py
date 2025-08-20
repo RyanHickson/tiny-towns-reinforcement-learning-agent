@@ -14,7 +14,10 @@ from placement_check import find_all_layouts, score_action, actions_equal
 from tqdm import tqdm
 import cProfile
 import pstats
+import hashlib
 
+def stable_hash(value):
+    return hashlib.md5(value.encode()).hexdigest()
 
 class BoardState:
     def __init__(self, player=None):
@@ -40,7 +43,10 @@ class BoardState:
         ]
 
         self.current_turn = 0
-        self.max_turns =20
+        self.max_turns =100
+
+        self.turns_since_build = 0
+        self.fallback_board = None
 
     def get_card_choices(self):
         return self.card_choices
@@ -72,6 +78,9 @@ class BoardState:
         new_state = copy.copy(self)
         new_player = copy.copy(self.player)
 
+        if new_player.turn == 1:
+            new_state.fallback_board = copy.deepcopy(new_player.get_board())
+
         current_board = self.player.get_board()
         new_board = np.array([row.copy() for row in current_board])
 
@@ -81,7 +90,24 @@ class BoardState:
         new_player.board = new_board
         new_state.player = new_player
         new_state.current_turn += 1
+
+        check_board_before_build = copy.deepcopy(new_player.get_display_board())
         new_state.auto_build()
+        check_board_after_build = new_player.get_display_board()
+        board_after_build = copy.deepcopy(new_player.get_board())
+
+
+        if np.array_equal(check_board_before_build, check_board_after_build):
+            new_state.turns_since_build += 1
+        else:
+            new_state.turns_since_build = 0
+            new_state.fallback_board = copy.deepcopy(board_after_build)
+
+        number_of_turns_to_wait = min(4, new_state.get_empty_tile_count())
+        if new_state.turns_since_build >= number_of_turns_to_wait:
+            new_player.board = new_state.fallback_board
+            new_state.player = new_player
+            new_state.turns_since_build = 0
         return new_state
 
     def auto_build(self):
@@ -235,7 +261,7 @@ class MCTSNode:
 
 
 class MCTS:
-    def __init__(self, exploration_const=1.414, max_iterations=5, batch_size=4):
+    def __init__(self, exploration_const=1.414, max_iterations=15, batch_size=6):
         self.exploration_const = exploration_const
         self.max_iterations = max_iterations
         self.transposition_table = {}
@@ -255,10 +281,9 @@ class MCTS:
         board_varieties = self.get_board_varieties(state)
         
         for board in board_varieties:
-            board_string = str(board)
-            if board_string in self.get_transposition_table():
-                existing_node = self.transposition_table[board_string]
-                existing_node.empty_tiles = state.get_empty_tile_list()
+            board_hash = stable_hash(board)
+            if board_hash in self.get_transposition_table():
+                existing_node = self.transposition_table[board_hash]
                 if parent:
                     existing_node.add_parent(parent, action)
                 return existing_node
@@ -375,7 +400,7 @@ class MCTS:
         current_state = copy.deepcopy(node.state)
 
         simulation_depth = 0
-        max_depth = 8
+        max_depth = 5
 
         while not current_state.is_terminal() and simulation_depth < max_depth:
             empty_tiles = current_state.get_empty_tile_list()
@@ -440,10 +465,11 @@ class MCTS:
 
 
 class MCTSAgent:
-    def __init__(self, name, iterations=5, exploration_const=1.414):
+    def __init__(self, name, iterations=15, exploration_const=1.414):
         self.name = name
         self.mcts = MCTS(exploration_const, iterations)
         self.game_state = None
+        self.best_actions = 0
 
     def choose_resource_and_tile(self, game, player):
         self.game_state = BoardState(player)
@@ -452,6 +478,7 @@ class MCTSAgent:
         best_action = self.mcts.search(self.game_state)
 
         if best_action:
+            self.best_actions += 1
             return best_action
         else:
             empty_list = []
@@ -466,7 +493,7 @@ class MCTSAgent:
                 resource = resource_dict[resource_index]
                 return resource, tile_coords
             else:
-                return wood, (0, 0)
+                None
 
 
 def test_mcts():
@@ -491,7 +518,7 @@ def test_mcts():
     print([card.__str__() for card in player.get_all_cards()])
 
     current_turn = 0
-    while not game_state.is_terminal() and current_turn < 90:
+    while not game_state.is_terminal() and current_turn < game_state.max_turns:
         print(f"\nTurn {current_turn + 1}")
 
         current_node = MCTSNode(game_state)
@@ -499,6 +526,10 @@ def test_mcts():
         action = None
         while action not in current_node.get_legal_actions():
             action = mcts_agent.choose_resource_and_tile(game_state, player)
+            if action is None:
+                break
+        if action is None:
+            break
         print(f"Agent chose {action[0]}, {action[1]}")
 
         game_state = game_state.apply_action(action)
@@ -513,6 +544,7 @@ def test_mcts():
 
     
     print("GAME COMPLETE")
+    print(mcts_agent.best_actions)
     game_state.finished = True
     print(f"Final Score: {game_state.evaluate()}")
     score = get_score(game_state, game_state.player)
