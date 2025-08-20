@@ -27,7 +27,6 @@ class Player:
         self.shrine_key = 0
         self.finish_position = 0
 
-
         self.environment = [
             self.board,
             self.factory_resources,

@@ -10,9 +10,10 @@ import numpy as np
 def work_towards_layout(board, layout):
     variants = create_variants(layout)
     board_rows, board_cols = len(board), len(board[0])
-    min_turns_needed = 16
+    min_turns_needed = 7 # Maximum number of resources for a building construction is six
     moves_wanted = []
     best_matching_resources = 0
+    # rdm.shuffle(variants)
 
     for variant in variants:
         
@@ -29,9 +30,11 @@ def work_towards_layout(board, layout):
                 for r, c in not_wilds:
                     board_value = board[i + r][j + c]
                     layout_value = variant[r][c]
+                    board_val_str = board_value.__str__()
+                    layout_val_str = layout_value.__str__()
                     if (
-                        board_value == layout_value  # if tile content on player board is not the same as the tile content of the layout
-                        or board_value == trading_post  # trading post is used as a wild resource but not picked up like other resources
+                        board_val_str == layout_val_str  # if tile content on player board is not the same as the tile content of the layout
+                        or board_val_str == trading_post.__str__()  # trading post is used as a wild resource but not picked up like other resources
                     ):
                         matching_resources += 1
                     elif isinstance(board_value, EmptyResource) and isinstance(layout_value, Resource):
@@ -46,7 +49,7 @@ def work_towards_layout(board, layout):
                         best_matching_resources = matching_resources
                         min_turns_needed = turns_needed
                         moves_wanted = moves_needed.copy()
-                        if turns_needed == 1:
+                        if turns_needed <= 1:
                             return moves_wanted
     return moves_wanted
 

@@ -29,7 +29,7 @@ def get_not_wilds(layout):
     co_ords = []
     for row_index, row in enumerate(layout):
         for col_index, cell in enumerate(row):
-            if cell != wild:
+            if cell.__str__() != wild.__str__():
                 co_ords.append((row_index, col_index))
     return co_ords
 
@@ -50,7 +50,7 @@ def find_placements(board, card):
     for variant in variants:
         variant = np.array(variant)
         variant_rows, variant_cols = variant.shape
-        not_wilds = get_not_wilds(variant.tolist())
+        not_wilds = get_not_wilds(variant)
 
         for i in range(board_rows - variant_rows + 1):
             for j in range(board_cols - variant_cols + 1):

@@ -8,11 +8,11 @@ from player import *
 import logging
 import math
 import copy
-from placement_check import actions_equal, score_action, find_all_layouts
+from placement_check import actions_equal, score_action, work_towards_layout
 
 
 class MCTSAgent:
-    def __init__(self, name, max_search_depth=5, exploration_const=1.414):
+    def __init__(self, name, max_search_depth=16, exploration_const=1.414):
         self.name = name
         self.mcts = MCTS(exploration_const, max_search_depth)
         self.game_state = None
@@ -41,7 +41,7 @@ class MCTSAgent:
 
 
 class MCTS:
-    def __init__(self, exploration_const=1.414, max_search_depth=10):
+    def __init__(self, exploration_const=1.414, max_search_depth=16):
         self.cottage_choice = rdm.choice(cottage_deck)
         self.farm_choice = rdm.choice(farm_deck)
         self.factory_choice = rdm.choice(factory_deck)
@@ -191,12 +191,32 @@ class MCTS:
 
         scored_actions = []
         board = node.state.player.get_board()
-        for action in node.untried_actions:
-            scored_action = (action, score_action(action, board, self.get_community_cards()))
-            scored_actions.append(scored_action)
-        scored_actions.sort(key=lambda item: item[1], reverse=True)
+        max_test_score = -17
+        test_score = None
+        top_scoring_actions = []
+        buildable_cards = node.state.player.get_buildable_cards()
+        # rdm.shuffle(buildable_cards)
+        for card in buildable_cards:
+            moves_wanted = work_towards_layout(board, card.get_layout())
+            test_board = copy.deepcopy(board)
+            test_player = copy.deepcopy(node.state.player)
+            test_player.board = test_board
+            for action in moves_wanted:
+                resource, tile_coords = action
+                test_board[tile_coords] = resource
+                test_score = get_score(node.state, test_player, simulated_scoring=True)
+            if test_score:
+                if max_test_score < test_score:
+                    max_test_score = test_score
+                    best_action = moves_wanted[0]
+                    top_scoring_actions = moves_wanted
+        if not top_scoring_actions:
+            for action in node.untried_actions:
+                scored_action = (action, score_action(action, board, self.get_community_cards()))
+                scored_actions.append(scored_action)
+            scored_actions.sort(key=lambda item: item[1], reverse=True)
 
-        top_scoring_actions = [action for action, score in scored_actions[:3]]
+            top_scoring_actions = [action for action, score in scored_actions[:3]]
 
         for action in top_scoring_actions:
             for untried_action in node.untried_actions:
@@ -235,7 +255,7 @@ class MCTS:
         current_state = copy.deepcopy(node.state)
 
         sim_depth = 0
-        max_sim_depth = 8
+        max_sim_depth = 16
 
         while not current_state.is_terminal() and sim_depth < max_sim_depth:
             empty_tiles = current_state.get_empty_tile_list()
@@ -253,7 +273,7 @@ class MCTS:
             scored_actions = node.prioritise_actions(actions, current_state.player.get_board(), self.get_community_cards())
 
             top_scoring_actions = scored_actions[:3] if len(scored_actions) >= 3 else scored_actions
-            action = rdm.choice(top_scoring_actions)
+            action = top_scoring_actions[0]
             current_state = current_state.apply_action(action)
             sim_depth += 1
         return current_state.evaluate()
@@ -292,6 +312,9 @@ class MCTSNode:
         else:
             tile_sample = self.empty_tiles
 
+
+        rdm.shuffle(resource_list)
+        rdm.shuffle(tile_sample)
         actions = []
         for tile_coords in tile_sample:
             for resource in resource_list:
@@ -353,6 +376,7 @@ class BoardState:
         self.player = player
         self.current_turn = 0
         self.max_turns = 100
+        self.build_project = None
 
     def get_empty_tile_list(self):
         board = self.player.get_board()
