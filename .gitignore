@@ -1,3 +1,5 @@
 # Ignore pycache
 __pycache__/
 Sideline/
+data/
+test.json
