@@ -18,7 +18,7 @@ def check_surrounding_tiles(tile_coords):
 
 def get_score(self, player, simulated_scoring=False):
 
-    cards_this_game = self.player.get_all_cards()
+    cards_this_game = self.player.display_all_cards()
 
     player_board_dict = player.board_to_dictionary()
     player.monument_score = 0
@@ -31,19 +31,19 @@ def get_score(self, player, simulated_scoring=False):
 
     def get_factory_score(player):
         player.factory_score = 0
-        if factory in cards_this_game:
+        if factory.__str__() in cards_this_game:
             pass    # factory does not affect score
-        if warehouse in cards_this_game:
+        if warehouse.__str__() in cards_this_game:
              for tile_coords, tile_content in player_board_dict.items():
-                if tile_content == warehouse:
+                if isinstance(tile_content, FactoryType):
                     player.factory_score -= (1 * len(player.warehouse_resources))
-        if trading_post in cards_this_game:
+        if trading_post.__str__() in cards_this_game:
             for tile_coords, tile_content in player_board_dict.items():
-                if tile_content == trading_post:
+                if isinstance(tile_content, FactoryType):
                     player.factory_score += 1
-        if bank in cards_this_game:
+        if bank.__str__() in cards_this_game:
             for tile_coords, tile_content in player_board_dict.items():
-                if tile_content == bank:
+                if isinstance(tile_content, FactoryType):
                     player.factory_score += 4
         return player.factory_score
     
@@ -54,14 +54,15 @@ def get_score(self, player, simulated_scoring=False):
         player.feedable_count = 0
         player.feedable_dict = {}
         for tile_coords, tile_content in player_board_dict.items():
-            if tile_content == cottage:
+            if isinstance(tile_content, CottageType):
                 player.feedable_count += 1
                 player.feedable_dict[tile_coords] = "cottage"
             # if tile_content == chapel:
             #     player.chapel_count +=    # function called correctly elsewhere, REMOVE
-            if tile_content == barrett_castle:
-                player.feedable_count += 1
-                player.feedable_dict[tile_coords] = "barrett_castle"
+            if player.get_monument() == barrett_castle:
+                if isinstance(tile_content, Monument):
+                    player.feedable_count += 1
+                    player.feedable_dict[tile_coords] = "barrett_castle"
         return player.feedable_count, player.feedable_dict
     
     def get_cottage_stats(player):
@@ -75,18 +76,21 @@ def get_score(self, player, simulated_scoring=False):
         player.feedable_coords = []
 
         for tile_coords, tile_content in player_board_dict.items():
-            if tile_content == cottage:
+            if isinstance(tile_content, CottageType):
                 player.cottage_count += 1
                 player.feedable_coords.append(tile_coords)
-            if tile_content == greenhouse:
-                player.greenhouse_count += 1
-            if tile_content == barrett_castle:
-                player.barrett_castle_present = True
-                player.feedable_coords.append(tile_coords)
+            if greenhouse.__str__() in cards_this_game:
+                if isinstance(tile_content, FarmType):
+                    player.greenhouse_count += 1
+            if player.get_monument() == barrett_castle:
+                if isinstance(tile_content, Monument):
+                    player.barrett_castle_present = True
+                    player.feedable_coords.append(tile_coords)
+                    player.cottage_count += 2
         player.unfed_cottage_count = player.cottage_count
 
 
-        if orchard in cards_this_game:
+        if orchard.__str__() in cards_this_game:
             player.fed_coords = []
             for feedable_coord_pair in player.feedable_coords:
                 row_coords_list = player.check_row(feedable_coord_pair)[1]
@@ -107,7 +111,7 @@ def get_score(self, player, simulated_scoring=False):
                                     player.fed_cottage_count += 2
                                     player.unfed_cottage_count -= 2
 
-        if greenhouse in cards_this_game:
+        if greenhouse.__str__() in cards_this_game:
             greenhouse_feed_list, player.fed_coords = player.greenhouse_feeding()
             player.cottage_score += sum([sum(el) for el in greenhouse_feed_list[:player.greenhouse_count]])
             player.fed_cottage_count += sum([len(el) for el in greenhouse_feed_list[:player.greenhouse_count]])
@@ -116,7 +120,7 @@ def get_score(self, player, simulated_scoring=False):
                 player.cottage_score -= 5
                 player.monument_score = 5
 
-        if granary in cards_this_game:
+        if granary.__str__() in cards_this_game:
             player.fed_coords = []
             for coord_pair in player.feedable_coords:
                 cottage_surrounding_coords = check_surrounding_tiles(coord_pair)
@@ -151,15 +155,15 @@ def get_score(self, player, simulated_scoring=False):
                 player.chapel_count += 1
                 player.chapel_coords.append(tile_coords)
 
-        if chapel in cards_this_game:
+        if chapel.__str__() in cards_this_game:
             player.chapel_score = (player.fed_cottage_count * player.chapel_count)
         
-        if temple in cards_this_game:
+        if temple.__str__() in cards_this_game:
             for coord_pair in player.chapel_coords: # for each temple on the board
                 temple_adjacent_fed_count = 0
                 tiles_next_to_temple = player.check_adjacent_tiles(coord_pair)
                 for tile_coords in tiles_next_to_temple:
-                    if farm in cards_this_game:
+                    if farm.__str__() in cards_this_game:
                         player.fed_coords = combination
                     if tile_coords in player.fed_coords:
                         if player.get_board()[tile_coords] == cottage:
@@ -169,7 +173,7 @@ def get_score(self, player, simulated_scoring=False):
                 if 2 <= temple_adjacent_fed_count:
                     player.chapel_score += 4
         
-        if abbey in cards_this_game:
+        if abbey.__str__() in cards_this_game:
             for coord_pair in player.chapel_coords: # for each abbey on board
                 all_adjacent_contents = []
                 abbey_adjacent_tile_contents = player.check_adjacent_tiles(coord_pair)
@@ -189,7 +193,7 @@ def get_score(self, player, simulated_scoring=False):
                 if still_might_score:
                     player.chapel_score += 3
         
-        if cloister in cards_this_game:
+        if cloister.__str__() in cards_this_game:
             cloisters_in_corners = 0
             if player.get_board()[0,0] == cloister:
                 cloisters_in_corners += 1
@@ -211,7 +215,7 @@ def get_score(self, player, simulated_scoring=False):
                 player.tavern_count += 1
                 player.tavern_coords.append(tile_coords)
         
-        if tavern in cards_this_game:
+        if tavern.__str__() in cards_this_game:
             match player.tavern_count:
                 case 0:
                     pass
@@ -226,7 +230,7 @@ def get_score(self, player, simulated_scoring=False):
                 case _: # 5+ case
                     player.tavern_score += 20
         
-        if inn in cards_this_game:
+        if inn.__str__() in cards_this_game:
             for inn_placement in player.tavern_coords:
                 row_coords_list = player.check_row(inn_placement)[1]
                 col_content_list = player.check_col(inn_placement)[1]
@@ -239,7 +243,7 @@ def get_score(self, player, simulated_scoring=False):
                 if not inn_found:
                     player.tavern_score += 3
         
-        if almshouse in cards_this_game:
+        if almshouse.__str__() in cards_this_game:
             match player.tavern_count:
                 case 0:
                     pass
@@ -256,7 +260,7 @@ def get_score(self, player, simulated_scoring=False):
                 case _: # 6+ case
                     player.tavern_score += 26
         
-        if feast_hall in cards_this_game:
+        if feast_hall.__str__() in cards_this_game:
             feast_hall_counts = []
             for each_player in self.dictionary_of_players.values():
                 feast_hall_counts.append(each_player.get_feast_hall_count())
@@ -279,7 +283,7 @@ def get_score(self, player, simulated_scoring=False):
                 player.theatre_count += 1
                 player.theatre_coords.append(tile_coords)
 
-        if theatre in cards_this_game:
+        if theatre.__str__() in cards_this_game:
             for theatre_coord_pair in player.theatre_coords:
                 unique_building_count = 0
                 row_content_list = player.check_row(theatre_coord_pair)[0]
@@ -300,7 +304,7 @@ def get_score(self, player, simulated_scoring=False):
                 if Monument in row_col_combined:
                     unique_building_count += 1
                 player.theatre_score += unique_building_count
-        if bakery in cards_this_game:
+        if bakery.__str__() in cards_this_game:
             for bakery_coords in player.theatre_coords:
                 tiles_next_to_bakery = player.check_adjacent_tiles(bakery_coords)
                 for coord_pair in tiles_next_to_bakery:
@@ -310,7 +314,7 @@ def get_score(self, player, simulated_scoring=False):
                     if isinstance(player.get_board()[coord_pair], FactoryType):
                         player.theatre_score += 3
                         break
-        if market in cards_this_game:
+        if market.__str__() in cards_this_game:
             for market_coords in player.theatre_coords:
                 markets_in_row = 1
                 markets_in_col = 1
@@ -323,7 +327,7 @@ def get_score(self, player, simulated_scoring=False):
                     if tile_content.__class__ is TheatreType:
                         markets_in_col += 1
                 player.theatre_score += max(markets_in_row, markets_in_col)
-        if tailor in cards_this_game:
+        if tailor.__str__() in cards_this_game:
             tailors_in_centre = 0
             if player.get_board()[1,1] == tailor:
                 tailors_in_centre += 1
@@ -345,7 +349,7 @@ def get_score(self, player, simulated_scoring=False):
                 player.well_count += 1
                 player.well_coords.append(tile_coords)
         
-        if well in cards_this_game:
+        if well.__str__() in cards_this_game:
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
@@ -359,7 +363,7 @@ def get_score(self, player, simulated_scoring=False):
                     except:
                         continue
         
-        if fountain in cards_this_game:
+        if fountain.__str__() in cards_this_game:
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
@@ -367,7 +371,7 @@ def get_score(self, player, simulated_scoring=False):
                         player.well_score += 2
                         break
         
-        if millstone in cards_this_game:
+        if millstone.__str__() in cards_this_game:
             for well_coords in player.well_coords:
                 tiles_next_to_well = player.check_adjacent_tiles(well_coords)
                 for coord_pair in tiles_next_to_well:
@@ -375,7 +379,7 @@ def get_score(self, player, simulated_scoring=False):
                         player.well_score += 2
                         break
         
-        if shed in cards_this_game:
+        if shed.__str__() in cards_this_game:
             for well_coords in player.well_coords:
                 player.well_score += 1
         return player.well_score
@@ -543,12 +547,12 @@ def get_score(self, player, simulated_scoring=False):
     def get_farm_count(player):
         player.farm_count = 0
         for tile_coords, tile_content in player_board_dict.items():
-            if tile_content == farm:
+            if isinstance(tile_content, FarmType):
                 player.farm_count += 1
         return player.farm_count
 
     
-    if farm in cards_this_game: # CALCULATES ALL POSSIBLE FEED COMBINATION SCORES TO RETURN ONLY THE HIGHEST SCORING FARM FEED COMBINATION
+    if farm.__str__() in cards_this_game: # CALCULATES ALL POSSIBLE FEED COMBINATION SCORES TO RETURN ONLY THE HIGHEST SCORING FARM FEED COMBINATION
         player.farm_count = get_farm_count(player)
         max_number_of_feeds = (player.farm_count * 4)   # each farm can feed four feedable buildings
         player.feedable_count, player.feedable_dict = get_feedable_count(player)

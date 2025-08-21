@@ -63,6 +63,7 @@ class MCTS:
         self.exploration_const = exploration_const
         self.max_search_depth = max_search_depth
         self.transposition_table = {}
+        self.priority_cards = []
 
     def get_community_cards(self):
         return self.community_cards
@@ -195,9 +196,24 @@ class MCTS:
         test_score = None
         top_scoring_actions = []
         buildable_cards = node.state.player.get_buildable_cards()
+        late_game_flip = False
+        
+        if not self.priority_cards:
+            if node.state.current_turn < 20:
+                self.priority_cards = [card for card in buildable_cards if card.get_priority() != "LateGame"]
+                rdm.shuffle(self.priority_cards)
+            else:
+                self.priority_cards = [card for card in buildable_cards if card.get_priority() != "EarlyGame"]
+                rdm.shuffle(self.priority_cards)
         # rdm.shuffle(buildable_cards)
-        for card in buildable_cards:
+        for card in self.priority_cards:
             moves_wanted = work_towards_layout(board, card.get_layout())
+            if len(moves_wanted) <= 1:
+                rdm.shuffle(self.priority_cards)
+                if not late_game_flip:
+                    if 20 < node.state.current_turn:
+                        late_game_flip = True
+                        self.priority_cards = []
             test_board = copy.deepcopy(board)
             test_player = copy.deepcopy(node.state.player)
             test_player.board = test_board
@@ -467,6 +483,8 @@ def run_mcts():
     mcts_agent = MCTSAgent("Agent")
     monument = rdm.choice(monuments_deck)
     player = Player(1, monument, mcts_agent)
+    print(player.get_monument())
+    print(player.get_monument().__str__())
     player.all_cards = mcts_agent.mcts.community_cards + [monument]
     board_state = BoardState(player)
     current_turn = 0
@@ -481,10 +499,13 @@ def run_mcts():
         current_turn += 1
         player = board_state.player
         print(player.get_display_board())
-
         score = board_state.evaluate()
         print(score)
-    
+
+    board_state.finished = True
+    print("Game finished.")
+    final_score = board_state.evaluate()
+    print(f"Final score: {final_score}")
 
 
 if __name__ == "__main__":

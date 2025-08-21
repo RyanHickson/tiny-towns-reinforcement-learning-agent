@@ -113,7 +113,7 @@ class TinyTowns:
         elif self.manual_card_selection:
             for player in range(1, self.number_of_players + 1):
                 monument_names_deck = [monument.__str__() for monument in self.monuments_deck]
-                monument_index = handle_input(monument_selection_text.format((player), dict_enum(monument_names_deck)), range_len(monument_names_deck))  # take player input to select a unique monument for each player
+                monument_index = handle_input(monument_selection_text.format((player), dict_enum(monument_names_deck)), list(range_len(monument_names_deck)))  # take player input to select a unique monument for each player
 
                 self.dictionary_of_players[player] = Player(player, self.monuments_deck[monument_index], self.dictionary_of_agents[self.agent_keys[player - 1]])
                 self.monuments_deck.remove(self.dictionary_of_players[player].get_monument())
@@ -361,7 +361,7 @@ class TinyTowns:
                             if which_building_choice[key]:
                                 dict_presented[key] = which_building_choice[key]
                         # print(f"{dict_presented=}")  # ...# print choices of the tile combinations that can be picked up to construct the building in the chosen position
-                        want_to_build = handle_input(want_to_build_text.format(self.acting_player.__str__(), no_yes_dict),range(2))
+                        want_to_build = handle_input(want_to_build_text.format(self.acting_player.__str__(), no_yes_dict), list(range(2)))
                         if want_to_build:
                             build_choice = handle_input(build_choice_text, list(dict_presented.keys()))
                             chosen_building_dict = build_options[build_choice]
