@@ -4,7 +4,7 @@ from building_layouts import *
 
 class Card:
     def __init__(
-        self, name, layout, deck, ability_text, is_feedable=False, is_fed=False, fed_score=0
+        self, name, layout, deck, ability_text, is_feedable=False, is_fed=False, fed_score=0, priority=None
     ):
         self.name = name
         self.layout = layout
@@ -13,6 +13,7 @@ class Card:
         self.is_feedable = is_feedable
         self.is_fed = is_fed
         self.fed_score = fed_score
+        self.priority = priority
 
     def get_layout(self):
         return self.layout
@@ -28,6 +29,9 @@ class Card:
         
     def score_when_fed(self):
         return self.fed_score
+    
+    def get_priority(self):
+        return self.priority
     
     def get_type(self):
         return type(self)
@@ -119,25 +123,25 @@ factory = FactoryType(
     "Factory",
     factory_layout,
     factory_deck,
-    "When constructed, place 1 of the 5 resources on FACTORY. When another player names this resource, you may place a different resource instead.",
+    "When constructed, place 1 of the 5 resources on FACTORY. When another player names this resource, you may place a different resource instead.", priority="EarlyGame"
 )
 warehouse = FactoryType(
     "Warehouse",
     warehouse_layout,
     factory_deck,
-    "-1VP for each resource on FACTORY. Each FACTORY can store 3 resources. When another player names a resource, you may place that resource on FACTORY or swap it with another resource on FACTORY.",
+    "-1VP for each resource on FACTORY. Each FACTORY can store 3 resources. When another player names a resource, you may place that resource on FACTORY or swap it with another resource on FACTORY.", priority="EarlyGame"
 )
 trading_post = FactoryType(
     "Trading Post",
     trading_post_layout,
     factory_deck,
-    "1VP. You may treat FACTORY as a wild resource for future buildings.",
+    "1VP. You may treat FACTORY as a wild resource for future buildings.", priority="EarlyGame"
 )
 bank = FactoryType(
     "Bank",
     bank_layout,
     factory_deck,
-    "4VP. When constructed, place a resource on this building that is not on another FACTORY in your town. As Master Builder, you can no longer name the resource on your FACTORY.",
+    "4VP. When constructed, place a resource on this building that is not on another FACTORY in your town. As Master Builder, you can no longer name the resource on your FACTORY.", priority="LateGame"
 )
 
 tavern = TavernType(
@@ -201,18 +205,18 @@ tailor = TheatreType(
     "1VP. +1VP for each THEATRE in the 4 centre squares in your town.",
 )
 
-well = WellType("Well", well_layout, well_deck, "1VP for each adjacent COTTAGE.")
+well = WellType("Well", well_layout, well_deck, "1VP for each adjacent COTTAGE.", priority="LateGame")
 fountain = WellType(
-    "Fountain", fountain_layout, well_deck, "2VP if adjacent to a WELL."
+    "Fountain", fountain_layout, well_deck, "2VP if adjacent to a WELL.", priority="LateGame"
 )
 millstone = WellType(
-    "Millstone", millstone_layout, well_deck, "2VP if adjacent to a FACTORY or THEATRE."
+    "Millstone", millstone_layout, well_deck, "2VP if adjacent to a FACTORY or THEATRE.", priority="LateGame"
 )
 shed = WellType(
     "Shed",
     shed_layout,
     well_deck,
-    "1VP. May be constructed on any empty square in your town.",
+    "1VP. May be constructed on any empty square in your town.", priority="LateGame"
 )
 
 cottage_deck = [cottage]
@@ -241,6 +245,7 @@ architects_guild = Monument(
     architects_guild_layout,
     monuments_deck,
     "1VP. When Constructed, replace up to 2 buildings in your town with any other building types.",
+    priority="LateGame"
 )
 archive_of_the_second_age = Monument(
     "Archive of the Second Age",
@@ -267,6 +272,7 @@ fort_ironweed = Monument(
     fort_ironweed_layout,
     monuments_deck,
     "7VP. Unless you are the last player in the game, you can no longer take turns as Master Builder.",
+    priority="LateGame"
 )
 grand_mausoleum_of_the_rodina = Monument(
     "Grand Mausoleum of the Rodina",
@@ -291,18 +297,21 @@ obelisk_of_the_crescent = Monument(
     obelisk_of_the_crescent_layout,
     monuments_deck,
     "You may place all future buildings on any empty square in your town.",
+    priority="EarlyGame"
 )
 opaleyes_watch = Monument(
     "Opaleye's Watch",
     opaleyes_watch_layout,
     monuments_deck,
     "Immediately place 3 unique buildings on this card. Whenever a player on the left or right of you constructs ",
+    priority="EarlyGame"
 )
 shrine_of_the_elder_tree = Monument(
     "Shrine of the Elder Tree",
     shrine_of_the_elder_tree_layout,
     monuments_deck,
     "VP based on the number of buildings in your town when constructed. 1: 1VP, 2: 2VP, 3: 3VP, 4:4VP, 5: 5VP, 6: 8VP",
+    priority="LateGame"
 )
 silva_forum = Monument(
     "Silva Forum",
@@ -321,12 +330,14 @@ the_starloom = Monument(
     the_starloom_layout,
     monuments_deck,
     "VP based on when you complete your town. 1st: 6VP, 2nd: 3VP, 3rd: 2VP, 4th+: 0VP",
+    priority="EarlyGame"
 )
 statue_of_the_bondmaker = Monument(
     "Statue of the Bondmaker",
     statue_of_the_bondmaker_layout,
     monuments_deck,
     "When another player names a resource, you may choose to place it on a square with a COTTAGE. Each of your COTTAGE can hold 1 resource.",
+    priority="EarlyGame"
 )
 
 monuments_deck = [
