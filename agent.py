@@ -39,7 +39,7 @@ class Agent:
             for tile_index in range(1,17):
                 tile_coords = board_tile_dict[tile_index]
                 if player.board[tile_coords] == empty:
-                    saved_board = player.board
+                    saved_board = player.board.copy()
                     sim_board = player.board.copy()
 
                     player.board = sim_board
@@ -67,24 +67,31 @@ class Agent:
         
         return best_resource_id, best_tile_index
 
-    def auto_build(self, player) -> None:
-    
-        coord_dictionary, build_options, _ = find_all_placements(
-            player, player.get_buildable_cards()
-        )
-        if not coord_dictionary:
-            return
-        for build_option in build_options:
-            if not build_option:
-                continue
-            for building_dict in build_option.values():
-                try:
-                    player.construct(building_dict, {})
-                    player.board = player.get_board()
-                    return
-                except Exception:
+    def auto_build(self, player):
+        """
+        Construct one building if possible
+        """
+        try:
+            coord_dictionary, build_options, placement_display = (
+                find_all_placements(player, player.get_buildable_cards())
+            )
+            if not coord_dictionary:
+                return
+
+            for build_option in build_options:
+                if not build_option:
                     continue
+
+                for building_dict in build_option.values():
+                    try:
+                        player.construct(building_dict, {})
+                        player.board = player.get_board()
+                        return
+                    except:
+                        continue
         
+        except:
+            pass
 
     
     # REMEMBER TO ACTUALLY WRITE SOME AGENT LOGIC IN HERE

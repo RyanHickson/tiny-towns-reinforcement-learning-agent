@@ -361,7 +361,7 @@ class TinyTowns:
                             if which_building_choice[key]:
                                 dict_presented[key] = which_building_choice[key]
                         # print(f"{dict_presented=}")  # ...# print choices of the tile combinations that can be picked up to construct the building in the chosen position
-                        want_to_build = handle_input(want_to_build_text.format(self.acting_player.__str__(), no_yes_dict), list(range(2)))
+                        want_to_build = handle_input(want_to_build_text.format(self.acting_player.__str__(), no_yes_dict), list(no_yes_dict.keys()))
                         if want_to_build:
                             build_choice = handle_input(build_choice_text, list(dict_presented.keys()))
                             chosen_building_dict = build_options[build_choice]
