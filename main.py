@@ -301,7 +301,7 @@ class TinyTowns:
 
                 for each_player in self.master_builder_queue:    # RESOURCE PLACEMENT ROUND
                     self.acting_player = self.dictionary_of_players[each_player]
-                    self.acting_player.turn += 1
+                    # self.acting_player.turn += 1
                     # print(self.acting_player.__repr__())
                     if self.acting_player.get_id() != self.first_player:
                         if (resource_choice_id in self.acting_player.get_factory_resources()):  # CHECK FACTORY RESOURCES
@@ -384,8 +384,8 @@ class TinyTowns:
                         self.acting_player.board_is_filled = True    # mark player as having a full board
                     print(self.acting_player.get_display_board())
                     print(self.acting_player.score)
-                    with open("transposition.json", "w") as f:
-                        json.dump(f)
+                with open("transposition.json", "a") as f:
+                    f.write(json.dumps(self.acting_player.display_score()) + "\n")
 
 
                     score_display(self.acting_player)
@@ -428,7 +428,7 @@ def main():
         game = TinyTowns()
         game.setup_players()
         game.play()
-        game.record_game()
+        # game.record_game()
         game.monuments_deck = game.refill_monuments_deck()
 
 

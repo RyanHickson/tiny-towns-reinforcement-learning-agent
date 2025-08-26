@@ -3,6 +3,7 @@ from choices import *
 from score import get_score
 from resources import *
 import random as rdm
+from layout_variants import find_all_placements
 
 class Agent:
     """
@@ -31,7 +32,8 @@ class Agent:
         best_resource_id = None
         best_tile_index = None
 
-        observation = game.get_observation(player.get_id())
+        current_score = get_score(game, player)
+        # observation = game.get_observation(player.get_id())
 
         for resource_index, resource in resource_dict.items():
             for tile_index in range(1,17):
@@ -43,21 +45,48 @@ class Agent:
                     player.board = sim_board
 
                     sim_board[tile_coords] = resource
+                    self.auto_build(player)                    
 
                     score = get_score(game, player)
+                    if score != -16:
+                        print("YES")
                     player.board = saved_board
                     if best_score < score:
                         best_score = score
                         best_resource_id = resource_index
                         best_tile_index = tile_index
         
+        if best_score == current_score:
+            best_resource_id = rdm.choice(list(resource_dict.keys()))
+            empty_tile_index_list = [tile for tile in range(1,17) if player.board[board_tile_dict[tile]] == empty]
+            best_tile_index = rdm.choice(empty_tile_index_list)
+            return best_resource_id, best_tile_index
+
         if best_resource_id is None or best_tile_index is None:
-            best_resource_id = rdm.choice()
+            best_resource_id = rdm.choice(list(resource_dict.keys()))
             empty_tile_index_list = [tile for tile in range(1,17) if player.board[board_tile_dict[tile]] == empty]
             best_tile_index = rdm.choice(empty_tile_index_list)
         
         return best_resource_id, best_tile_index
 
+    def auto_build(self, player) -> None:
+    
+        coord_dictionary, build_options, _ = find_all_placements(
+            player, player.get_buildable_cards()
+        )
+        if not coord_dictionary:
+            return
+        for build_option in build_options:
+            if not build_option:
+                continue
+            for building_dict in build_option.values():
+                try:
+                    player.construct(building_dict, {})
+                    player.board = player.get_board()
+                    return
+                except Exception:
+                    continue
+        
 
     
     # REMEMBER TO ACTUALLY WRITE SOME AGENT LOGIC IN HERE

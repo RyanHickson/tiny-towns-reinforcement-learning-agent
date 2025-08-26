@@ -4,9 +4,10 @@ from building_layouts import *
 
 class Card:
     def __init__(
-        self, name, layout, deck, ability_text, is_feedable=False, is_fed=False, fed_score=0, priority=None
+        self, name, id, layout, deck, ability_text, is_feedable=False, is_fed=False, fed_score=0, priority=None
     ):
         self.name = name
+        self.id = id
         self.layout = layout
         self.deck = deck
         self.ability_text = ability_text
@@ -20,6 +21,11 @@ class Card:
 
     def __str__(self):
         return "{}".format(self.name)
+    
+    def __eq__(self, other):
+        if isinstance(other, Card):
+            return self.id == other.id
+        return False
 
     def get_card_detail(self):
         if self.is_feedable:
@@ -90,6 +96,7 @@ well_deck = []
 
 cottage = CottageType(
     "Cottage",
+    10,
     cottage_layout,
     cottage_deck,
     "3VP if this building is fed.",
@@ -98,22 +105,25 @@ cottage = CottageType(
 )
 
 farm = FarmType(
-    "Farm", farm_layout, farm_deck, "Feeds 4 LEAF buildings anywhere in your town."
+    "Farm", 20, farm_layout, farm_deck, "Feeds 4 LEAF buildings anywhere in your town."
 )
 orchard = FarmType(
     "Orchard",
+    21,
     orchard_layout,
     farm_deck,
     "Feeds all LEAF buildings in the same row and column as FARM.",
 )
 greenhouse = FarmType(
     "Greenhouse",
+    22,
     greenhouse_layout,
     farm_deck,
     "Feeds 1 contiguous group of LEAF buildings anywhere in your town.",
 )
 granary = FarmType(
     "Granary",
+    23,
     granary_layout,
     farm_deck,
     "Feeds all LEAF buildings in the 8 squares surrounding FARM.",
@@ -121,24 +131,28 @@ granary = FarmType(
 
 factory = FactoryType(
     "Factory",
+    30,
     factory_layout,
     factory_deck,
     "When constructed, place 1 of the 5 resources on FACTORY. When another player names this resource, you may place a different resource instead.", priority="EarlyGame"
 )
 warehouse = FactoryType(
     "Warehouse",
+    31,
     warehouse_layout,
     factory_deck,
     "-1VP for each resource on FACTORY. Each FACTORY can store 3 resources. When another player names a resource, you may place that resource on FACTORY or swap it with another resource on FACTORY.", priority="EarlyGame"
 )
 trading_post = FactoryType(
     "Trading Post",
+    32,
     trading_post_layout,
     factory_deck,
     "1VP. You may treat FACTORY as a wild resource for future buildings.", priority="EarlyGame"
 )
 bank = FactoryType(
     "Bank",
+    33,
     bank_layout,
     factory_deck,
     "4VP. When constructed, place a resource on this building that is not on another FACTORY in your town. As Master Builder, you can no longer name the resource on your FACTORY.", priority="LateGame"
@@ -146,38 +160,43 @@ bank = FactoryType(
 
 tavern = TavernType(
     "Tavern",
+    40,
     tavern_layout,
     tavern_deck,
     "VP based on your constructed TAVERN. 1: 2VP, 2: 5VP, 3: 9VP, 4: 14VP, 5: 20VP",
 )
 inn = TavernType(
-    "Inn", inn_layout, tavern_deck, "3VP if not in a row or column with another TAVERN."
+    "Inn", 41, inn_layout, tavern_deck, "3VP if not in a row or column with another TAVERN."
 )
 almshouse = TavernType(
     "Almshouse",
+    42,
     almshouse_layout,
     tavern_deck,
     "VP based on your constructed TAVERN. 1: -1VP, 2: 5VP, 3: -3VP, 4: 15VP, 5: -5VP, 6: 26VP",
 )
 feast_hall = TavernType(
     "Feast Hall",
+    43,
     feast_hall_layout,
     tavern_deck,
     "2VP. +1VP if you have more TAVERN than the player on your right.",
 )
 
-chapel = ChapelType("Chapel", chapel_layout, chapel_deck, "1VP for each fed COTTAGE.")
+chapel = ChapelType("Chapel", 50, chapel_layout, chapel_deck, "1VP for each fed COTTAGE.")
 temple = ChapelType(
-    "Temple", temple_layout, chapel_deck, "4VP if adjacent to 2 or more fed COTTAGE."
+    "Temple", 51, temple_layout, chapel_deck, "4VP if adjacent to 2 or more fed COTTAGE."
 )
 abbey = ChapelType(
     "Abbey",
+    52,
     abbey_layout,
     chapel_deck,
     "3VP if not adjacent to FACTORY, TAVERN or THEATRE.",
 )
 cloister = ChapelType(
     "Cloister",
+    53,
     cloister_layout,
     chapel_deck,
     "1VP for each CHAPEL in a corner of your town.",
@@ -185,35 +204,39 @@ cloister = ChapelType(
 
 theatre = TheatreType(
     "Theatre",
+    60,
     theatre_layout,
     theatre_deck,
     "1VP for each other unique building type in the same row and column as THEATRE.",
 )
 bakery = TheatreType(
-    "Bakery", bakery_layout, theatre_deck, "3VP if adjacent to FARM or FACTORY."
+    "Bakery", 61, bakery_layout, theatre_deck, "3VP if adjacent to FARM or FACTORY."
 )
 market = TheatreType(
     "Market",
+    62,
     market_layout,
     theatre_deck,
     "1VP for each THEATRE in the same row or column (not both) as THEATRE.",
 )
 tailor = TheatreType(
     "Tailor",
+    63,
     tailor_layout,
     theatre_deck,
     "1VP. +1VP for each THEATRE in the 4 centre squares in your town.",
 )
 
-well = WellType("Well", well_layout, well_deck, "1VP for each adjacent COTTAGE.", priority="LateGame")
+well = WellType("Well", 70, well_layout, well_deck, "1VP for each adjacent COTTAGE.", priority="LateGame")
 fountain = WellType(
-    "Fountain", fountain_layout, well_deck, "2VP if adjacent to a WELL.", priority="LateGame"
+    "Fountain", 71, fountain_layout, well_deck, "2VP if adjacent to a WELL.", priority="LateGame"
 )
 millstone = WellType(
-    "Millstone", millstone_layout, well_deck, "2VP if adjacent to a FACTORY or THEATRE.", priority="LateGame"
+    "Millstone", 72, millstone_layout, well_deck, "2VP if adjacent to a FACTORY or THEATRE.", priority="LateGame"
 )
 shed = WellType(
     "Shed",
+    73,
     shed_layout,
     well_deck,
     "1VP. May be constructed on any empty square in your town.", priority="LateGame"
@@ -242,6 +265,7 @@ all_decks = [
 
 architects_guild = Monument(
     "Architect's Guild",
+    801,
     architects_guild_layout,
     monuments_deck,
     "1VP. When Constructed, replace up to 2 buildings in your town with any other building types.",
@@ -249,12 +273,14 @@ architects_guild = Monument(
 )
 archive_of_the_second_age = Monument(
     "Archive of the Second Age",
+    802,
     archive_of_the_second_age_layout,
     monuments_deck,
     "1VP for each unique building type (other than MONUMENT) in your town.",
 )
 barrett_castle = Monument(
     "Barrett Castle",
+    803,
     barrett_castle_layout,
     monuments_deck,
     "5VP if fed. Counts as 2 COTTAGE.",
@@ -263,12 +289,14 @@ barrett_castle = Monument(
 )
 cathedral_of_caterina = Monument(
     "Cathedral of Caterina",
+    804,
     cathedral_of_caterina_layout,
     monuments_deck,
     "2VP. Empty squares in your town are worth 0VP (instead of -1VP).",
 )
 fort_ironweed = Monument(
     "Fort Ironweed",
+    805,
     fort_ironweed_layout,
     monuments_deck,
     "7VP. Unless you are the last player in the game, you can no longer take turns as Master Builder.",
@@ -276,24 +304,28 @@ fort_ironweed = Monument(
 )
 grand_mausoleum_of_the_rodina = Monument(
     "Grand Mausoleum of the Rodina",
+    806,
     grand_mausoleum_of_the_rodina_layout,
     monuments_deck,
     "Your unfed COTTAGE are worth 3VP each.",
 )
 grove_university = Monument(
     "Grove University",
+    807,
     grove_university_layout,
     monuments_deck,
     "3VP. Immediately place a building on an empty square in your town.",
 )
 mandras_palace = Monument(
     "Mandras Palace",
+    808,
     mandras_palace_layout,
     monuments_deck,
     "2VP for each unique adjacent building type.",
 )
 obelisk_of_the_crescent = Monument(
     "Obelisk of the Crescent",
+    809,
     obelisk_of_the_crescent_layout,
     monuments_deck,
     "You may place all future buildings on any empty square in your town.",
@@ -301,6 +333,7 @@ obelisk_of_the_crescent = Monument(
 )
 opaleyes_watch = Monument(
     "Opaleye's Watch",
+    810,
     opaleyes_watch_layout,
     monuments_deck,
     "Immediately place 3 unique buildings on this card. Whenever a player on the left or right of you constructs ",
@@ -308,6 +341,7 @@ opaleyes_watch = Monument(
 )
 shrine_of_the_elder_tree = Monument(
     "Shrine of the Elder Tree",
+    811,
     shrine_of_the_elder_tree_layout,
     monuments_deck,
     "VP based on the number of buildings in your town when constructed. 1: 1VP, 2: 2VP, 3: 3VP, 4:4VP, 5: 5VP, 6: 8VP",
@@ -315,18 +349,21 @@ shrine_of_the_elder_tree = Monument(
 )
 silva_forum = Monument(
     "Silva Forum",
+    812,
     silva_forum_layout,
     monuments_deck,
     "1VP. +1VP for each building in your largest contiguous group of buildings of the same type in your town.",
 )
 the_sky_baths = Monument(
     "The Sky Baths",
+    813,
     the_sky_baths_layout,
     monuments_deck,
     "2VP for each building type your town is missing.",
 )
 the_starloom = Monument(
     "The Starloom",
+    814,
     the_starloom_layout,
     monuments_deck,
     "VP based on when you complete your town. 1st: 6VP, 2nd: 3VP, 3rd: 2VP, 4th+: 0VP",
@@ -334,6 +371,7 @@ the_starloom = Monument(
 )
 statue_of_the_bondmaker = Monument(
     "Statue of the Bondmaker",
+    815,
     statue_of_the_bondmaker_layout,
     monuments_deck,
     "When another player names a resource, you may choose to place it on a square with a COTTAGE. Each of your COTTAGE can hold 1 resource.",

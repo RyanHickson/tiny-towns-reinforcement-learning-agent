@@ -148,15 +148,15 @@ class MCTS:
                 tile = board[r_i][c_i]
                 if isinstance(tile, Resource) and not isinstance(tile, EmptyResource):
                     tile_coords_with_resources.append((r_i, c_i))
-                if tile.__str__() == wood.__str__():
+                if tile == wood:
                     wood_count += 1
-                if tile.__str__() == wheat.__str__():
+                if tile == wheat:
                     wheat_count += 1
-                if tile.__str__() == glass.__str__():
+                if tile == glass:
                     glass_count += 1
-                if tile.__str__() == brick.__str__():
+                if tile == brick:
                     brick_count += 1
-                if tile.__str__() == stone.__str__():
+                if tile == stone:
                     stone_count += 1
         resource_count_dict = {wood: wood_count, wheat: wheat_count, glass: glass_count, brick: brick_count, stone: stone_count}
         if tile_coords_with_resources:

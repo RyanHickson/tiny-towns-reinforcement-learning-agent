@@ -29,7 +29,7 @@ def get_not_wilds(layout):
     co_ords = []
     for row_index, row in enumerate(layout):
         for col_index, cell in enumerate(row):
-            if cell.__str__() != wild.__str__():
+            if cell != wild:
                 co_ords.append((row_index, col_index))
     return co_ords
 
@@ -59,8 +59,8 @@ def find_placements(board, card):
                     board_value = board[i + r][j + c]
                     layout_value = variant[r][c]
                     if (
-                        board_value != layout_value.__str__()  # if tile content on player board is not the same as the tile content of the layout
-                        and board_value != trading_post.__str__()  # trading post is used as a wild resource but not picked up like other resources
+                        board_value != layout_value  # if tile content on player board is not the same as the tile content of the layout
+                        and board_value != trading_post  # trading post is used as a wild resource but not picked up like other resources
                     ):
                         match = False
                         break
@@ -69,11 +69,11 @@ def find_placements(board, card):
                     for el in not_wilds:
                         coord_set.append((i + el[0], j + el[1]))
                     for coord_pair in coord_set:
-                        if board[coord_pair] != trading_post.__str__(): # trading post being used as a wild resource is not a valid placement
+                        if board[coord_pair] != trading_post: # trading post being used as a wild resource is not a valid placement
                             if coord_pair in placement_dict.keys():
-                                placement_dict[coord_pair].add(card.__str__())
+                                placement_dict[coord_pair].add(card)
                             else:
-                                placement_dict[coord_pair] = {card.__str__()}
+                                placement_dict[coord_pair] = {card}
                                 placement_options.append(
                                     {
                                         "placement": coord_pair,
@@ -89,13 +89,13 @@ def find_placements(board, card):
                                     }
                                 )
                                 for row in board:
-                                    if obelisk_of_the_crescent.__str__() in row:
+                                    if obelisk_of_the_crescent in row:
                                         obelisk_present = True
                                 if card == shed or obelisk_present:
                                     for row_index, row in enumerate(board):
                                         for col_index, tile in enumerate(row):
                                             
-                                            if board[row_index][col_index] == empty.__str__():
+                                            if board[row_index][col_index] == empty:
                                                 placement_options.append(
                                                     {
                                                     "placement": (row_index, col_index),
@@ -120,7 +120,7 @@ def find_all_placements(player, cards):
     all_build_options = []
     full_placement_display = []
     for card in cards:
-        build_dict, build_options, placement_display = find_placements(player.get_display_board(), card)
+        build_dict, build_options, placement_display = find_placements(player.get_board(), card)
         for coord, building in build_dict.items():
             if coord in coord_dictionary.keys():
                 coord_dictionary[coord].update(building)
