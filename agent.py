@@ -48,8 +48,6 @@ class Agent:
                     self.auto_build(player)                    
 
                     score = get_score(game, player)
-                    if score != -16:
-                        print("YES")
                     player.board = saved_board
                     if best_score < score:
                         best_score = score

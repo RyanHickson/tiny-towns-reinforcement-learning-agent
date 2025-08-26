@@ -26,6 +26,9 @@ class Card:
         if isinstance(other, Card):
             return self.id == other.id
         return False
+    
+    def get_name(self):
+        return self.name
 
     def get_card_detail(self):
         if self.is_feedable:

@@ -71,9 +71,9 @@ def find_placements(board, card):
                     for coord_pair in coord_set:
                         if board[coord_pair] != trading_post: # trading post being used as a wild resource is not a valid placement
                             if coord_pair in placement_dict.keys():
-                                placement_dict[coord_pair].add(card)
+                                placement_dict[coord_pair].add(card.get_name())
                             else:
-                                placement_dict[coord_pair] = {card}
+                                placement_dict[coord_pair] = {card.get_name()}
                                 placement_options.append(
                                     {
                                         "placement": coord_pair,
