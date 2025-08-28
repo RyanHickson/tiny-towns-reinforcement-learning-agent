@@ -72,8 +72,3 @@ for _ in range(1000):
     if best_score < score:
         best_score = score
         print(best_score)
-
-
-for card in player.get_buildable_cards():
-    if current_turn < 20:
-        if card.priority == "Early Game":

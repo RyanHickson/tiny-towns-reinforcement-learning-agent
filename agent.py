@@ -73,6 +73,3 @@ class Agent:
         return "{}".format(self.name)
 
     # def dynamic_to_fixed_action_state(self):
-
-    
-    # REMEMBER TO ACTUALLY WRITE SOME AGENT LOGIC IN HERE
