@@ -30,8 +30,8 @@ class TinyTowns:
         self.game_data = []
         self.monuments_deck = monuments_deck
 
-        self.number_of_players = 2  # handle_input(number_of_players_text, range(2,7))
-        self.manual_card_selection = 0 # handle_input(manual_card_selection_text, range(3))
+        self.number_of_players = handle_input(number_of_players_text, range(2,7))
+        self.manual_card_selection = handle_input(manual_card_selection_text, range(3))
 
         for player in range(1, self.number_of_players + 1):
             self.dictionary_of_agents[player] = Agent(player)
@@ -145,7 +145,7 @@ class TinyTowns:
 
             player.score = get_score(self, player)
             rewards[player_id] = player.score
-            observations[player_id] = get_observation(self, player_id)
+            # observations[player_id] = get_observation(self, player_id)
 
         done = all(player.get_board_is_filled() for player in self.dictionary_of_players)
 
@@ -217,7 +217,7 @@ class TinyTowns:
         # SETUP
         self.finished = False
         self.players_finished = 0
-        # print(self.get_initial_state())
+        print(self.get_initial_state())
         return self.finished, self.players_finished
 
 
@@ -292,16 +292,16 @@ class TinyTowns:
             if self.acting_player.can_be_master_builder:
                 # print(self.acting_player.__repr__())
                 self.acting_player.resource_choice_dict = self.bank_resource_check()
-                resource_choice_id, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
+                # resource_choice_id, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
                 # print(resource_choice_id, tile_index)
-                # resource_choice_id = handle_input(resource_selection_text.format(self.acting_player.__str__(), self.acting_player.resource_choice_dict),self.acting_player.resource_choice_dict,)  # MASTER BUILDER CHOOSES A RESOURCE
+                resource_choice_id = handle_input(resource_selection_text.format(self.acting_player.__str__(), self.acting_player.resource_choice_dict),self.acting_player.resource_choice_dict,)  # MASTER BUILDER CHOOSES A RESOURCE
 
                 resource_choice = resource_dict[resource_choice_id]
 
 
                 for each_player in self.master_builder_queue:    # RESOURCE PLACEMENT ROUND
                     self.acting_player = self.dictionary_of_players[each_player]
-                    self.acting_player.turn += 1
+                    # self.acting_player.turn += 1
                     # print(self.acting_player.__repr__())
                     if self.acting_player.get_id() != self.first_player:
                         if (resource_choice_id in self.acting_player.get_factory_resources()):  # CHECK FACTORY RESOURCES
@@ -331,12 +331,12 @@ class TinyTowns:
                                 else:
                                     self.acting_player.warehouse_resources.append(resource_choice_id)
                                     break
-                    # tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
+                    tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # SELECT WHERE TO PLACE MASTER BUILDERS CHOSEN RESOURCE
 
-                    # while self.acting_player.get_board()[board_tile_dict[tile_index]] != empty:
-
-                    _, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
-                        # tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # If chosen tile is not empty, ask for a new tile index
+                    while self.acting_player.get_board()[board_tile_dict[tile_index]] != empty:
+                        print(not_empty_tile_text)
+                    # _, tile_index = self.acting_player.get_agent().choose_resource_and_tile(self, self.acting_player)
+                        tile_index = handle_input(tile_index_text.format(self.acting_player.__str__()), range(1, 17))   # If chosen tile is not empty, ask for a new tile index
 
                     self.acting_player.board[board_tile_dict[tile_index]] = resource_choice  # RESOURCE PLACEMENT ASSIGNMENT
 
@@ -360,12 +360,12 @@ class TinyTowns:
                         for key in which_building_choice:
                             if which_building_choice[key]:
                                 dict_presented[key] = which_building_choice[key]
-                        # print(f"{dict_presented=}")  # ...# print choices of the tile combinations that can be picked up to construct the building in the chosen position
+                        print(f"{dict_presented=}")  # ...# print choices of the tile combinations that can be picked up to construct the building in the chosen position
                         want_to_build = handle_input(want_to_build_text.format(self.acting_player.__str__(), no_yes_dict), list(range(2)))
                         if want_to_build:
                             build_choice = handle_input(build_choice_text, list(dict_presented.keys()))
                             chosen_building_dict = build_options[build_choice]
-                            # print(chosen_building_dict)
+                            print(chosen_building_dict)
                             building_placement_choice = handle_input(build_coord_text, list(chosen_building_dict.keys()))
 
                             self.acting_player.construct(chosen_building_dict[building_placement_choice], self.dictionary_of_players)  # CONSTRUCTION METHOD CALL
