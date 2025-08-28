@@ -158,7 +158,7 @@ class MCTS:
                     brick_count += 1
                 if tile == stone:
                     stone_count += 1
-        resource_count_dict = {wood: wood_count, wheat: wheat_count, glass: glass_count, brick: brick_count, stone: stone_count}
+        resource_count_dict = {"wood": wood_count, "wheat": wheat_count, "glass": glass_count, "brick": brick_count, "stone": stone_count}
         if tile_coords_with_resources:
             rdm.shuffle(tile_coords_with_resources)
             tile_coords_for_adjacency_check = tile_coords_with_resources.pop()

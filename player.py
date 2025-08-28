@@ -146,6 +146,7 @@ The cards available to them are {}""".format(
         """
         self.display_board = np.full((4, 4), empty)
         self.town_board_dict = self.get_board()
+        self.town_board_dict = np.array(self.town_board_dict)
         for tile_id, tile_coords in board_tile_dict.items():
             # print(f"{self.town_board_dict[board_tile_dict[tile_id]]=}")
             self.display_board[tile_coords] = self.town_board_dict[
