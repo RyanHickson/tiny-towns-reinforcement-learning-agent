@@ -215,6 +215,7 @@ class BoardState:
         try:
             # Prefer actual card scoring if available
             score = get_score(self, self.player, simulated_scoring=True)
+            return score
         except:
             # Fall back to heuristic scoring
             score = 0
