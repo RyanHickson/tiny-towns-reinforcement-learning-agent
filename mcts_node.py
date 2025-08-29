@@ -12,7 +12,7 @@ from placement_check import actions_equal, score_action, find_all_layouts
 
 
 class MCTSAgent:
-    def __init__(self, name, iterations=500, exploration_const=1.414, n_jobs=-1):
+    def __init__(self, name, iterations=1000, exploration_const=1.414, n_jobs=-1):
         self.name = name
         self.mcts = MCTS(exploration_const, iterations, n_jobs)
         self.game_state = None
@@ -71,7 +71,7 @@ class MCTSNode:
 
 
 class MCTS:
-    def __init__(self, exploration_const=1.414, max_iterations=200, n_jobs=-1):
+    def __init__(self, exploration_const=1.414, max_iterations=1000, n_jobs=-1):
         self.exploration_const = exploration_const
         self.max_iterations = max_iterations
         self.n_jobs = n_jobs
@@ -115,7 +115,7 @@ class MCTS:
     def simulate(self, state):
         rollout_state = copy.deepcopy(state)
         depth = 0
-        max_depth = 20  # adjust for balance of speed vs foresight
+        max_depth = 50  # adjust for balance of speed vs foresight
 
         while not rollout_state.is_terminal() and depth < max_depth:
             actions = rollout_state.get_legal_actions()
@@ -188,10 +188,12 @@ class BoardState:
                 return
 
             best_build = None
-            best_score = -1
+            best_score = -17
 
             for build_option in build_options:
                 for building_dict in build_option.values():
+                    if isinstance(building_dict["card"], WellType) and rdm.random < 0.9:
+                        continue
                     # Estimate score if this build is applied
                     temp_player = copy.deepcopy(self.player)
                     try:
@@ -214,7 +216,7 @@ class BoardState:
         """Return a reward from 0 to 1, reflecting likely final score."""
         try:
             # Prefer actual card scoring if available
-            score = get_score(self, self.player, simulated_scoring=True)
+            score = get_score(self, self.player)
             return score
         except:
             # Fall back to heuristic scoring

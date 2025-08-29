@@ -46,7 +46,6 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                             self.board[i, j] = building_dict[swap_index]
                             completed_swaps += 1
         case "Grove University":
-            print("Grove University")
             want_to_build = handle_input(            
                 want_to_build_text.format(self.__str__(), no_yes_dict),
                 list(no_yes_dict.keys()))
