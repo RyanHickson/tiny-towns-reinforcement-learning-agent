@@ -1,4 +1,3 @@
-from gymnasium.spaces import MultiDiscrete
 from choices import *
 from score import get_score
 from resources import *

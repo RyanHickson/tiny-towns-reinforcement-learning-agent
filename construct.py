@@ -35,7 +35,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
         case "Architect's Guild":
             completed_swaps = 0
             allowed_swaps = 2
-            building_dict = dict_enum(self.all_cards)
+            building_dict = dict_enum(self.get_buildable_cards())
             for i, row in enumerate(self.board):
                 for j, tile in enumerate(row):
                     if isinstance(tile, Card):
@@ -46,9 +46,10 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
                             self.board[i, j] = building_dict[swap_index]
                             completed_swaps += 1
         case "Grove University":
+            print("Grove University")
             want_to_build = handle_input(            
                 want_to_build_text.format(self.__str__(), no_yes_dict),
-                list(range(2)))
+                list(no_yes_dict.keys()))
             if want_to_build:
                 possible_cards = dict_enum(self.get_buildable_cards())
                 card = handle_input(possible_cards, list(possible_cards.keys()))
@@ -85,7 +86,7 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
         temp_acting_player = dictionary_of_players[each_player]
         opaleyes_watch_holdings_display = [el.__str__() for el in temp_acting_player.opaleyes_watch_holdings]
         if construction_dict["card"].__str__() in opaleyes_watch_holdings_display:
-            want_to_build = handle_input(want_to_build_text.format(temp_acting_player.__str__(), no_yes_dict), list(range(2)))
+            want_to_build = handle_input(want_to_build_text.format(temp_acting_player.__str__(), no_yes_dict), list(no_yes_dict.keys()))
             if want_to_build:
                 opaleye_building_choice = construction_dict["card"]
                 opaleye_placement_dict = {}
