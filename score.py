@@ -235,6 +235,7 @@ def get_score(self, player, simulated_scoring=False):
                 row_coords_list = player.check_row(inn_placement)[1]
                 col_content_list = player.check_col(inn_placement)[1]
                 row_col_combined = set(row_coords_list + col_content_list)
+                row_col_combined.remove(inn_placement)
                 inn_found = False
                 for coord_pair in row_col_combined:
                     if isinstance(player.get_board()[coord_pair], TavernType):

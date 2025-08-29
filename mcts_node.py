@@ -9,6 +9,8 @@ import logging
 import math
 import copy
 from placement_check import actions_equal, score_action, find_all_layouts
+import time
+import json
 
 
 class MCTSAgent:
@@ -192,7 +194,7 @@ class BoardState:
 
             for build_option in build_options:
                 for building_dict in build_option.values():
-                    if isinstance(building_dict["card"], WellType) and rdm.random < 0.9:
+                    if isinstance(building_dict["card"], WellType) and rdm.random < 0.75:
                         continue
                     # Estimate score if this build is applied
                     temp_player = copy.deepcopy(self.player)
@@ -267,10 +269,14 @@ class BoardState:
         return max(0, min(1, score / 50))
 
 
-def run_mcts():
-    mcts_agent = MCTSAgent("Agent")
+def run_mcts(i, data_dict, monument_data_dict):
+    mcts_agent = MCTSAgent("Agent", 200)
     monument = rdm.choice(monuments_deck)
     player = Player(1, monument, mcts_agent)
+    monument_name = str(monument)
+    if not monument_data_dict[monument_name]:
+        monument_data_dict[monument_name] = dict()
+        monument_data_dict[monument_name]["# of occurances"] = 1
 
     # Instead of mcts_agent.mcts.community_cards (which doesn’t exist anymore),
     # explicitly choose community cards here:
@@ -283,6 +289,9 @@ def run_mcts():
     well_choice = rdm.choice(well_deck)
     community_cards = [cottage_choice, farm_choice, factory_choice, tavern_choice, chapel_choice, theatre_choice, well_choice]  # or however many the game uses
     player.all_cards = community_cards + [monument]
+    data_dict[i]["Cards"] = [str(card) for card in community_cards]
+    data_dict[i]["Monument"] = str(monument)
+    data_dict[i]["Iterations"] = 150
 
     board_state = BoardState(player)
     current_turn = 0
@@ -300,11 +309,51 @@ def run_mcts():
         print(f"Score: {score}")
         if board_state.is_terminal():
             break
-
+    
+    if monument_data_dict[monument_name]["Best Score"]:
+        best_score = monument_data_dict[monument_name]["Best Score"]
+        if best_score < score:
+            monument_data_dict[monument_name]["Best Score"] = score
+    else:
+        monument_data_dict[monument_name]["Best Score"] = score
+    
+    if monument_data_dict[monument_name]["Worst Score"]:
+        worst_score = monument_data_dict[monument_name]["Worst Score"]
+        if score < worst_score:
+            monument_data_dict[monument_name]["Worst Score"] = score
+    else:
+        monument_data_dict[monument_name]["Worst Score"] = score
+    
+    if monument_data_dict[monument_name]["Total Score"]:
+        worst_score = monument_data_dict[monument_name]["Total Score"]
+        if score < worst_score:
+            monument_data_dict[monument_name]["Total Score"] = score
+    else:
+        monument_data_dict[monument_name]["Total Score"] = score
+    
+    if monument_data_dict[monument_name]["Average Score"]:
+        worst_score = monument_data_dict[monument_name]["Average Score"]
+        if score < worst_score:
+            monument_data_dict[monument_name]["Average Score"] = score
+    else:
+        monument_data_dict[monument_name]["Average Score"] = score
+        
+    data_dict[i]["Score"] = score
+    data_dict[i]["Monument Built"] = (len(player.get_buildable_cards()) == 7)
     print("Game Completed!")
     return score
     
 
 
 if __name__ == "__main__":
-    run_mcts()
+    data_dict = dict()
+    monument_data_dict = dict()
+    for i in range(1, 101):
+        timer_start = time.time()
+        data_dict[i] = dict()
+        run_mcts(i, data_dict, monument_data_dict)
+        timer_end = time.time()
+        monument_data_dict
+        data_dict[i]["TimeTaken"] = timer_end - timer_start
+        with open("data_dict10.json", "w") as f:
+            f.write(json.dumps(monument_data_dict, indent=4))
