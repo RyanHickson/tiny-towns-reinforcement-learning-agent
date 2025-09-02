@@ -83,15 +83,16 @@ def player_construct(self, construction_dict, dictionary_of_players, opaleye_con
     master_builder_queue = list(dictionary_of_players.keys())
     for each_player in master_builder_queue:
         temp_acting_player = dictionary_of_players[each_player]
-        opaleyes_watch_holdings_display = [el.__str__() for el in temp_acting_player.opaleyes_watch_holdings]
-        if construction_dict["card"].__str__() in opaleyes_watch_holdings_display:
-            want_to_build = handle_input(want_to_build_text.format(temp_acting_player.__str__(), no_yes_dict), list(no_yes_dict.keys()))
-            if want_to_build:
-                opaleye_building_choice = construction_dict["card"]
-                opaleye_placement_dict = {}
-                for tile_id, tile_coords in board_tile_dict.items():
-                    if temp_acting_player.board[tile_coords] == empty:
-                        opaleye_placement_dict[tile_id] = tile_coords
-                where_to_build = handle_input(where_to_build_text.format(temp_acting_player.__str__(), opaleye_placement_dict), list(opaleye_placement_dict.keys()))
-                temp_acting_player.opaleyes_watch_holdings.remove(construction_dict["card"])
-                temp_acting_player.construct({"placement": opaleye_placement_dict[where_to_build], "card": opaleye_building_choice, "co-ords": []}, dictionary_of_players=dictionary_of_players, opaleye_construct=True)
+        if temp_acting_player.get_id() - 1 == self.get_id() or temp_acting_player.get_id() + 1 == self.get_id():    # limited to player on left and right
+            opaleyes_watch_holdings_display = [el.__str__() for el in temp_acting_player.opaleyes_watch_holdings]
+            if construction_dict["card"].__str__() in opaleyes_watch_holdings_display:
+                want_to_build = handle_input(want_to_build_text.format(temp_acting_player.__str__(), no_yes_dict), list(no_yes_dict.keys()))
+                if want_to_build:
+                    opaleye_building_choice = construction_dict["card"]
+                    opaleye_placement_dict = {}
+                    for tile_id, tile_coords in board_tile_dict.items():
+                        if temp_acting_player.board[tile_coords] == empty:
+                            opaleye_placement_dict[tile_id] = tile_coords
+                    where_to_build = handle_input(where_to_build_text.format(temp_acting_player.__str__(), opaleye_placement_dict), list(opaleye_placement_dict.keys()))
+                    temp_acting_player.opaleyes_watch_holdings.remove(construction_dict["card"])
+                    temp_acting_player.construct({"placement": opaleye_placement_dict[where_to_build], "card": opaleye_building_choice, "co-ords": []}, dictionary_of_players=dictionary_of_players, opaleye_construct=True)

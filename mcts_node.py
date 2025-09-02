@@ -11,18 +11,27 @@ import copy
 from placement_check import actions_equal, score_action, find_all_layouts
 import time
 import json
+from copy import deepcopy
 
 
 class MCTSAgent:
+    """
+    Agent class used for instanciation of MCTS.
+    Should record transposition table to persist between MCTS instances
+    Should memorise tree between MCTS instances for efficiencies.
+    """
     def __init__(self, name, iterations=1000, exploration_const=1.414, n_jobs=-1):
         self.name = name
         self.mcts = MCTS(exploration_const, iterations, n_jobs)
         self.game_state = None
+        self.transposition_table = None
 
     def choose_resource_and_tile(self, game, player):
+        """
+        A method for performing Monte Carlo Tree Search and returning a best action tuple.
+        """
         if self.game_state is None:
-            from copy import deepcopy
-            self.game_state = deepcopy(game)  # ensure fresh snapshot
+            self.game_state = deepcopy(game)
         else:
             self.game_state.player = player
 
@@ -31,7 +40,6 @@ class MCTSAgent:
         if action:
             return action
         else:
-            # fallback to legal random if tree failed
             legal = self.game_state.get_legal_actions()
             return rdm.choice(legal) if legal else None
         
@@ -39,6 +47,9 @@ class MCTSAgent:
 
 
 class MCTSNode:
+    """
+    Tree node class
+    """
     def __init__(self, state, parent=None, action=None):
         self.state = state
         self.parent = parent
@@ -73,17 +84,27 @@ class MCTSNode:
 
 
 class MCTS:
+    """
+    Tree search class object
+    """
     def __init__(self, exploration_const=1.414, max_iterations=1000, n_jobs=-1):
         self.exploration_const = exploration_const
         self.max_iterations = max_iterations
         self.n_jobs = n_jobs
+        self.current_turn = 0
+        self.random_resource_list = []
+        for _ in range(100):
+            self.random_resource_list.append(rdm.choice(resource_list))
 
     def search(self, root_state):
-        root = MCTSNode(root_state)
+        root_node = MCTSNode(root_state)
+        self.current_turn += 1
+        if self.current_turn % 3 == 0:
+            print(f"Random resource this turn: {self.random_resource_list[int(self.current_turn/3)]}")
 
         for _ in range(self.max_iterations):
             # Selection
-            node = self.select(root)
+            node = self.select(root_node)
 
             # Expansion
             if not node.state.is_terminal():
@@ -91,14 +112,14 @@ class MCTS:
 
             # Parallel simulation
             rewards = Parallel(n_jobs=self.n_jobs)(
-                delayed(self.simulate)(node.state) for _ in range(4)  # 4 rollouts per expansion
+                delayed(self.simulate)(node.state) for _ in range(4)
             )
             avg_reward = sum(rewards) / len(rewards)
 
             # Backpropagation
             self.backpropagate(node, avg_reward)
 
-        best_child = max(root.children, key=lambda c: c.visits, default=None)
+        best_child = max(root_node.children, key=lambda c: c.visits, default=None)
         return best_child.action if best_child else None
 
     def select(self, node):
@@ -109,7 +130,13 @@ class MCTS:
     def expand(self, node):
         if not node.untried_actions:
             return node
-        action = rdm.choice(node.untried_actions)
+        if self.current_turn % 3 == 0:
+            limited_actions = [action for action in node.untried_actions if action[0] == self.random_resource_list[int(self.current_turn/3)]]
+            if not limited_actions:
+                return node
+            action = rdm.choice(limited_actions)
+        else:
+            action = rdm.choice(node.untried_actions)
         node.untried_actions.remove(action)
         new_state = node.state.apply_action(action)
         return node.add_child(action, new_state)
@@ -117,7 +144,7 @@ class MCTS:
     def simulate(self, state):
         rollout_state = copy.deepcopy(state)
         depth = 0
-        max_depth = 50  # adjust for balance of speed vs foresight
+        max_depth = 60
 
         while not rollout_state.is_terminal() and depth < max_depth:
             actions = rollout_state.get_legal_actions()
@@ -137,9 +164,11 @@ class MCTS:
 
 
 
-
-
 class BoardState:
+    """
+    Boardstate object class
+    Should depend on as little as possible besides the player board
+    """
     def __init__(self, player=None):
         self.player = player
         self.current_turn = 0
@@ -194,15 +223,15 @@ class BoardState:
 
             for build_option in build_options:
                 for building_dict in build_option.values():
-                    if isinstance(building_dict["card"], WellType) and rdm.random < 0.75:
+                    if isinstance(building_dict["card"], WellType) and rdm.random < 0.9:
                         continue
                     # Estimate score if this build is applied
                     temp_player = copy.deepcopy(self.player)
                     try:
                         temp_player.construct(building_dict, {})
-                        # Use card points as proxy
-                        score = sum(getattr(tile, "points", 1) for row in temp_player.get_board() for tile in row if isinstance(tile, Card))
+                        score = get_score(self, self.player)
                         if score > best_score:
+
                             best_score = score
                             best_build = building_dict
                     except:
@@ -215,7 +244,9 @@ class BoardState:
             pass
 
     def evaluate(self):
-        """Return a reward from 0 to 1, reflecting likely final score."""
+        """
+        Return a reward from 0 to 1, reflecting likely final score.
+        """
         try:
             # Prefer actual card scoring if available
             score = get_score(self, self.player)
@@ -233,10 +264,8 @@ class BoardState:
                         continue
                     elif isinstance(tile, Card):
                         building_count += 1
-                        # Add weight proportional to building's point value
-                        high_value_bonus += getattr(tile, "points", 1)
                     else:
-                        resource_count += 1
+                        resource_count -= 0.5
 
             # Slightly penalize resources that don't help high-value builds
             score += high_value_bonus
@@ -270,16 +299,16 @@ class BoardState:
 
 
 def run_mcts(i, data_dict, monument_data_dict):
-    mcts_agent = MCTSAgent("Agent", 200)
+    mcts_agent = MCTSAgent("Agent", 400)
     monument = rdm.choice(monuments_deck)
     player = Player(1, monument, mcts_agent)
     monument_name = str(monument)
-    if not monument_data_dict[monument_name]:
+    if monument_name in monument_data_dict.keys():
+        monument_data_dict[monument_name]["# of occurrences"] += 1
+    else:
         monument_data_dict[monument_name] = dict()
-        monument_data_dict[monument_name]["# of occurances"] = 1
+        monument_data_dict[monument_name]["# of occurrences"] = 1
 
-    # Instead of mcts_agent.mcts.community_cards (which doesn’t exist anymore),
-    # explicitly choose community cards here:
     cottage_choice = rdm.choice(cottage_deck)
     farm_choice = rdm.choice(farm_deck)
     factory_choice = rdm.choice(factory_deck)
@@ -287,15 +316,17 @@ def run_mcts(i, data_dict, monument_data_dict):
     chapel_choice = rdm.choice(chapel_deck)
     theatre_choice = rdm.choice(theatre_deck)
     well_choice = rdm.choice(well_deck)
-    community_cards = [cottage_choice, farm_choice, factory_choice, tavern_choice, chapel_choice, theatre_choice, well_choice]  # or however many the game uses
+
+    community_cards = [cottage_choice, farm_choice, factory_choice, tavern_choice, chapel_choice, theatre_choice, well_choice]
     player.all_cards = community_cards + [monument]
+    print([str(card) for card in player.all_cards])
     data_dict[i]["Cards"] = [str(card) for card in community_cards]
     data_dict[i]["Monument"] = str(monument)
     data_dict[i]["Iterations"] = 150
 
     board_state = BoardState(player)
     current_turn = 0
-
+    
     while not board_state.is_terminal() and current_turn < 100:
         print(f"\nTurn {current_turn + 1}")
 
@@ -310,34 +341,26 @@ def run_mcts(i, data_dict, monument_data_dict):
         if board_state.is_terminal():
             break
     
-    if monument_data_dict[monument_name]["Best Score"]:
+    if len(monument_data_dict[monument_name]) == 1:
+        monument_data_dict[monument_name]["Best Score"] = score
+        monument_data_dict[monument_name]["Worst Score"] = score
+        monument_data_dict[monument_name]["Total Score"] = score
+        monument_data_dict[monument_name]["Average Score"] = score
+    else:
         best_score = monument_data_dict[monument_name]["Best Score"]
+        worst_score = monument_data_dict[monument_name]["Worst Score"]
+        total_score = monument_data_dict[monument_name]["Total Score"]
         if best_score < score:
             monument_data_dict[monument_name]["Best Score"] = score
-    else:
-        monument_data_dict[monument_name]["Best Score"] = score
-    
-    if monument_data_dict[monument_name]["Worst Score"]:
-        worst_score = monument_data_dict[monument_name]["Worst Score"]
-        if score < worst_score:
+        elif score < worst_score:
             monument_data_dict[monument_name]["Worst Score"] = score
-    else:
-        monument_data_dict[monument_name]["Worst Score"] = score
-    
-    if monument_data_dict[monument_name]["Total Score"]:
-        worst_score = monument_data_dict[monument_name]["Total Score"]
-        if score < worst_score:
-            monument_data_dict[monument_name]["Total Score"] = score
-    else:
-        monument_data_dict[monument_name]["Total Score"] = score
-    
-    if monument_data_dict[monument_name]["Average Score"]:
-        worst_score = monument_data_dict[monument_name]["Average Score"]
-        if score < worst_score:
-            monument_data_dict[monument_name]["Average Score"] = score
-    else:
-        monument_data_dict[monument_name]["Average Score"] = score
         
+        monument_data_dict[monument_name]["Total Score"] = total_score + score
+
+        total_score = monument_data_dict[monument_name]["Total Score"]
+        occurances = monument_data_dict[monument_name]["# of occurrences"]
+        monument_data_dict[monument_name]["Average Score"] = total_score/occurances
+
     data_dict[i]["Score"] = score
     data_dict[i]["Monument Built"] = (len(player.get_buildable_cards()) == 7)
     print("Game Completed!")
@@ -348,7 +371,7 @@ def run_mcts(i, data_dict, monument_data_dict):
 if __name__ == "__main__":
     data_dict = dict()
     monument_data_dict = dict()
-    for i in range(1, 101):
+    for i in range(1):
         timer_start = time.time()
         data_dict[i] = dict()
         run_mcts(i, data_dict, monument_data_dict)
