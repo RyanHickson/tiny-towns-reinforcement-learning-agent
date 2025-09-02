@@ -20,7 +20,7 @@ def work_towards_layout(board, layout):
         variant = np.array(variant)
         variant_rows, variant_cols = variant.shape
         not_wilds = get_not_wilds(variant.tolist())
-        total_resource_count = len(not_wilds)
+        
         for i in range(board_rows - variant_rows + 1):
             for j in range(board_cols - variant_cols + 1):
                 matching_resources = 0
@@ -30,11 +30,9 @@ def work_towards_layout(board, layout):
                 for r, c in not_wilds:
                     board_value = board[i + r][j + c]
                     layout_value = variant[r][c]
-                    board_val_str = board_value.__str__()
-                    layout_val_str = layout_value.__str__()
                     if (
-                        board_val_str == layout_val_str  # if tile content on player board is not the same as the tile content of the layout
-                        or board_val_str == trading_post.__str__()  # trading post is used as a wild resource but not picked up like other resources
+                        board_value == layout_value
+                        or board_value == trading_post
                     ):
                         matching_resources += 1
                     elif isinstance(board_value, EmptyResource) and isinstance(layout_value, Resource):
@@ -45,7 +43,10 @@ def work_towards_layout(board, layout):
                         break
                 
                 if placement_possible:
-                    if (best_matching_resources < matching_resources) or (best_matching_resources == matching_resources and turns_needed < min_turns_needed):
+                    if (best_matching_resources < matching_resources) or (
+                        best_matching_resources == matching_resources and 
+                        turns_needed < min_turns_needed
+                        ):
                         best_matching_resources = matching_resources
                         min_turns_needed = turns_needed
                         moves_wanted = moves_needed.copy()
@@ -69,9 +70,9 @@ def score_action(action, board, card_choices):
         for variant in variants:
             not_wilds = get_not_wilds(variant)
             if tile_coords in not_wilds:
-                if resource.__str__() == variant[tile_coords[0]][tile_coords[1]].__str__():
+                if resource == variant[tile_coords[0]][tile_coords[1]]:
                     score += 3
     return score
 
 def actions_equal(a1, a2):
-    return (a1[0].__str__() == a2[0].__str__()) and ([a1[1] == a2[1]])
+    return (a1[0] == a2[0]) and ([a1[1] == a2[1]])
